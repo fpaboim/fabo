@@ -2,18 +2,34 @@
   "name": "semstack",
   "version": "0.0.1",
   "description": "svelte express mongo (serverless) stack",
-  "main": "index.js",
+  "main": "./.semstack/index.js",
+  "type": "module",
   "devDependencies": {
     "concurrently": "^6.2.0"
   },
   "scripts": {
+    "semstack": "nodemon ./index.js",
     "client:dev": "cd client && pnpm run dev",
     "server:dev": "cd server && pnpm run dev",
     "server:dev_prod": "cd server && pnpm run dev_prod",
     "server:deploy": "cd server && pnpm run deploy",
-    "start": "concurrently -n \"client,server\" -c \"blue.bold,yellow.bold\" \"pnpm run client:dev\" \"pnpm run server:dev\" ",
+    "start": "concurrently -n \"client,server,semstack\" -c \"blue.bold,yellow.bold,magenta.bold\" \"pnpm run client:dev\" \"pnpm run server:dev\" \"pnpm run semstack\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "nodemonConfig": {
+    "ignore": [
+      "client/*",
+      "server/*",
+      "docs/*"
+    ],
+    "watch": [".semstack/*"],
+    "ext": ".js, .json, .yaml, .hbs"
+  },
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "handlebars": "^4.7.7",
+    "js-yaml": "^4.1.0"
+  }
 }

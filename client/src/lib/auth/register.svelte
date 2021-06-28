@@ -1,12 +1,12 @@
 <script context="module">
   export const prerender = true
-  import getValidators from '$shared/services/getValidators.js'
 </script>
 
 <script>
   import { goto } from "$app/navigation"
   import { User } from '../../store/store'
   import { post, setLocalStorage } from '$lib/req_utils'
+  import getValidators from '$semstack/'
   export let redirect = true
   export let showlogin
 

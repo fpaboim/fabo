@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt    from 'jsonwebtoken'
 
 import User from '../models/User.js'
-import C from '#shared/constants.js'
+import C      from "#semstack/shared/constants.js"
 
 const createToken = (user, secret, expiresIn='2d') => {
   // console.log('CRETE TOKEN USER:', user)

@@ -1,8 +1,9 @@
 import config from "../config.js"
-import C      from "#shared/constants.js"
+import C      from "#semstack/shared/constants.js"
 import _ from 'lodash'
 import faker from 'faker/locale/pt_BR.js'
 faker.seed(42)
+
 
 const seedDB = () => {
   /**

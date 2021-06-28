@@ -1,11 +1,9 @@
 import mongoose from 'mongoose'
 import bcrypt   from 'bcryptjs'
 import validate from 'mongoose-validator'
-import {getSchema} from '#shared/models'
+import schema from '#semstack/models/User.js'
 
 const UserSchema = new mongoose.Schema(schema)
-const schema = await getSchema('User')
-
 // hooks
 ///////////////////////////////////////////////////////////////////////////////
 UserSchema.pre('save', function (next) {

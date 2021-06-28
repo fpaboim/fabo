@@ -13,7 +13,7 @@
     "poststart": "mongo admin --eval 'db.shutdownServer()'"
   },
   "imports": {
-    "#shared/*": "../shared/*"
+    "#semstack/*": "./.semstack/*"
   },
   "keywords": [],
   "author": "Francisco Aboim",

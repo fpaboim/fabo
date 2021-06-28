@@ -16,7 +16,7 @@ const config = {
     vite: {
       resolve: {
         alias: {
-          $shared: path.resolve('../shared'),
+          $semstack: path.resolve('./.semstack/'),
         }
       }
     }

@@ -1,5 +1,8 @@
 .DS_Store
 /node_modules/*
+/semstack/.shared/*
+/client/.semstack/*
+/server/.semstack/*
 *.log*
 *.swp
 *.lock
