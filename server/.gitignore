@@ -1,0 +1,10 @@
+.DS_Store
+/node_modules/*
+/db/data/*
+/logs/*
+/.serverless/*
+/.webpack/*
+*.log*
+*.wt
+*.lock
+*.env*
