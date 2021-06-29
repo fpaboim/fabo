@@ -6,7 +6,7 @@
   import { goto } from "$app/navigation"
   import { User } from '../../store/store'
   import { post, setLocalStorage } from '$lib/req_utils'
-  import getValidators from '$semstack/'
+  // import getValidators from '$semstack/models/User/validation.js'
   export let redirect = true
   export let showlogin
 

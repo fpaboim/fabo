@@ -2,6 +2,7 @@ import config from "../config.js"
 import C      from "#semstack/shared/constants.js"
 import _ from 'lodash'
 import faker from 'faker/locale/pt_BR.js'
+import User from '../models/User.js'
 faker.seed(42)
 
 

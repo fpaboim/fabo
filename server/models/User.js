@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import bcrypt   from 'bcryptjs'
 import validate from 'mongoose-validator'
-import schema from '#semstack/models/User.js'
+import schema from '#semstack/models/User/schema.js'
 
 const UserSchema = new mongoose.Schema(schema)
 // hooks

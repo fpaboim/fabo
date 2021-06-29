@@ -22,6 +22,7 @@
   "type": "module",
   "dependencies": {
     "cookie": "^0.4.1",
+    "mongoose-validator": "^2.1.0",
     "svelte-local-storage-store": "^0.2.3"
   }
 }
