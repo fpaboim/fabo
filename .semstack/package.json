@@ -1,0 +1,24 @@
+{
+  "name": "shared",
+  "version": "0.0.1",
+  "description": "services shared beetween client and server",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "nodemonConfig": {
+    "ignore": [
+      ".shared/*",
+      "docs/*"
+    ],
+    "ext": ".js, .json, .yaml, .hbs"
+  },
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "handlebars": "^4.7.7",
+    "js-yaml": "^4.1.0"
+  }
+}

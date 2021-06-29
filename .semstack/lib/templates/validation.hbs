@@ -1,0 +1,15 @@
+import validate from 'mongoose-validator'
+
+// {{name}} validation schema
+///////////////////////////////////////////////////////////////////////////////
+export default {
+{{#schemaEntries}}
+  {{name}}: [
+  {{#data}}
+    {{parseValidationEntry this}}
+  {{/data}}
+{{/schemaEntries}}
+}
+
+
+
