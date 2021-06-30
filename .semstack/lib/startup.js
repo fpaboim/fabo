@@ -46,6 +46,7 @@ const startup = () => {
 
   copyFolder('./shared', serverBase+'.semstack/shared')
   copyFolder('./shared', clientBase+'.semstack/shared')
+  copyFolder('./.semstack/lib/shared', clientBase+'.semstack/shared/lib')
 }
 
 export default startup

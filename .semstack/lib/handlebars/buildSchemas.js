@@ -69,6 +69,29 @@ const parseValidations = (value, validationTemplate=false) => {
   return res
 }
 
+const isRequired = (keys, value) => {
+  // console.log('keys:', keys, keys.includes('required'), value['required'])
+  let hasRequired = (keys.includes('required'))
+  if (hasRequired) {
+    if (typeof(value['required'])=='object') {
+      hasRequired = value['required'][0]
+      if (typeof(hasRequired)=='boolean') {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    if (typeof(value['required'])=='boolean') {
+      // console.log("IS BOOL", value['required'])
+      hasRequired = value['required']
+    } else {
+      hasRequired = false
+    }
+  }
+  return hasRequired
+}
+
 // helpers
 ///////////////////////////////////////////////////////////////////////////////
 Handlebars.registerHelper('json', function(context) {
@@ -79,8 +102,24 @@ Handlebars.registerHelper('parseValidationEntry', function (value) {
   let res = ''
   let keys = Object.keys(value)
 
+  if (isRequired(keys,value)) {
+    if (!value['validations']) {
+      value['validations'] = []
+    }
+
+    if (value['validations'] && typeof(value['validations']=='object')) {
+      value['validations'].push({
+        validator: 'required',
+      })
+    }
+  }
+  keys = Object.keys(value)
+
   if (!keys.includes('validations')) {
-    console.log('asdf', value)
+    return ''
+  }
+
+  if (keys.length == 0) {
     return ''
   }
 
@@ -108,9 +147,20 @@ Handlebars.registerHelper('parseValidationEntry', function (value) {
   return res
 });
 
+Handlebars.registerHelper('hasValidationEntries', function (value) {
+  let keys = Object.keys(value)
+
+  // console.log('reqr0:', isRequired(keys, value))
+  return (keys.includes('validations') || isRequired(keys,value))
+});
+
 Handlebars.registerHelper('parseEntry', function (value) {
   let res = ''
   let keys = Object.keys(value)
+
+  if (keys.length == 0) {
+    return ''
+  }
 
   for (let entry in value) {
     entry = entry.trim()
@@ -122,11 +172,15 @@ Handlebars.registerHelper('parseEntry', function (value) {
         res += entry+': '+parseType(value[entry])
         break
       case 'validations':
-        res += entry+': [validate({\n      '+parseValidations(value[entry])
+        res += 'validate: [validate({\n      '+parseValidations(value[entry])
         break
       case 'def':
         entry = 'default'
-        res += entry+': '+JSON.stringify(value[entry])
+        if (typeof(value[entry])=='object') {
+          res += entry+': '+JSON.stringify(value[entry])
+        } else {
+          res += entry+': '+value[entry]
+        }
         break
       default:
         res += entry+': '+JSON.stringify(value[entry])

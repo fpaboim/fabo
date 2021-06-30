@@ -1,13 +1,16 @@
+import '$lib/.semstack/shared/lib/extendValidators.js'
 import validate from 'mongoose-validator'
 
 // {{name}} validation schema
 ///////////////////////////////////////////////////////////////////////////////
 export default {
 {{#schemaEntries}}
+  {{#if (hasValidationEntries data)}}
   {{name}}: [
   {{#data}}
     {{parseValidationEntry this}}
   {{/data}}
+  {{/if}}
 {{/schemaEntries}}
 }
 

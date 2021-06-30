@@ -26,7 +26,7 @@ export function setLocalStorage(key, value) {
 
 export async function post(url, body) {
   if (dev) {
-    url = 'http://192.168.111.2:4000/dev' + url
+    url = 'http://192.168.111.3:4000/dev' + url
   } else {
     url = 'https://4bff8f2bb6.execute-api.us-east-1.amazonaws.com/prod' + url
   }

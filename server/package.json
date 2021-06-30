@@ -23,7 +23,6 @@
     "@middy/core": "^2.4.1",
     "@middy/http-cors": "^2.4.1",
     "@vendia/serverless-express": "^4.3.9",
-    "shared": "workspace:0.0.1",
     "bcryptjs": "^2.4.3",
     "chalk": "^2.4.2",
     "compression": "^1.7.3",
@@ -46,6 +45,7 @@
     "passport-jwt": "^4.0.0",
     "saslprep": "^1.0.3",
     "serverless-api-gateway-throttling": "^1.1.0",
+    "shared": "workspace:0.0.1",
     "slugify": "^1.5.3"
   },
   "devDependencies": {
