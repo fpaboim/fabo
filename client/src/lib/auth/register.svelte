@@ -5,7 +5,8 @@
 <script>
   import { goto } from "$app/navigation"
   import { User } from '../../store/store'
-  import { post, setLocalStorage } from '$lib/req_utils'
+  import { post, setLocalStorage } from '$lib/req_utils.js'
+  import { getErrors } from '$lib/form_utils.js'
   import userValidators from '$semstack/models/User/validation.js'
   export let redirect = true
   export let showlogin
@@ -37,15 +38,8 @@
     try {
       let res = {}
 
-      for (let label in userValidators) {
-        for (let {message, validator} of userValidators[label]) {
-          const isValid = validator(formInput[label])
-          if (!isValid) {
-            errorMsgs[label] = message
-            break
-          }
-        }
-      }
+      const validationErrors = getErrors(formInput, userValidators)
+      errorMsgs = {...errorMsgs, ...validationErrors}
 
       if (formInput.password != formInput.password2) {
         errorMsgs['password2'] = 'Repeating password does not match'
@@ -55,6 +49,8 @@
         if (errorMsgs[error] != '')
           return
       }
+
+      const {username, email, password} = formInput
 
       if (!res.errors) {
         res = await post('/auth/signup', {

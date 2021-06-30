@@ -227,6 +227,12 @@ export default function buildSchemas(schemas, clientBase, serverBase) {
       const buildMongoose = Handlebars.compile(mongooseTemplate, { noEscape: true });
       const mongooseOut = buildMongoose({name: modelName, schemaEntries})
       fs.writeFileSync(serverBase+'.semstack/models/'+modelName+'/schema.js', mongooseOut);
+      try {
+        fs.copyFileSync('./models/'+modelName+'/schemaHooks.js',
+                        serverBase+'.semstack/models/'+modelName+'/schemaHooks.js')
+      } catch(e) {
+        // console.log('COPY ERR', e)
+      }
 
       const buildValidation = Handlebars.compile(validationTemplate, { noEscape: true });
       const validationOut = buildValidation({name: modelName, schemaEntries})

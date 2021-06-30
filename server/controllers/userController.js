@@ -64,7 +64,7 @@ const methods = {
       }
 
       if (user2) {
-        return res.status(400).send({errors: {email: {message: 'Username already exists.'}}})
+        return res.status(400).send({errors: {username: {message: 'Username already exists.'}}})
       }
 
       let newUser = await User.create({
