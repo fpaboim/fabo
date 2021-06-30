@@ -3,7 +3,7 @@ import {extend} from  'mongoose-validator'
 try {
   extend(
     'required',
-    function(val, msg) {
+    function(val) {
       return val != undefined
     },
     'Value is required.'

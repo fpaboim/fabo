@@ -14,7 +14,7 @@ email   :
   unique  : true
   lowercase: true
   trim    : true
-  required: [true, 'Email is required.']
+  required: true
   validations:
     - validator: isEmail
       message: Please enter a valid email
@@ -25,7 +25,7 @@ email   :
 password:
   type    : String
   trim    : true
-  required: [true, 'Password is required.']
+  required: true
   validations:
     - validator: isLength
       arguments: [8, 40]

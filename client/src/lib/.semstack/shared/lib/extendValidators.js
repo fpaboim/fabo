@@ -3,10 +3,10 @@ import {extend} from  'mongoose-validator'
 try {
   extend(
     'required',
-    function(val) {
-      val != undefined
+    function(val, msg) {
+      return val != undefined
     },
-    'field is required.'
+    'Value is required.'
   )
 } catch(e) {
   //

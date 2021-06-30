@@ -108,9 +108,17 @@ Handlebars.registerHelper('parseValidationEntry', function (value) {
     }
 
     if (value['validations'] && typeof(value['validations']=='object')) {
-      value['validations'].push({
-        validator: 'required',
-      })
+      if (typeof(value['required'])=='object') {
+        const msg = value['required'][1]
+        value['validations'].push({
+          validator: 'required',
+          message: msg
+        })
+      } else {
+        value['validations'].push({
+          validator: 'required'
+        })
+      }
     }
   }
   keys = Object.keys(value)

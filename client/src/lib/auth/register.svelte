@@ -10,10 +10,14 @@
   export let redirect = true
   export let showlogin
 
-  let username  = "asdf"
-  let email     = "asdf"
-  let password  = "asdf"
-  let password2 = "asdf"
+
+  let formInput = {
+    username : "asdf",
+    email    : "asdf",
+    password : "asdf",
+    password2: "asdf"
+  }
+
 
   let errorMsgs = {
     username: '',
@@ -33,22 +37,20 @@
     try {
       let res = {}
 
-      // Validation before requesting data
-      if (password2 == '') {
-        errorMsgs['password2'] = 'Repeating password is required'
+      for (let label in userValidators) {
+        for (let {message, validator} of userValidators[label]) {
+          const isValid = validator(formInput[label])
+          if (!isValid) {
+            errorMsgs[label] = message
+            break
+          }
+        }
       }
-      if (username == '') {
-        errorMsgs['username'] = 'Username is required'
-      }
-      if (email == '') {
-        errorMsgs['email'] = 'Email is required'
-      }
-      if (password == '') {
-        errorMsgs['password'] = 'Password is required'
-      }
-      if (password != password2) {
+
+      if (formInput.password != formInput.password2) {
         errorMsgs['password2'] = 'Repeating password does not match'
       }
+
       for (let error in errorMsgs) {
         if (errorMsgs[error] != '')
           return
@@ -106,7 +108,7 @@
       <div class="flex flex-row items-center">
         <label for="email" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Username</label>
         <input
-          bind:value={username}
+          bind:value={formInput.username}
           type="text"
           name="name"
           placeholder=" "
@@ -122,7 +124,7 @@
       <div class="flex flex-row items-center">
         <label for="email" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Email</label>
         <input
-          bind:value={email}
+          bind:value={formInput.email}
           type="email"
           name="email"
           placeholder=" "
@@ -138,7 +140,7 @@
       <div class="flex flex-row items-center">
         <label for="password" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Password</label>
         <input
-          bind:value={password}
+          bind:value={formInput.password}
           type="password"
           name="password"
           placeholder=" "
@@ -154,7 +156,7 @@
       <div class="flex flex-row items-center">
         <label for="password" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Repeat password</label>
         <input
-          bind:value={password2}
+          bind:value={formInput.password2}
           type="password"
           name="passwordrepeat"
           placeholder=" "
