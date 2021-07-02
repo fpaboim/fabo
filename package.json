@@ -1,19 +1,19 @@
 {
-  "name": "semstack",
+  "name": "fabo",
   "version": "0.0.1",
   "description": "svelte express mongo (serverless) stack",
-  "main": "./.semstack/index.js",
+  "main": "./.fabo/index.js",
   "type": "module",
   "devDependencies": {
     "concurrently": "^6.2.0"
   },
   "scripts": {
-    "semstack": "nodemon ./index.js",
+    "fabo": "nodemon ./index.js",
     "client:dev": "cd client && pnpm run dev",
     "server:dev": "cd server && pnpm run dev",
     "server:dev_prod": "cd server && pnpm run dev_prod",
     "server:deploy": "cd server && pnpm run deploy",
-    "start": "concurrently -n \"client,server,semstack\" -c \"blue.bold,yellow.bold,magenta.bold\" \"pnpm run client:dev\" \"pnpm run server:dev\" \"pnpm run semstack\" ",
+    "start": "concurrently -n \"client,server,fabo\" -c \"blue.bold,yellow.bold,magenta.bold\" \"pnpm run client:dev\" \"pnpm run server:dev\" \"pnpm run fabo\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -25,7 +25,7 @@
       "docs/*"
     ],
     "watch": [
-      ".semstack/*",
+      ".fabo/*",
       "./models/*",
       "./shared/*"
     ],

@@ -1,9 +1,7 @@
-import path     from "path"
-import chalk    from "chalk"
 import passportJWT from 'passport-jwt';
 import passport from "passport"
 
-import User from "../models/User.js"
+import User from "#fabo/models/User"
 
 
 const setupPassport = (app) => {

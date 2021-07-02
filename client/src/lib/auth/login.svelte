@@ -6,46 +6,43 @@
   import { goto } from "$app/navigation"
   import { User } from '../../store/store'
   import { post, setLocalStorage } from '$lib/req_utils'
+  import { getErrors } from '$lib/form_utils.js'
+  import userValidators from '$fabo/models/User/validation.js'
 
   export let redirect = true
   export let showlogin
 
-  let email = ""
-  let password = ""
-  let errorMsgs = {}
-
-  const resetErrors = () => {
-   errorMsgs = {
-      email   : 'ok',
-      password: 'ok',
+  let formInput = {
+    email   : '',
+    password: '',
+  }
+  let resetInput = () => {
+    return {
+      email:     'ok',
+      password:  'ok',
     }
   }
-  resetErrors()
+  let errorMsgs = resetInput()
 
   const handleSubmit = async () => {
     try {
       let res = {}
-      resetErrors()
 
-      if (email == '') {
-        errorMsgs['email'] = 'Email is required'
-      }
-      if (password == '') {
-        errorMsgs['password'] = 'Password is required'
-      }
+      const validationErrors = getErrors(formInput, userValidators)
+      errorMsgs = {...errorMsgs, ...validationErrors}
 
       for (let error in errorMsgs) {
-        if (errorMsgs[error] != '')
+        if (errorMsgs[error] != 'ok')
           return
       }
 
       if (!res.errors) {
-        res = await post('/auth/signup', {
-          username,
-          email,
-          password
+        res = await post('/auth/login', {
+          email: formInput.email,
+          password: formInput.password
         })
       }
+      console.log('re:', res)
 
       if (res.errors) {
         let errors = res.errors
@@ -60,10 +57,6 @@
       }
 
 
-      res = await post('/auth/login', {
-        email,
-        password
-      })
 
       if (res.token) {
         // console.log("SET TOKEN:", res.token)
@@ -96,13 +89,13 @@
 
 <div class="">
   <h1 class="text-2xl font-bold mb-8">Login</h1>
-  <form id="form" on:submit|preventDefault={handleSubmit} novalidate>
+  <form id="form" on:submit|preventDefault={handleSubmit} novalidate on:keydown={() => errorMsgs = resetInput()}>
 
     <div class="z-0 w-full mb-5">
       <div class="flex flex-row items-center">
         <label for="email" class="text-right w-1/3 duration-300 pr-3 -z-1 origin-0 text-gray-500">Email</label>
         <input
-          bind:value={email}
+          bind:value={formInput.email}
           type="email"
           name="email"
           placeholder=" "
@@ -116,7 +109,7 @@
       <div class="flex flex-row items-center">
         <label for="password" class="text-right w-1/3 duration-300 pr-3 -z-1 origin-0 text-gray-500">Password</label>
         <input
-          bind:value={password}
+          bind:value={formInput.password}
           type="password"
           name="password"
           placeholder=" "

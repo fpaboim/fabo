@@ -1,16 +1,16 @@
+import C from "#fabo/shared/constants.js"
 import validate from 'mongoose-validator'
-import '$lib/.semstack/shared/lib/extendValidators.js'
+import mongoose from 'mongoose'
 
-// {{name}} validation schema
+// {{name}} schema
 ///////////////////////////////////////////////////////////////////////////////
 export default {
 {{#schemaEntries}}
-  {{#if (hasValidationEntries data)}}
-  {{name}}: [
+  {{name}}: {
   {{#data}}
-    {{parseValidationEntry this}}
+    {{parseEntry this}}
   {{/data}}
-  {{/if}}
+  },
 {{/schemaEntries}}
 }
 

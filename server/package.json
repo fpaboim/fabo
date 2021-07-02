@@ -1,19 +1,19 @@
 {
-  "name": "semstack_backend",
+  "name": "fabo_backend",
   "version": "0.0.1",
   "private": true,
-  "description": "semstack_backend API server",
+  "description": "fabo_backend API server",
   "main": "server.js",
   "scripts": {
     "prestart": "mongo admin --eval 'db.shutdownServer()'; mongod --config ./db/mongodb.conf",
     "start": "cross-env NODE_ENV=development babel-node server.js --debug",
-    "dev": "sls offline --stage dev --printOutput start",
+    "dev": "sls offline --stage dev --printOutput start | pino-pretty -i req.headers,res.headers",
     "dev_prod": "sls offline --stage prod --printOutput start",
     "deploy": "sls deploy --stage prod --verbose",
     "poststart": "mongo admin --eval 'db.shutdownServer()'"
   },
   "imports": {
-    "#semstack/*": "./.semstack/*",
+    "#fabo/*": "./.fabo/*",
     "#models/*": "./server/models*"
   },
   "keywords": [],

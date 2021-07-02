@@ -1,3 +1,5 @@
+import bcrypt   from 'bcryptjs'
+
 const hooks = {
   save: (next) => {
     // only run this if we're messing with the password field, or else bcrypt
@@ -23,3 +25,5 @@ const hooks = {
     })
   }
 }
+
+export default hooks

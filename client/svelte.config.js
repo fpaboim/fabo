@@ -16,7 +16,7 @@ const config = {
     vite: {
       resolve: {
         alias: {
-          $semstack: path.resolve('./src/lib/.semstack/'),
+          $fabo: path.resolve('./src/lib/.fabo/'),
         }
       }
     }

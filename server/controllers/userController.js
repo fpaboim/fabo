@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs'
 import jwt    from 'jsonwebtoken'
 
-import User from '../models/User.js'
-import C      from "#semstack/shared/constants.js"
+import User from '#fabo/models/User'
+import C      from "#fabo/shared/constants.js"
 
 const createToken = (user, secret, expiresIn='2d') => {
   // console.log('CRETE TOKEN USER:', user)

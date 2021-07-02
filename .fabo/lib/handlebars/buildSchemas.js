@@ -207,7 +207,7 @@ Handlebars.registerHelper('parseEntry', function (value) {
 
 // exports
 ///////////////////////////////////////////////////////////////////////////////
-export default function buildSchemas(schemas, clientBase, serverBase) {
+export default function compileTemplates(schemas, clientBase, serverBase) {
   let mongooseSchemas = {}
   let validationSchemas = {}
 
@@ -218,26 +218,31 @@ export default function buildSchemas(schemas, clientBase, serverBase) {
       for (let key in schema) {
         schemaEntries.push({name: key, data: schema[key]})
       }
-      const mongooseTemplate = fs.readFileSync('./.semstack/lib/templates/schema.hbs', 'utf8');
-      const validationTemplate = fs.readFileSync('./.semstack/lib/templates/validation.hbs', 'utf8');
+      const mongooseTemplate = fs.readFileSync('./.fabo/lib/templates/schema.hbs', 'utf8');
+      const validationTemplate = fs.readFileSync('./.fabo/lib/templates/validation.hbs', 'utf8');
+      const modelTemplate = fs.readFileSync('./.fabo/lib/templates/model.hbs', 'utf8');
 
-      createDirIfNone(serverBase+'.semstack/models/'+modelName)
-      createDirIfNone(clientBase+'.semstack/models/'+modelName)
+      createDirIfNone(serverBase+'.fabo/models/'+modelName)
+      createDirIfNone(clientBase+'.fabo/models/'+modelName)
 
       const buildMongoose = Handlebars.compile(mongooseTemplate, { noEscape: true });
       const mongooseOut = buildMongoose({name: modelName, schemaEntries})
-      fs.writeFileSync(serverBase+'.semstack/models/'+modelName+'/schema.js', mongooseOut);
+      fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/schema.js', mongooseOut);
       try {
         fs.copyFileSync('./models/'+modelName+'/schemaHooks.js',
-                        serverBase+'.semstack/models/'+modelName+'/schemaHooks.js')
+                        serverBase+'.fabo/models/'+modelName+'/schemaHooks.js')
       } catch(e) {
         // console.log('COPY ERR', e)
       }
 
+      const buildModel = Handlebars.compile(modelTemplate, { noEscape: true });
+      const modelOut = buildModel({name: modelName, schemaEntries})
+      fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/index.js', modelOut);
+
       const buildValidation = Handlebars.compile(validationTemplate, { noEscape: true });
       const validationOut = buildValidation({name: modelName, schemaEntries})
-      fs.writeFileSync(serverBase+'.semstack/models/'+modelName+'/validation.js', validationOut);
-      fs.writeFileSync(clientBase+'.semstack/models/'+modelName+'/validation.js', validationOut);
+      fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/validation.js', validationOut);
+      fs.writeFileSync(clientBase+'.fabo/models/'+modelName+'/validation.js', validationOut);
     }
   } catch(err) {
     console.log('**ERROR**: Template compilation error:',err)

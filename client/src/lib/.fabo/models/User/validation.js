@@ -1,5 +1,6 @@
 import validate from 'mongoose-validator'
-import '$lib/.semstack/shared/lib/extendValidators.js'
+
+import '$lib/.fabo/shared/lib/extendValidators.js'
 
 // User validation schema
 ///////////////////////////////////////////////////////////////////////////////

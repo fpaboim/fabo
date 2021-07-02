@@ -6,6 +6,7 @@ import crossdomain from "helmet-crossdomain"
 import netjet      from 'netjet'
 import compression from 'compression'
 import cors        from "cors"
+// import pino        from "pino-http"
 
 import router      from './router.js'
 import config from "./config.js"
@@ -24,9 +25,9 @@ function initHelmetHeaders(app) {
 }
 
 const whitelist = [
-  'http://www.sems_stack.com.br',
-  'https://sems_stack-front.vercel.app',
-  'http://sems_stack-front.vercel.app',
+  'http://www.myproject.com.br',
+  'https://myproject-front.vercel.app',
+  'http://myproject-front.vercel.app',
   'http://192.168.111.2:3000',
 ];
 
@@ -39,7 +40,7 @@ const corsOptions = {
 };
 
 var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'https://sems_stack-front.vercel.app');
+    res.header('Access-Control-Allow-Origin', 'https://myproject-front.vercel.app');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -57,6 +58,7 @@ const createApp = () => {
   app.use(express.json())
   app.use(express.urlencoded({ extended: false }))
   app.use(express.static('./static'))
+  // app.use(pino())
 
   initHelmetHeaders(app)
 

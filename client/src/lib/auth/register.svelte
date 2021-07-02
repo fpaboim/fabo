@@ -7,33 +7,30 @@
   import { User } from '../../store/store'
   import { post, setLocalStorage } from '$lib/req_utils.js'
   import { getErrors } from '$lib/form_utils.js'
-  import userValidators from '$semstack/models/User/validation.js'
+  import userValidators from '$fabo/models/User/validation.js'
   export let redirect = true
   export let showlogin
 
 
   let formInput = {
     username : "asdf",
-    email    : "asdf",
-    password : "asdf",
-    password2: "asdf"
+    email    : "asdf@asdf.com",
+    password : "asdfasdf",
+    password2: "asdfasdf"
   }
 
-
-  let errorMsgs = {
-    username: '',
-    email: '',
-    password: '',
-    password2: '',
+  let resetInput = () => {
+    return {
+      username:  'ok',
+      email:     'ok',
+      password:  'ok',
+      password2: 'ok',
+    }
   }
+  let errorMsgs = resetInput()
 
   const handleSubmit = async () => {
-    errorMsgs = {
-      username: '',
-      email: '',
-      password: '',
-      password2: '',
-    }
+    errorMsgs = resetInput()
 
     try {
       let res = {}
@@ -46,12 +43,13 @@
       }
 
       for (let error in errorMsgs) {
-        if (errorMsgs[error] != '')
+        if (errorMsgs[error] != 'ok')
           return
       }
 
       const {username, email, password} = formInput
 
+      console.log('post!')
       if (!res.errors) {
         res = await post('/auth/signup', {
           username,
@@ -98,25 +96,22 @@
 
 <main class="">
   <h1 class="text-2xl font-bold mb-8">Create Account</h1>
-  <form id="form" on:submit|preventDefault={handleSubmit} novalidate>
-
-    <div class="z-0 w-full mb-5">
+  <form id="form" on:submit|preventDefault={handleSubmit} novalidate on:keydown={() => errorMsgs = resetInput()}>
+    <div class="z-0 w-full pb-2">
       <div class="flex flex-row items-center">
-        <label for="email" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Username</label>
+        <label for="username" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Username</label>
         <input
           bind:value={formInput.username}
           type="text"
           name="name"
           placeholder=" "
-          class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
+          class="pt-3 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      {#if errorMsgs['username'] != ''}
-        <span class="text-sm text-red-600" id="error">{errorMsgs['username']}</span>
-      {/if}
+      <span class:invisible={errorMsgs['username'] == 'ok'} class="text-sm text-red-600" id="error">{errorMsgs['username']}</span>
     </div>
 
-    <div class="z-0 w-full mb-5">
+    <div class="z-0 w-full pb-2">
       <div class="flex flex-row items-center">
         <label for="email" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Email</label>
         <input
@@ -124,15 +119,13 @@
           type="email"
           name="email"
           placeholder=" "
-          class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
+          class="pt-3 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      {#if errorMsgs['email'] != ''}
-        <span class="text-sm text-red-600" id="error">{errorMsgs['email']}</span>
-      {/if}
+      <span class:invisible={errorMsgs['email'] == 'ok'} class="text-sm text-red-600" id="error">{errorMsgs['email']}</span>
     </div>
 
-    <div class="z-0 w-full mb-5">
+    <div class="z-0 w-full pb-2">
       <div class="flex flex-row items-center">
         <label for="password" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Password</label>
         <input
@@ -140,15 +133,13 @@
           type="password"
           name="password"
           placeholder=" "
-          class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
+          class="pt-3 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      {#if errorMsgs['password'] != ''}
-        <span class="text-sm text-red-600" id="error">{errorMsgs['password']}</span>
-      {/if}
+      <span class:invisible={errorMsgs['password'] == 'ok'} class="text-sm text-red-600" id="error">{errorMsgs['password']}</span>
     </div>
 
-    <div class="z-0 w-full mb-5">
+    <div class="z-0 w-full pb-2">
       <div class="flex flex-row items-center">
         <label for="password" class="text-right duration-300 w-1/3 pr-3 -z-1 origin-0 text-gray-500">Repeat password</label>
         <input
@@ -156,12 +147,10 @@
           type="password"
           name="passwordrepeat"
           placeholder=" "
-          class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
+          class="pt-3 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      {#if errorMsgs['password2'] != ''}
-        <span class="text-sm text-red-600" id="error">{errorMsgs['password2']}</span>
-      {/if}
+      <span class:invisible={errorMsgs['password2'] == 'ok'} class="text-sm text-red-600" id="error">{errorMsgs['password2']}</span>
     </div>
 
     <div class="pt-5 flex flex-col justify-center items-center">

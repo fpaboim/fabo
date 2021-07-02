@@ -1,3 +1,3 @@
-import startup from './.semstack/lib/startup.js'
+import startup from './.fabo/lib/startup.js'
 
 startup()

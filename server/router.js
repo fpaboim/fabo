@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 import passport from 'passport'
 
 import userController from './controllers/userController.js'
-import User from './models/User.js'
+import User from '#fabo/models/User'
 
 const auth = passport.authenticate("jwt", { session: false })
 

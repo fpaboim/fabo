@@ -3,7 +3,7 @@
 /db/data/*
 /logs/*
 /.serverless/*
-/.semstack/*
+/.fabo/*
 /.webpack/*
 *.log*
 *.wt

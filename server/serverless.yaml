@@ -1,6 +1,6 @@
-app: semstack-back
-service: semstack-api
-name: semstack-api
+app: fabo-back
+service: fabo-api
+name: fabo-api
 useDotenv: true
 
 package:
