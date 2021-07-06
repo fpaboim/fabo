@@ -1,9 +1,21 @@
-const jwt = require('jsonwebtoken')
+import aqp from 'api-query-params';
+import jwt from 'jsonwebtoken'
 import passport from 'passport'
-import rateLimit   from "express-rate-limit"
+import rateLimit from "express-rate-limit"
 
-import userController from '#fabo/models/methods.js'
-import User from '#fabo/models/User'
+{{#models}}
+import {{name}} from '#fabo/models/{{name}}'
+{{/models}}
+
+{{#controllers}}
+{{#if default}}
+import {{name}}Api from '#fabo/models/{{name}}/api.js'
+{{else}}
+import {{name}}Methods from '#fabo/models/{{name}}/methods.js'
+{{/if}}
+{{makeController this}}
+{{/controllers}}
+import C from "#fabo/shared/constants.js"
 
 const auth = passport.authenticate("jwt", { session: false })
 
@@ -16,7 +28,9 @@ const apiLimiter = rateLimit({
 // 3. Routes
 const router = (app) => {
   console.log("Setup routes...")
-  // 4. Authentication Routes
+  {{#routerEntries}}
+  app.post("/{{path}}", {{#if middlewares}}{{middlewares}},{{/if}} {{middlewares}})
+  {{/routerEntries}}
   app.post("/auth/login", apiLimiter, userController.signinUser)
   app.post("/auth/signup", apiLimiter, userController.signupUser)
   app.post("/auth/refreshtoken", apiLimiter, userController.refreshToken)

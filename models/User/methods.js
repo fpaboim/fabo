@@ -1,13 +1,5 @@
-import bcrypt from 'bcryptjs'
-import jwt    from 'jsonwebtoken'
-
-import User from '#fabo/models/User'
+import Post from '#fabo/models/Post'
 import C      from "#fabo/shared/constants.js"
-
-const createToken = (user, secret, expiresIn='2d') => {
-  // console.log('CRETE TOKEN USER:', user)
-  return jwt.sign({ email: user.email, _id: user._id }, secret, { expiresIn })
-}
 
 const methods = {
   getCurrentUser: async (req, res, next) => {

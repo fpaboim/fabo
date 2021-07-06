@@ -10,6 +10,10 @@ const CommentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  deleted: {
+    type: Boolean,
+    default: false
+  },
   created: {
     type: Date,
     default: Date.now

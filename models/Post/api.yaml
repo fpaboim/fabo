@@ -1,0 +1,11 @@
+count:
+  role: C.ROLES.USER
+delete:
+  role: C.ROLES.ADMIN
+find: true
+findone: true
+create:
+  role: C.ROLES.USER
+update:
+  role: C.ROLES.USER
+  owner: author

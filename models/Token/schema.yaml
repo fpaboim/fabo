@@ -1,0 +1,14 @@
+userId:
+  type: Id
+  required: [true, 'Id is required']
+  ref: User
+isVerify:
+  type: Boolean
+  default: false
+token:
+  type: String
+  required: [true, 'Token is required']
+created:
+  type: Date
+  default: Date.now
+  expires: 3600

@@ -1,7 +1,7 @@
 import bcrypt   from 'bcryptjs'
 
 const hooks = {
-  save: (next) => {
+  save: function (next) {
     // only run this if we're messing with the password field, or else bcrypt
     // will on all saves!
     if (!this.isModified('password')) {

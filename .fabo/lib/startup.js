@@ -1,5 +1,6 @@
-import compileTemplates from './handlebars/buildSchemas.js'
-import { readConfig } from './services/readConfig.js'
+import compileSchemas from './handlebars/buildSchemas.js'
+import compileAPIs from './handlebars/buildAPI.js'
+import { readSchemas, readAPIs } from './services/readConfig.js'
 import {
   scaffoldProject,
   copyProjectFiles
@@ -13,10 +14,12 @@ const startup = () => {
   scaffoldProject(serverBase, clientBase)
 
   console.log("Reading Configs... ")
-  let schemas = readConfig()
+  let schemas = readSchemas()
+  let apis = readAPIs()
 
   console.log("Compiling Templates...️")
-  const {mongooseSchemas, validationSchemas} = compileTemplates(schemas, clientBase, serverBase)
+  compileSchemas(schemas, clientBase, serverBase)
+  compileAPIs(apis, clientBase, serverBase)
 
   console.log("Copying files...")
   copyProjectFiles(serverBase, clientBase)

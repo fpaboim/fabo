@@ -6,6 +6,8 @@ import crossdomain from "helmet-crossdomain"
 import netjet      from 'netjet'
 import compression from 'compression'
 import cors        from "cors"
+import rateLimit   from "express-rate-limit"
+
 // import pino        from "pino-http"
 
 import router      from './router.js'
@@ -59,6 +61,14 @@ const createApp = () => {
   app.use(express.urlencoded({ extended: false }))
   app.use(express.static('./static'))
   // app.use(pino())
+
+  // Rate limit per function
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    message: {errors: [{username: 'Too many attempts.'}]},
+    max: 100 // limit each IP to 100 requests per windowMs
+  });
+  app.use(limiter);
 
   initHelmetHeaders(app)
 

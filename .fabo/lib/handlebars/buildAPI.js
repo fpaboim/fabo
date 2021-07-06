@@ -94,68 +94,24 @@ const isRequired = (keys, value) => {
 
 // helpers
 ///////////////////////////////////////////////////////////////////////////////
-Handlebars.registerHelper('json', function(context) {
-  return JSON.stringify(context);
-});
-
-Handlebars.registerHelper('parseValidationEntry', function (value) {
+Handlebars.registerHelper('makeController', function (value) {
   let res = ''
-  let keys = Object.keys(value)
+  console.log('val:', value)
+  res += ''
 
-  if (isRequired(keys,value)) {
-    if (!value['validations']) {
-      value['validations'] = []
-    }
-
-    if (value['validations'] && typeof(value['validations']=='object')) {
-      if (typeof(value['required'])=='object') {
-        const msg = value['required'][1]
-        value['validations'].push({
-          validator: 'required',
-          message: msg
-        })
-      } else {
-        value['validations'].push({
-          validator: 'required'
-        })
-      }
-    }
-  }
-  keys = Object.keys(value)
-
-  if (!keys.includes('validations')) {
-    return ''
-  }
-
-  if (keys.length == 0) {
-    return ''
-  }
-
-  for (let entry in value) {
-    // console.log('ent:', entry)
-    entry = entry.trim()
-    if (entry === 'default')
-      entry = 'def'
-
-    switch (entry) {
-      case 'validations':
-        res += 'validate({\n      '+parseValidations(value[entry], true)
-        break
-      default:
-        continue
-    }
-
-    if (entry != keys.slice(-1)[0]) {
-      res += ',\n    '
-    } else {
-      // console.log('last')
-    }
-    // console.log('res:', res)
-  }
   return res
 });
 
-Handlebars.registerHelper('hasValidationEntries', function (value) {
+Handlebars.registerHelper('hasAuth', function (value) {
+  let res = ''
+
+  if (value != 'C.ROLES.USER') {
+    return true
+  }
+  return false
+});
+
+Handlebars.registerHelper('isEntry', function (value) {
   let keys = Object.keys(value)
 
   // console.log('reqr0:', isRequired(keys, value))
@@ -205,55 +161,68 @@ Handlebars.registerHelper('parseEntry', function (value) {
   return res
 });
 
+const defaultEntries = ['count', 'delete', 'find', 'findone', 'create', 'update']
+const hasDefaultEntries = api => {
+  let foundDefaultEntries = false
+  for (let key of Object.keys(api)) {
+    for (let entry of defaultEntries) {
+      if (entry == key) {
+        foundDefaultEntries = true
+        break
+      }
+    }
+  }
+  return foundDefaultEntries
+}
 // exports
 ///////////////////////////////////////////////////////////////////////////////
-export default function compileSchemas(schemas, clientBase, serverBase) {
-  let mongooseSchemas = {}
-  let validationSchemas = {}
-
+export default function compileAPIs(apis, clientBase, serverBase) {
   try {
-    for (let modelName in schemas) {
-      console.log("MODEL:", modelName)
-      let schema = schemas[modelName]
-      let schemaEntries = []
-      for (let key in schema) {
-        schemaEntries.push({name: key, data: schema[key]})
+    let routerEntries = []
+    let models = []
+    let controllers = []
+    for (let modelName in apis) {
+      models.push({name: modelName})
+      let api = apis[modelName]
+      console.log('modelName:', modelName)
+
+      const apiMethods = './models/'+modelName+'/methods.js'
+      if (fs.existsSync(apiMethods)) {
+        fs.copyFileSync(apiMethods,
+                        serverBase+'.fabo/models/'+modelName+'/methods.js')
+        controllers.push({
+          name: modelName,
+          default: false
+        })
       }
-      if (schemaEntries.length == 0) {
-        // console.log('no entries for:', modelName)
-        continue
+
+      if (Object.keys(api).length > 0) {
+        const mongooseTemplate = fs.readFileSync('./.fabo/lib/templates/api.hbs', 'utf8');
+        createDirIfNone(serverBase+'.fabo/models/'+modelName)
+
+        if (hasDefaultEntries(api)) {
+          const buildMongoose = Handlebars.compile(mongooseTemplate, { noEscape: true });
+          const mongooseOut = buildMongoose({name: modelName, apiEntries: api})
+          fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/api.js', mongooseOut);
+          controllers.push({
+            name: modelName,
+            default: true
+          })
+        }
+
+        const apiHooks = './models/'+modelName+'/apiHooks.js'
+        if (fs.existsSync(apiHooks))
+          fs.copyFileSync(apiHooks,
+                          serverBase+'.fabo/models/'+modelName+'/apiHooks.js')
       }
-
-      const mongooseTemplate = fs.readFileSync('./.fabo/lib/templates/schema.hbs', 'utf8');
-      const validationTemplate = fs.readFileSync('./.fabo/lib/templates/validation.hbs', 'utf8');
-      const modelTemplate = fs.readFileSync('./.fabo/lib/templates/model.hbs', 'utf8');
-
-      createDirIfNone(serverBase+'.fabo/models/'+modelName)
-      createDirIfNone(clientBase+'.fabo/models/'+modelName)
-
-      const buildMongoose = Handlebars.compile(mongooseTemplate, { noEscape: true });
-      const mongooseOut = buildMongoose({name: modelName, schemaEntries})
-      fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/schema.js', mongooseOut);
-
-      const schemaHooksIn = './models/'+modelName+'/schemaHooks.js'
-      const hasHooks = fs.existsSync(schemaHooksIn)
-      if (hasHooks)
-        fs.copyFileSync(schemaHooksIn,
-                        serverBase+'.fabo/models/'+modelName+'/schemaHooks.js')
-
-      const buildModel = Handlebars.compile(modelTemplate, { noEscape: true });
-      const modelInput = {name: modelName, hasHooks, schemaEntries}
-      const modelOut = buildModel(modelInput)
-      fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/index.js', modelOut);
-
-      const buildValidation = Handlebars.compile(validationTemplate, { noEscape: true });
-      const validationOut = buildValidation({name: modelName, schemaEntries})
-      fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/validation.js', validationOut);
-      fs.writeFileSync(clientBase+'.fabo/models/'+modelName+'/validation.js', validationOut);
     }
+
+    const routerTemplate = fs.readFileSync('./.fabo/lib/templates/router.hbs', 'utf8');
+    const builtRouter = Handlebars.compile(routerTemplate, { noEscape: true });
+    const mongooseOut = builtRouter({models, routerEntries, controllers})
+    fs.writeFileSync(serverBase+'.fabo/router.js', mongooseOut);
+
   } catch(err) {
     console.log('**ERROR**: Template compilation error:',err)
   }
-
-  return {mongooseSchemas, validationSchemas}
 }

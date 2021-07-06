@@ -68,6 +68,7 @@ importers:
       '@middy/core': ^2.4.1
       '@middy/http-cors': ^2.4.1
       '@vendia/serverless-express': ^4.3.9
+      api-query-params: ^5.0.0
       babel-loader: ^8.2.2
       bcryptjs: ^2.4.3
       chalk: ^2.4.2
@@ -78,17 +79,19 @@ importers:
       dayjs: ^1.10.5
       dotenv: ^6.2.0
       express: ^4.17.1
+      express-rate-limit: ^5.3.0
       faker: ^4.1.0
       helmet: ^3.15.0
       helmet-crossdomain: ^0.3.0
       install: ^0.13.0
       jsonwebtoken: ^8.4.0
       lodash: ^4.17.21
-      md5: ^2.2.1
+      md5: ^2.3.0
       mongodb-client-encryption: ^1.2.5
       mongoose: ^5.4.10
       mongoose-validator: ^2.1.0
       netjet: ^1.3.0
+      nodemailer: ^6.6.2
       nodemon: ^1.19.4
       npm: ^7.17.0
       passport: ^0.4.0
@@ -106,6 +109,7 @@ importers:
       '@middy/core': 2.4.1
       '@middy/http-cors': 2.4.1
       '@vendia/serverless-express': 4.3.9
+      api-query-params: 5.0.0
       bcryptjs: 2.4.3
       chalk: 2.4.2
       compression: 1.7.4
@@ -114,6 +118,7 @@ importers:
       dayjs: 1.10.5
       dotenv: 6.2.0
       express: 4.17.1
+      express-rate-limit: 5.3.0
       helmet: 3.23.3
       helmet-crossdomain: 0.3.0
       install: 0.13.0
@@ -123,6 +128,7 @@ importers:
       mongoose: 5.12.14_mongodb-client-encryption@1.2.5
       mongoose-validator: 2.1.0
       netjet: 1.4.0
+      nodemailer: 6.6.2
       npm: 7.19.0
       passport: 0.4.1
       passport-jwt: 4.0.0
@@ -2001,6 +2007,10 @@ packages:
       picomatch: 2.3.0
     dev: true
 
+  /api-query-params/5.0.0:
+    resolution: {integrity: sha512-xdzUeRmq+v/jtE8L5VfGaXjT5LqyHvvVvWdSlai1BoKseocgzRv2eV63gFBGFR0XurZJ8EOlb8WhW24BXdKMmA==}
+    dev: false
+
   /aproba/1.2.0:
     resolution: {integrity: sha512-Y9J6ZjXtoYh8RnXVCMOU/ttDmk1aBjunq9vO0ta5x85WDQiQfUF9sIPBITdbiiIVcBo03Hi3jMxigBtsddlXRw==}
     dev: false
@@ -3547,6 +3557,10 @@ packages:
   /expand-template/2.0.3:
     resolution: {integrity: sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==}
     engines: {node: '>=6'}
+    dev: false
+
+  /express-rate-limit/5.3.0:
+    resolution: {integrity: sha512-qJhfEgCnmteSeZAeuOKQ2WEIFTX5ajrzE0xS6gCOBCoRQcU+xEzQmgYQQTpzCcqUAAzTEtu4YEih4pnLfvNtew==}
     dev: false
 
   /express/4.17.1:
@@ -5355,6 +5369,11 @@ packages:
       long-timeout: 0.1.1
       sorted-array-functions: 1.3.0
     dev: true
+
+  /nodemailer/6.6.2:
+    resolution: {integrity: sha512-YSzu7TLbI+bsjCis/TZlAXBoM4y93HhlIgo0P5oiA2ua9Z4k+E2Fod//ybIzdJxOlXGRcHIh/WaeCBehvxZb/Q==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /nodemon/1.19.4:
     resolution: {integrity: sha512-VGPaqQBNk193lrJFotBU8nvWZPqEZY2eIzymy2jjY0fJ9qIsxA0sxQ8ATPl0gZC645gijYEc1jtZvpS8QWzJGQ==}

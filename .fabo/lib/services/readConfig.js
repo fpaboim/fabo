@@ -5,15 +5,18 @@ import {
 } from './fileUtils.js'
 
 
-export function readConfig() {
+export function readSchemas() {
   let schemas = {}
   try {
     const baseFolder = './models/';
     const dirs = getDirectories(baseFolder)
     for (let dir of dirs) {
       try {
-        const schema = yaml.load(fs.readFileSync(baseFolder+dir+'/schema.yaml', 'utf8'));
-        schemas[dir] = schema
+        const file = fs.readFileSync(baseFolder+dir+'/schema.yaml', 'utf8')
+        if (file) {
+          const schema = yaml.load(file);
+          schemas[dir] = schema
+        }
         // console.log('YAML:', schema);
       } catch(err) {
         console.log('**ERROR**: YAML read error:',err)
@@ -24,4 +27,35 @@ export function readConfig() {
   }
 
   return schemas
+}
+
+export function readAPIs() {
+  let apis = {}
+  try {
+    const baseFolder = './models/';
+    const dirs = getDirectories(baseFolder)
+    for (let dir of dirs) {
+      try {
+        const schema = yaml.load(fs.readFileSync(baseFolder+dir+'/api.yaml', 'utf8'));
+        apis[dir] = schema
+        // console.log('YAML:', schema);
+      } catch(err) {
+        // console.log('**ERROR**: API YAML read error:',err)
+      }
+      try {
+        const apiMethods = baseFolder+dir+'/methods.js'
+        if (fs.existsSync(apiMethods)) {
+          if (!apis[dir])
+            apis[dir] = {}
+        }
+        // console.log('YAML:', schema);
+      } catch(err) {
+        // console.log('**ERROR**: API YAML read error:',err)
+      }
+    }
+  } catch(err) {
+    console.log('**ERROR**: Error reading API config:', err)
+  }
+
+  return apis
 }

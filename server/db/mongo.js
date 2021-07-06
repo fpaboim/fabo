@@ -15,7 +15,7 @@ const connectToDB = async () => {
   mongoose.set("useUnifiedTopology", true)
 
   db = await mongoose.connect(config.db.uri, config.db.options)
-  seedDB()
+  // seedDB()
 
   return db
 }
