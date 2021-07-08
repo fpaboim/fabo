@@ -1,5 +1,11 @@
-import Post from '#fabo/models/Post'
-import C      from "#fabo/shared/constants.js"
+import User from "./";
+import jwt from 'jsonwebtoken'
+
+const createToken = (user, secret, expiresIn='2d') => {
+  // console.log('CRETE TOKEN USER:', user)
+  return jwt.sign({ email: user.email, _id: user._id }, secret, { expiresIn })
+}
+
 
 const methods = {
   getCurrentUser: async (req, res, next) => {
@@ -11,6 +17,14 @@ const methods = {
       return res.send({user})
     }
   },
+
+  verifyEmail: async (req, res, next) => {
+    const user = await User.findById(req.user.id, '-password').lean()
+    if (!user) {
+      throw new Error('Error refreshing token')
+    }
+  },
+
 
   refreshToken: async (req, res, next) => {
     const user = await User.findById(req.user.id, '-password').lean()

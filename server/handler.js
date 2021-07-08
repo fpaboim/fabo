@@ -1,3 +1,7 @@
-import {startApp} from '../.fabo/server-core/handler.js'
+import { makeHandler } from '../.fabo/server-core/makeHandler.js'
+import setupPassport from './services/passport.js'
 
-export default startApp
+const services = [setupPassport]
+const startApp = makeHandler(services)
+
+export {startApp}

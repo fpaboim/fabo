@@ -3,8 +3,8 @@ import fse from 'fs-extra'
 
 export const copyProjectFiles = (serverBase, clientBase) => {
   try {
-    // copyFolder('./shared', serverBase+'.fabo/shared')
-    // copyFolder('./shared', clientBase+'.fabo/shared')
+    copyFolder('./shared', serverBase+'.fabo/shared')
+    copyFolder('./shared', clientBase+'.fabo/shared')
     // copyFolder('./.fabo/lib/shared', clientBase+'.fabo/shared/lib')
   } catch(err) {
     console.log("ERR:", err)

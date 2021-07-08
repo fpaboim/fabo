@@ -1,6 +1,3 @@
-import Post from '#fabo/models/Post'
-import C      from "#fabo/shared/constants.js"
-
 const methods = {
   example: async (req, res, next) => {
     const user = req.user

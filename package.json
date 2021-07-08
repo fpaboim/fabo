@@ -13,7 +13,7 @@
     "server:dev": "cd server && pnpm run dev",
     "server:dev_prod": "cd server && pnpm run dev_prod",
     "server:deploy": "cd server && pnpm run deploy",
-    "start": "concurrently -n \"client,server,fabo\" -c \"blue.bold,yellow.bold,magenta.bold\" \"pnpm run client:dev\" \"pnpm run server:dev\" \"pnpm run fabo\" ",
+    "dev": "concurrently -n \"client,server,fabo\" -c \"blue.bold,yellow.bold,magenta.bold\" \"pnpm run client:dev\" \"pnpm run server:dev\" \"pnpm run fabo\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

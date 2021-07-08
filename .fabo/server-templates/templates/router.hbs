@@ -1,11 +1,5 @@
-import aqp from 'api-query-params';
-import jwt from 'jsonwebtoken'
 import passport from 'passport'
 import rateLimit from "express-rate-limit"
-
-{{#models}}
-import {{name}} from './models/{{name}}'
-{{/models}}
 
 {{#controllers}}
 {{#if default}}
@@ -16,7 +10,6 @@ import {{name}}Methods from './models/{{name}}/methods.js'
 {{/controllers}}
 
 {{makeController controllers}}
-import C from "#server/shared/constants.js"
 
 const auth = passport.authenticate("jwt", { session: false })
 
@@ -36,14 +29,6 @@ const router = (app) => {
   app.post("/{{path}}", {{#if data.middlewares}}{{data.middlewares}},{{/if}} {{name}}Controller.{{path}})
   {{/if}}
   {{/routerEntries}}
-
-  app.post("/auth/login", apiLimiter, userController.signinUser)
-  app.post("/auth/signup", apiLimiter, userController.signupUser)
-  app.post("/auth/refreshtoken", apiLimiter, userController.refreshToken)
-  app.post("/auth/verifyEmail/:userid/:token", apiLimiter, userController.verifyEmail)
-  app.get("/profile", auth, userController.getCurrentUser)
-
-  // 5. Application Routes
 }
 
 export default router

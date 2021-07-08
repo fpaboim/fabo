@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import schema from '#server/models/{{name}}/schema.js'
+import schema from './schema.js'
 {{#if hasHooks}}
-import hooks from '#server/models/{{name}}/schemaHooks.js'
+import hooks from './schemaHooks.js'
 {{/if}}
 
 const {{name}}Schema = new mongoose.Schema(schema)

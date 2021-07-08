@@ -12,10 +12,11 @@ const connectToDB = async () => {
   mongoose.set("useFindAndModify", false)
   mongoose.set("useCreateIndex", true)
   mongoose.set("useUnifiedTopology", true)
-  mongoose.set("bufferCommands", false)
-  mongoose.set("bufferMaxEntries", 0)
 
-  db = await mongoose.connect(process.env.MONGO_URI)
+  db = await mongoose.connect(process.env.MONGO_URI, {
+    "bufferCommands": false,
+    "bufferMaxEntries": 0
+  })
   // seedDB()
 
   return db

@@ -9,12 +9,7 @@ import cors        from "cors"
 import rateLimit   from "express-rate-limit"
 
 // import pino        from "pino-http"
-
-console.log('**** wd:', process.env.cwd())
 import router      from '#server/.fabo/router.js'
-import setupPassport from './services/passport.js'
-
-import chalk from "chalk"
 
 function initHelmetHeaders(app) {
   // Use helmet to secure Express headers
@@ -49,7 +44,7 @@ var allowCrossDomain = function(req, res, next) {
     next();
 }
 
-const createApp = () => {
+const createApp = (services) => {
   console.log('Initializing express...')
   const app = express()
 
@@ -80,10 +75,14 @@ const createApp = () => {
     });
   }
 
-  setupPassport(app)
   console.log('Express init done.')
 
   app.use(allowCrossDomain)
+
+  for (let service of services) {
+    service(app)
+  }
+
   router(app)
 
   return app
