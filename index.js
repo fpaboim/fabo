@@ -1,3 +1,3 @@
-import startup from './.fabo/lib/startup.js'
+import startup from './.fabo/server-templates/startup.js'
 
 startup()

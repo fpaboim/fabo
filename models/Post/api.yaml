@@ -1,5 +1,4 @@
-count:
-  role: C.ROLES.USER
+count: true
 delete:
   role: C.ROLES.ADMIN
 find: true

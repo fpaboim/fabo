@@ -1,0 +1,20 @@
+import mongoose from 'mongoose'
+import schema from '#server/models/{{name}}/schema.js'
+{{#if hasHooks}}
+import hooks from '#server/models/{{name}}/schemaHooks.js'
+{{/if}}
+
+const {{name}}Schema = new mongoose.Schema(schema)
+{{#if hasHooks}}
+// hooks
+///////////////////////////////////////////////////////////////////////////////
+for (let hook in hooks) {
+  {{name}}Schema.pre(hook, hooks[hook])
+}
+{{/if}}
+
+const {{name}} = mongoose.model('{{name}}', {{name}}Schema)
+export default {{name}}
+
+
+

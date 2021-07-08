@@ -2,6 +2,7 @@
 /node_modules/*
 /db/data/*
 /logs/*
+/db/logs/*
 /.serverless/*
 /.fabo/*
 /.webpack/*
