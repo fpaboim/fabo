@@ -7,9 +7,8 @@ module.exports = {
   // entry: { handler: './server.js' },
   entry: slsw.lib.entries,
   mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
-  node: false,
   optimization: {
-    minimize: false,
+    minimize: slsw.lib.webpack.isLocal ? false:true
   },
   externals: [nodeExternals()],
   module: {

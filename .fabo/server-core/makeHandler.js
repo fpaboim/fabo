@@ -11,12 +11,11 @@ import createApp from "./express.js"
 // Vars
 ///////////////////////////////////////////////////////////////////////////////
 dotenv.config()
-const PORT = 4000
 
 // funcs
 ///////////////////////////////////////////////////////////////////////////////
 export function makeHandler(services) {
-  async function startApp(...args) {
+  return async function startApp(...args) {
     console.log("\n")
     console.log(
       chalk.bold(
@@ -39,6 +38,4 @@ export function makeHandler(services) {
 
     return app(...args)
   }
-
-  return startApp
 }

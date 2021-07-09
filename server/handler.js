@@ -4,4 +4,4 @@ import setupPassport from './services/passport.js'
 const services = [setupPassport]
 const startApp = makeHandler(services)
 
-export {startApp}
+export default {startApp}

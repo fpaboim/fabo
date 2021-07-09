@@ -17,9 +17,10 @@
     "ext": ".js, .json, .yaml, .hbs"
   },
   "dependencies": {
-    "express-rate-limit": "workspace:^5.3.0",
     "fs-extra": "^10.0.0",
-    "handlebars": "^4.7.7",
-    "js-yaml": "^4.1.0"
+    "handlebars": "^4.7.7"
+  },
+  "devDependencies": {
+    "js-yaml": "workspace:^4.1.0"
   }
 }
