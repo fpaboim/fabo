@@ -36,11 +36,14 @@ export function readAPIs() {
     const dirs = getDirectories(baseFolder)
     for (let dir of dirs) {
       try {
-        const schema = yaml.load(fs.readFileSync(baseFolder+dir+'/api.yaml', 'utf8'));
-        apis[dir] = schema
-        // console.log('YAML:', schema);
+        const apipath= baseFolder+dir+'/api.yaml'
+        if (fs.existsSync(apipath)) {
+          const schema = yaml.load(fs.readFileSync(apipath, 'utf8'));
+          apis[dir] = schema
+          // console.log('YAML:', schema);
+        }
       } catch(err) {
-        // console.log('**ERROR**: API YAML read error:',err)
+        console.log('**ERROR**: API YAML read error:',err)
       }
       try {
         const apiMethods = baseFolder+dir+'/methods.js'
@@ -48,9 +51,8 @@ export function readAPIs() {
           if (!apis[dir])
             apis[dir] = {}
         }
-        // console.log('YAML:', schema);
       } catch(err) {
-        // console.log('**ERROR**: API YAML read error:',err)
+        console.log('**ERROR**: API YAML read error:',err)
       }
     }
   } catch(err) {

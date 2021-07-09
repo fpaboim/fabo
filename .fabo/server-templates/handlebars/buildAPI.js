@@ -92,6 +92,31 @@ const isRequired = (keys, value) => {
   return hasRequired
 }
 
+// partials
+///////////////////////////////////////////////////////////////////////////////
+Handlebars.registerPartial('authPartial', `
+{{#if (requiresLogin this)}}
+if (!user) {
+  return res.status(400).send({errors: {auth: {message: 'User must be logged in.'}}})
+}
+{{/if}}
+
+{{#if (hasAuth this.auth)}}
+if (!(
+  {{#each this.auth}}
+  {{#if @first}}
+      user.roles.includes({{this.role}})
+  {{else}}
+  || user.roles.includes({{this.role}})
+  {{/if}}
+  {{/each}}
+)) {
+  return res.status(400).send({errors: {auth: {message: 'User not authorized.'}}})
+}
+{{/if}}`
+)
+
+
 // helpers
 ///////////////////////////////////////////////////////////////////////////////
 Handlebars.registerHelper('getController', function (entry) {
@@ -126,10 +151,27 @@ Handlebars.registerHelper('makeController', function (controllers) {
   return res
 });
 
+Handlebars.registerHelper('requiresLogin', function (obj) {
+  let res = ''
+
+  if (obj.login) {
+    if (obj.auth) {
+      return true
+    }
+    return obj.login
+  }
+
+  if (obj.auth) {
+    return true
+  }
+
+  return false
+});
+
 Handlebars.registerHelper('hasAuth', function (value) {
   let res = ''
 
-  if (value != 'C.ROLES.USER') {
+  if (value && typeof(value) == 'object' && value.length > 0) {
     return true
   }
   return false
@@ -185,7 +227,7 @@ Handlebars.registerHelper('parseEntry', function (value) {
   return res
 });
 
-const defaultEntries = ['count', 'delete', 'find', 'findone', 'create', 'update']
+const defaultEntries = ['count', 'delete', 'find', 'findone', 'create', 'updateone', 'updatemany']
 const hasDefaultEntries = api => {
   let foundDefaultEntries = false
   for (let key of Object.keys(api)) {
@@ -236,6 +278,7 @@ export default function compileAPIs(apis, clientBase, serverBase) {
         })
       }
 
+      // console.log("NAME:", modelName, api)
       if (Object.keys(api).length > 0) {
         let file_loc = new URL('../templates/api.hbs', import.meta.url)
         const mongooseTemplate = fs.readFileSync(file_loc, 'utf8');
@@ -249,6 +292,8 @@ export default function compileAPIs(apis, clientBase, serverBase) {
             name: modelName,
             default: true
           })
+          // console.log("DEFAUL ENTRIES:", api)
+        } else {
         }
 
         const apiHooks = './models/'+modelName+'/apiHooks.js'

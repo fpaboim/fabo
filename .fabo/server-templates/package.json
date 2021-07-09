@@ -18,9 +18,7 @@
   },
   "dependencies": {
     "fs-extra": "^10.0.0",
-    "handlebars": "^4.7.7"
-  },
-  "devDependencies": {
-    "js-yaml": "workspace:^4.1.0"
+    "handlebars": "^4.7.7",
+    "js-yaml": "^4.1.0"
   }
 }

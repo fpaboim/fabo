@@ -1,8 +1,8 @@
 const constants = {
   ROLES: {
-    ADMIN  : 'ADMIN',
+    ADMIN : 'ADMIN',
     EDITOR: 'EDITOR',
-    USER   : 'USER',
+    USER  : 'USER',
   },
   POST_STATES: {
     DRAFT    : 'DRAFT',

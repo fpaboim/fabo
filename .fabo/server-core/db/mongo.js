@@ -17,7 +17,7 @@ const connectToDB = async () => {
     "bufferCommands": false,
     "bufferMaxEntries": 0
   })
-  // seedDB()
+  seedDB()
 
   return db
 }
