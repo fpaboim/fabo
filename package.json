@@ -1,12 +1,16 @@
 {
   "name": "fabo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "svelte express mongo (serverless) stack",
   "main": "./.fabo/index.js",
   "type": "module",
   "devDependencies": {
     "@changesets/cli": "^2.16.0",
     "concurrently": "^6.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpaboim/fabo.git"
   },
   "bin": {
     "@fpaboim/fabo": "./.fabo/cli/bin/fabo",
@@ -21,6 +25,9 @@
     "server:deploy": "cd server && pnpm run deploy",
     "dev": "concurrently -n \"client,server,fabo\" -c \"blue.bold,yellow.bold,magenta.bold\" \"pnpm run client:dev\" \"pnpm run server:dev\" \"pnpm run fabo\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "author": "",
   "license": "ISC",
