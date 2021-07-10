@@ -1,0 +1,19 @@
+import validate from 'mongoose-validator'
+
+import '$lib/.fabo/shared/lib/extendValidators.js'
+
+// {{name}} validation schema
+///////////////////////////////////////////////////////////////////////////////
+export default {
+{{#schemaEntries}}
+  {{#if (hasValidationEntries data)}}
+  {{name}}: [
+  {{#data}}
+    {{parseValidationEntry this}}
+  {{/data}}
+  {{/if}}
+{{/schemaEntries}}
+}
+
+
+

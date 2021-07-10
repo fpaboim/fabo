@@ -1,0 +1,75 @@
+app: fabo-back
+service: fabo-api
+name: fabo-api
+useDotenv: true
+
+package:
+  individually: true
+  exclude:
+    - 'logs/**'
+    - '.git/**'
+    - 'serverless-configs/**'
+    - 'node_modules/.cache/**'
+    - 'db/**'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  # stage: dev
+  region: us-east-1
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-webpack
+  - serverless-offline
+
+functions:
+  app:
+    handler: handler.startApp
+    # events:
+    #   - http: ANY /
+    #   - http: 'ANY {proxy+}'
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - X-Amz-Date
+              - Accept
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - X-Amz-Date
+              - Accept
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
+
+custom:
+  apiGatewayThrottling:
+    maxRequestsPerSecond: 1000
+    maxConcurrentRequests: 500
+  webpack:
+    webpackConfig: './webpack.config.js' # Name of webpack configuration file
+    includeModules: true # Node modules configuration for packaging
+    packager: 'npm' # Packager that will be used to package your external modules
+    # excludeFiles: src/**/*.test.js # Provide a glob for files to ignore
+  serverless-offline:
+    # noPrependStageInUrl: true
+    # httpsProtocol: "dev-certs"
+    httpPort: 4000
+    host: 0.0.0.0
