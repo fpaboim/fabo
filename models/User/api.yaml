@@ -12,4 +12,5 @@ auth/verifyEmail/:userid/:token:
   middlewares: [apiLimiter]
 profile:
   method: getCurrentUser
-  role: C.ROLES.USER
+  auth:
+    - role: ROLES.USER

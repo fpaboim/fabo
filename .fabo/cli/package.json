@@ -20,15 +20,13 @@
   ],
   "author": "fpaboim",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "arg": "^5.0.0",
+    "chalk": "^4.1.1",
     "esm": "^3.2.25",
     "execa": "^5.1.1",
     "inquirer": "^8.1.1",
     "listr": "^0.14.3",
     "ncp": "^2.0.0"
-  },
-  "dependencies": {
-    "chalk": "workspace:^4.1.1"
   }
 }

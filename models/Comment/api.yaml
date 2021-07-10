@@ -1,9 +1,15 @@
 count: true
 delete:
-  role: C.ROLES.ADMIN
+  auth: 
+    - role: ROLES.ADMIN
 find: true
 findone: true
 create:
-  role: C.ROLES.USER
-update:
-  role: C.ROLES.USER
+  login: true
+updateone:
+  login: true
+  auth:
+    - role: ROLES.USER
+      owner: from
+    - role: ROLES.EDITOR
+
