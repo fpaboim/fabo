@@ -4,7 +4,7 @@
   "description": "fabo framework creation cli",
   "main": "src/index.js",
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

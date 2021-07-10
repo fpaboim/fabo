@@ -4,6 +4,9 @@
   "description": "services shared beetween client and server",
   "main": "index.js",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "nodemon index.js"
   },

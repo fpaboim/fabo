@@ -6,6 +6,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  },
   "imports": {
     "#server/*": "./../../server/*"
   },
