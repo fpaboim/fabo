@@ -4,7 +4,7 @@
 
 <script>
   import { goto } from "$app/navigation"
-  import { User } from '../../store/store'
+  import { User, modal } from '../../store/store'
   import { post, setLocalStorage } from '$lib/req_utils'
   import { getErrors } from '$lib/form_utils.js'
   import userValidators from '$fabo/models/User/validation.js'
@@ -42,7 +42,7 @@
           password: formInput.password
         })
       }
-      console.log('re:', res)
+      console.log('re:', JSON.stringify(res))
 
       if (res.errors) {
         let errors = res.errors
@@ -56,23 +56,13 @@
         setLocalStorage('jwt', res.token)
       }
 
-
-
-      if (res.token) {
-        // console.log("SET TOKEN:", res.token)
-        setLocalStorage('jwt', res.token)
-      }
-
-      const user = res.user
-      // console.log('user:', user)
-
+      delete res.token
+      const user = res
       User.set({
         ...$User,
-        email: user.email,
-        username: user.username,
-        verified: user.verified,
-        roles: user.roles
+        ...user
       })
+      $modal = false
 
       if (redirect) {
         await goto('/')
@@ -82,10 +72,6 @@
     }
   }
 </script>
-
-<svelte:head>
-  <title>Home</title>
-</svelte:head>
 
 <div class="">
   <h1 class="text-2xl font-bold mb-8">Login</h1>

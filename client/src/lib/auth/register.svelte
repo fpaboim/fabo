@@ -4,7 +4,7 @@
 
 <script>
   import { goto } from "$app/navigation"
-  import { User } from '../../store/store'
+  import { modal, User } from '../../store/store'
   import { post, setLocalStorage } from '$lib/req_utils.js'
   import { getErrors } from '$lib/form_utils.js'
   import userValidators from '$fabo/models/User/validation.js'
@@ -13,10 +13,10 @@
 
 
   let formInput = {
-    username : "asdf",
-    email    : "asdf@asdf.com",
-    password : "asdfasdf",
-    password2: "asdfasdf"
+    username : "",
+    email    : "",
+    password : "",
+    password2: ""
   }
 
   let resetInput = () => {
@@ -49,7 +49,6 @@
 
       const {username, email, password} = formInput
 
-      console.log('post!')
       if (!res.errors) {
         res = await post('/auth/signup', {
           username,
@@ -70,18 +69,16 @@
         setLocalStorage('jwt', res.token)
       }
 
+      delete res.token
+      const user = res
+
+
       if (res.email) {
         User.set({
           ...$User,
-          email: res.email,
-          username: res.lastName,
-          verified: res.verified,
-          roles: res.roles
+          ...user
         })
-      }
-
-      if (redirect) {
-        await goto('/')
+        $modal = false
       }
     } catch(err) {
       console.log(err)
@@ -89,10 +86,6 @@
     }
   }
 </script>
-
-<svelte:head>
-  <title>Criar Conta</title>
-</svelte:head>
 
 <main class="">
   <h1 class="text-2xl font-bold mb-8">Create Account</h1>

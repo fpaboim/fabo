@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-  <title>Criar Conta</title>
+  <title>Create account</title>
 </svelte:head>
 
 <main class="">

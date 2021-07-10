@@ -1,5 +1,6 @@
 import User from "./";
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 
 const createToken = (user, secret, expiresIn='2d') => {
   // console.log('CRETE TOKEN USER:', user)
@@ -73,20 +74,15 @@ const methods = {
         return res.status(400).send({errors: {username: {message: 'Username already exists.'}}})
       }
 
-      let newUser = await User.create({
+      let newUser = await new User({
         username,
         email,
         password
-      })
-
+      }).save()
+      console.log("NEW USER:", JSON.stringify(newUser))
       const token = createToken(newUser, process.env.SECRET)
 
-      newUser = {
-        ...newUser,
-        token
-      }
-
-      return res.status(200).json(newUser)
+      return res.status(200).send(newUser)
     } catch(err) {
       console.log('err:', err)
       return res.status(400).json(err)

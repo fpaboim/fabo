@@ -7,6 +7,10 @@
   let sidebarOpen = false
 </script>
 
+<svelte:head>
+  <link href="https://fonts.googleapis.com/css?family=Gelasio" rel="stylesheet">
+</svelte:head>
+
 <main class="h-screen p-6 bg-amber-50 flex flex-col">
   <Header />
   <div class="flex flex-col items-center">

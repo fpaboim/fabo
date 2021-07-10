@@ -3,16 +3,14 @@
 </script>
 
 <script>
-  import { User } from '../../store/store'
+  import { User, modal } from '../../store/store'
 
   let showlogin = true
-  export let showmodal
   import Login from '$lib/auth/login.svelte'
   import Register from '$lib/auth/register.svelte'
 
   function hidemodal() {
-    console.log('hide')
-    showmodal = false
+    $modal = false
   }
 </script>
 

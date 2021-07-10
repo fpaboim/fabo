@@ -1,18 +1,16 @@
 import { writable } from 'svelte/store';
 import { writable as writable_ls } from 'svelte-local-storage-store'
+import { setLocalStorage } from '$lib/req_utils'
 
 function createUser() {
   const initial_user = {
-    email         : '',
-    name          : '',
-    crm           : '',
-    lastName      : '',
-    verifiedDoctor: false,
-    defaultSchedule: [],
-    telephone     : '',
-    verified      : false,
-    appointment   : [],
-    roles         : ['USER'],
+    username: '',
+    email   : '',
+    joined: '',
+    verified: false,
+    roles: [],
+    liked: [],
+    messages: []
   }
 
   const { subscribe, set, update } = writable_ls('user', initial_user);
@@ -21,7 +19,10 @@ function createUser() {
     subscribe,
     set,
     update,
-    reset: () => set(initial_user)
+    reset: () => {
+      set(initial_user)
+      setLocalStorage('jwt', '')
+    }
   };
 }
 
