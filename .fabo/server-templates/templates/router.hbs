@@ -24,9 +24,9 @@ const router = (app) => {
   console.log("Setup routes...")
   {{#routerEntries}}
   {{#if data.method}}
-  app.post("/{{path}}", {{#if data.middlewares}}{{data.middlewares}},{{/if}} {{name}}Controller.{{data.method}})
+  app.post("/{{lowercase name}}/{{path}}", {{#if data.middlewares}}[{{data.middlewares}}],{{/if}} {{name}}Controller.{{data.method}})
   {{else}}
-  app.post("/{{path}}", {{#if data.middlewares}}{{data.middlewares}},{{/if}} {{name}}Controller.{{path}})
+  app.post("/{{lowercase name}}/{{path}}", {{#if data.middlewares}}[{{data.middlewares}}],{{/if}} {{name}}Controller.{{path}})
   {{/if}}
   {{/routerEntries}}
 }

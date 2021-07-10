@@ -17,7 +17,7 @@ const setupPassport = (app) => {
   opts.secretOrKey = process.env.SECRET;
   const passportJWTStrategy = new JWTStrategy(opts, function(jwtPayload, done) {
     // retrieve mail from jwt payload
-    // console.log("** payload:", jwtPayload)
+    console.log("** payload:", jwtPayload)
     const id = jwtPayload._id;
 
     // if mail exist in database then authentication succeed

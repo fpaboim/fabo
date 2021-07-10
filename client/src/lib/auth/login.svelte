@@ -12,16 +12,13 @@
   export let redirect = true
   export let showlogin
 
-  let formInput = {
-    email   : '',
-    password: '',
-  }
   let resetInput = () => {
     return {
-      email:     'ok',
-      password:  'ok',
+      email:     '',
+      password:  '',
     }
   }
+  let formInput = resetInput()
   let errorMsgs = resetInput()
 
   const handleSubmit = async () => {
@@ -32,17 +29,16 @@
       errorMsgs = {...errorMsgs, ...validationErrors}
 
       for (let error in errorMsgs) {
-        if (errorMsgs[error] != 'ok')
+        if (errorMsgs[error] != '')
           return
       }
 
       if (!res.errors) {
-        res = await post('/auth/login', {
+        res = await post('/user/auth/login', {
           email: formInput.email,
           password: formInput.password
         })
       }
-      console.log('re:', JSON.stringify(res))
 
       if (res.errors) {
         let errors = res.errors
@@ -88,7 +84,7 @@
           class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      <span class="h-10 text-sm text-red-600 {errorMsgs['email'] != 'ok' ? 'visible':'invisible'}" id="error">{errorMsgs['email']}</span>
+      <span class="h-10 text-sm text-red-600 {errorMsgs['email'] != '' ? 'visible':'invisible'}" id="error">{errorMsgs['email']}</span>
     </div>
 
     <div class="z-0 w-full mb-5">
@@ -102,7 +98,7 @@
           class="pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      <span class="h-10 text-sm text-red-600 {errorMsgs['password'] != 'ok' ? 'visible':'invisible'}" id="error">{errorMsgs['password']}</span>
+      <span class="h-10 text-sm text-red-600 {errorMsgs['password'] != '' ? 'visible':'invisible'}" id="error">{errorMsgs['password']}</span>
     </div>
 
     <div class="pt-5 flex flex-col justify-center items-center">

@@ -126,6 +126,11 @@ Handlebars.registerHelper('getController', function (entry) {
 
   return res
 });
+
+Handlebars.registerHelper('lowercase', function (value) {
+  return String(value).toLowerCase()
+});
+
 Handlebars.registerHelper('makeController', function (controllers) {
   let res = ''
 
@@ -258,7 +263,7 @@ export default function compileAPIs(apis, clientBase, serverBase) {
           path: key,
           data: api[key]
         }
-        if (obj.data.role) {
+        if (obj.data.auth || obj.data.login) {
           if (obj.data.middlewares) {
             obj.data.middlewares.push('auth')
           } else {

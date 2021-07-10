@@ -11,22 +11,16 @@
   export let redirect = true
   export let showlogin
 
-
-  let formInput = {
-    username : "",
-    email    : "",
-    password : "",
-    password2: ""
-  }
-
   let resetInput = () => {
     return {
-      username:  'ok',
-      email:     'ok',
-      password:  'ok',
-      password2: 'ok',
+      username:  '',
+      email:     '',
+      password:  '',
+      password2: '',
     }
   }
+
+  let formInput = resetInput()
   let errorMsgs = resetInput()
 
   const handleSubmit = async () => {
@@ -43,14 +37,14 @@
       }
 
       for (let error in errorMsgs) {
-        if (errorMsgs[error] != 'ok')
+        if (errorMsgs[error] != '')
           return
       }
 
       const {username, email, password} = formInput
 
       if (!res.errors) {
-        res = await post('/auth/signup', {
+        res = await post('/user/auth/signup', {
           username,
           email,
           password
@@ -101,7 +95,7 @@
           class="pt-3 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      <span class:invisible={errorMsgs['username'] == 'ok'} class="text-sm text-red-600" id="error">{errorMsgs['username']}</span>
+      <span class:invisible={errorMsgs['username'] == ''} class="text-sm text-red-600" id="error">{errorMsgs['username']}</span>
     </div>
 
     <div class="z-0 w-full pb-2">
@@ -115,7 +109,7 @@
           class="pt-3 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      <span class:invisible={errorMsgs['email'] == 'ok'} class="text-sm text-red-600" id="error">{errorMsgs['email']}</span>
+      <span class:invisible={errorMsgs['email'] == ''} class="text-sm text-red-600" id="error">{errorMsgs['email']}</span>
     </div>
 
     <div class="z-0 w-full pb-2">
@@ -129,7 +123,7 @@
           class="pt-3 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      <span class:invisible={errorMsgs['password'] == 'ok'} class="text-sm text-red-600" id="error">{errorMsgs['password']}</span>
+      <span class:invisible={errorMsgs['password'] == ''} class="text-sm text-red-600" id="error">{errorMsgs['password']}</span>
     </div>
 
     <div class="z-0 w-full pb-2">
@@ -143,7 +137,7 @@
           class="pt-3 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-black border-gray-200"
         />
       </div>
-      <span class:invisible={errorMsgs['password2'] == 'ok'} class="text-sm text-red-600" id="error">{errorMsgs['password2']}</span>
+      <span class:invisible={errorMsgs['password2'] == ''} class="text-sm text-red-600" id="error">{errorMsgs['password2']}</span>
     </div>
 
     <div class="pt-5 flex flex-col justify-center items-center">

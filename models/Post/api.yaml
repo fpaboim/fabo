@@ -1,11 +1,12 @@
 count: true
 delete:
-  auth: 
+  auth:
     - role: ROLES.ADMIN
 find: true
 findone: true
 create:
   login: true
+  middlewares: [apiLimiter]
 updateone:
   login: true
   auth:
