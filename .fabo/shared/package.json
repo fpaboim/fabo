@@ -1,6 +1,6 @@
 {
   "name": "@fabo/shared",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "services shared beetween client and server",
   "main": "index.js",
   "type": "module",
