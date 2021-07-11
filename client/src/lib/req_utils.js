@@ -24,6 +24,53 @@ export function setLocalStorage(key, value) {
   return true
 }
 
+export async function postServer(url, body) {
+  if (dev) {
+    url = 'http://192.168.111.3:4000/dev' + url
+  } else {
+    url = 'https://4bff8f2bb6.execute-api.us-east-1.amazonaws.com/prod' + url
+  }
+  console.log('post:', url)
+
+  let customError = false
+  try {
+    let headers = {}
+
+    headers['Content-Type'] = 'application/json'
+    body = JSON.stringify(body)
+    const token = getLocalStorage('jwt')
+    if (token) {
+      headers['Authorization'] = 'Bearer ' + token
+    }
+
+    const res = await fetch(url, {
+      method: 'POST',
+      body,
+      headers
+    })
+
+    if (!res.ok) {
+      // console.log("POST ERROR", res)
+      try {
+        const data = await res.json()
+        if (data.errors) {
+          return {errors:data.errors}
+        } else {
+          return {errors:[]}
+        }
+      } catch(err) {
+        console.log('ERROR:', err)
+        throw err
+      }
+    }
+
+    return res.json()
+  } catch (err) {
+    console.log(err)
+    throw customError ? err : {id: '', message: 'unknown error'}
+  }
+}
+
 export async function post(url, body) {
   if (dev) {
     url = 'http://192.168.111.3:4000/dev' + url
@@ -35,10 +82,9 @@ export async function post(url, body) {
   let customError = false
   try {
     let headers = {}
-    if (!(body instanceof FormData)) {
-      headers['Content-Type'] = 'application/json'
-      body = JSON.stringify(body)
-    }
+
+    headers['Content-Type'] = 'application/json'
+    body = JSON.stringify(body)
     const token = getLocalStorage('jwt')
     if (token) {
       headers['Authorization'] = 'Bearer ' + token

@@ -8,131 +8,175 @@ const methods = {
 {{#apiEntries}}
   {{#if this.count}}
   count: async (req, res, next) => {
-    const user = req.user
-    {{> buildAPI_authPartial this.count}}
+    try {
+      const user = req.user
+      {{> buildAPI_authPartial this.count}}
+      {{> buildAPI_prePartial this.count}}
 
-    let { filter } = aqp(req.query);
-    {{#if this.count.owner}}
-    filter = {
-      ...filter,
-      {{this.count.owner}}: user._id
+      let { filter } = aqp(req.query);
+      {{#if this.count.owner}}
+      filter = {
+        ...filter,
+        {{this.count.owner}}: user._id
+      }
+      {{/if}}
+
+      const count = await {{../name}}.count(filter)
+
+      return res.status(200).send(count)
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../name}}.count', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
-    {{/if}}
-
-    const count = await {{../name}}.count(filter).lean()
-    return count
   },
   {{/if}}
 
   {{#if this.delete}}
   delete: async (req, res, next) => {
-    const user = req.user
-    {{> buildAPI_authPartial this.delete}}
+    try {
+      const user = req.user
+      {{> buildAPI_authPartial this.delete}}
+      {{> buildAPI_prePartial this.delete}}
 
-    let { filter } = aqp(req.query);
-    {{#if this.delete.owner}}
-    filter = {
-      ...filter,
-      {{this.delete.owner}}: user._id
+      let { filter } = aqp(req.query);
+      {{#if this.delete.owner}}
+      filter = {
+        ...filter,
+        {{this.delete.owner}}: user._id
+      }
+      {{/if}}
+      const del = await {{../name}}.deleteOne(filter)
+
+      return res.status(200).send(del)
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../name}}.delete', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
-    {{/if}}
-    const del = await {{../name}}.deleteOne(filter)
-                                 .lean()
-    return del
   },
   {{/if}}
+
   {{#if this.find}}
   find: async (req, res, next) => {
-    const user = req.user
-    {{> buildAPI_authPartial this.find}}
+    try {
+      const user = req.user
+      {{> buildAPI_authPartial this.find}}
+      {{> buildAPI_prePartial this.find}}
 
-    let { filter } = aqp(req.query);
-    {{#if this.find.owner}}
-    filter = {
-      ...filter,
-      {{this.find.owner}}: user._id
+      let { filter,skip,limit,sort,projection,population } = aqp(req.query);
+      {{#if this.find.owner}}
+      filter = {
+        ...filter,
+        {{this.find.owner}}: user._id
+      }
+      {{/if}}
+      const found = await {{../name}}
+        .find(filter)
+        .skip(skip)
+        .limit(limit)
+        .sort(sort)
+        .select(projection)
+        .populate(population)
+        .lean()
+
+      return res.status(200).send(found)
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../name}}.find', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
-    {{/if}}
-    const found = await {{../name}}
-      .find(filter)
-      .skip(skip)
-      .limit(limit)
-      .sort(sort)
-      .select(projection)
-      .populate(population)
-      .lean()
-
-    return found
   },
   {{/if}}
 
   {{#if this.findone}}
   findone: async (req, res, next) => {
-    const user = req.user
-    {{> buildAPI_authPartial this.findone}}
+    try {
+      const user = req.user
+      {{> buildAPI_authPartial this.findone}}
+      {{> buildAPI_prePartial this.findone}}
 
-    let { filter } = aqp(req.query);
-    {{#if this.findone.owner}}
-    filter = {
-      ...filter,
-      {{this.findone.owner}}: user._id
+      let { filter,population } = aqp(req.query);
+      {{#if this.findone.owner}}
+      filter = {
+        ...filter,
+        {{this.findone.owner}}: user._id
+      }
+      {{/if}}
+      const found = await {{../name}}.findOne(filter)
+                                     .populate(population).lean()
+
+      return res.status(200).send(found)
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../name}}.findone', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
-    {{/if}}
-    const found = await {{../name}}.findOne(filter)
-                                   .select(projection)
-                                   .populate(population).lean()
-
-    return found
   },
   {{/if}}
 
   {{#if this.create}}
   create: async (req, res, next) => {
-    const user = req.user
-    {{> buildAPI_authPartial this.create}}
+    try {
+      const user = req.user
+      let   body = req.body
+      {{> buildAPI_authPartial this.create}}
+      {{> buildAPI_prePartial this.create}}
 
-    const body = req.body
-    const created = await {{../name}}.create(body).lean()
+      const created = await new {{../name}}(body).save()
 
-    return created
+      return res.status(200).send(created.toObject())
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../name}}.create', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
+    }
   },
   {{/if}}
 
   {{#if this.updateone}}
   updateone: async (req, res, next) => {
-    const user = req.user
-    {{> buildAPI_authPartial this.updateone}}
+    try {
+      const user = req.user
+      let   body = req.body
+      {{> buildAPI_authPartial this.updateone}}
+      {{> buildAPI_prePartial this.updateone}}
 
-    let { filter } = aqp(req.query);
-    {{#if this.updateone.owner}}
-    filter = {
-      ...filter,
-      {{this.updateone.owner}}: user._id
+      let { filter } = aqp(req.query);
+      {{#if this.updateone.owner}}
+      filter = {
+        ...filter,
+        {{this.updateone.owner}}: user._id
+      }
+      {{/if}}
+      const updated = await {{../name}}.updateone(filter, body)
+
+      return res.status(200).send(updated.toObject())
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../name}}.updateone', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
-    {{/if}}
-    const body = req.body
-    const updated = await {{../name}}.updateone(filter, body).lean()
-
-    return updated
   },
   {{/if}}
 
   {{#if this.updatemany}}
   updatemany: async (req, res, next) => {
-    const user = req.user
-    {{> buildAPI_authPartial this.updatemany}}
+    try {
+      const user = req.user
+      let   body = req.body
 
-    let { filter } = aqp(req.query);
-    {{#if this.updatemany.owner}}
-    filter = {
-      ...filter,
-      {{this.updatemany.owner}}: user._id
+      {{> buildAPI_authPartial this.updatemany}}
+      {{> buildAPI_prePartial this.updatemany}}
+
+      let { filter } = aqp(req.query);
+      {{#if this.updatemany.owner}}
+      filter = {
+        ...filter,
+        {{this.updatemany.owner}}: user._id
+      }
+      {{/if}}
+      const updatemany = await {{../name}}.updatemany(filter, body)
+
+      return res.status(200).send(updatemany.toObject())
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../name}}.updatemany', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
-    {{/if}}
-    const body = req.body
-    const updatemany = await {{../name}}.updatemany(filter, body).lean()
-
-    return updatemany
   },
   {{/if}}
 

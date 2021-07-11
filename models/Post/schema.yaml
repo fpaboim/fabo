@@ -18,8 +18,6 @@ body:
       message: Post body should be between {ARGS[0]} and {ARGS[1]} characters
 slug:
   type: String
-  required: true
-  select: false
 author:
   type: Id
   ref: User

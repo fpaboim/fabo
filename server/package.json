@@ -27,6 +27,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "serverless-api-gateway-throttling": "^1.1.1",
+    "slugify": "^1.5.3",
     "webpack": "^5.44.0"
   },
   "devDependencies": {

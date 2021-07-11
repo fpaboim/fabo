@@ -187,7 +187,6 @@ Handlebars.registerHelper('buildSchemas_parseEntry', function (value) {
         res += entry+': '+JSON.stringify(value[entry])
         break
       case 'def':
-        console.log("def RES:", entry, JSON.stringify(value[entry]))
         entry = 'default'
         if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
           res += entry+': '+JSON.stringify(value[entry])
@@ -196,7 +195,6 @@ Handlebars.registerHelper('buildSchemas_parseEntry', function (value) {
         }
         break
       default:
-        console.log("RES:", entry, JSON.stringify(value[entry]))
         if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
           res += entry+': '+JSON.stringify(value[entry])
         } else {
@@ -248,7 +246,6 @@ export default function compileSchemas(schemas, clientBase, serverBase) {
       const buildMongoose = Handlebars.compile(mongooseTemplate, { noEscape: true });
       const mongooseOut = buildMongoose({name: modelName, schemaEntries})
       fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/schema.js', mongooseOut);
-      console.log('write out:', serverBase+'.fabo/models/'+modelName+'/schema.js')
 
       const schemaHooksIn = './models/'+modelName+'/schemaHooks.js'
       const hasHooks = fs.existsSync(schemaHooksIn)

@@ -45,7 +45,7 @@
         return
       }
 
-      console.log('RES:', JSON.strigify(res))
+      console.log('RES:', res)
     } catch(err) {
       console.log(err)
       alert(err.error)

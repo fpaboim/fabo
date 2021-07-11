@@ -8,12 +8,14 @@ importers:
       chalk: ^4.1.1
       concurrently: ^6.2.0
       express-rate-limit: ^5.3.0
+      wait-on: ^6.0.0
     dependencies:
-      chalk: 4.1.1
-      express-rate-limit: 5.3.0
+      chalk: link:.fabo/cli/node_modules/chalk
+      express-rate-limit: link:.fabo/server-templates/node_modules/express-rate-limit
     devDependencies:
       '@changesets/cli': 2.16.0
       concurrently: 6.2.0
+      wait-on: 6.0.0
 
   .fabo/cli:
     specifiers:
@@ -134,6 +136,7 @@ importers:
       serverless-dotenv-plugin: ^3.9.0
       serverless-offline: ^7.0.0
       serverless-webpack: ^5.5.1
+      slugify: ^1.5.3
       webpack: ^5.44.0
       webpack-node-externals: ^3.0.0
     dependencies:
@@ -147,6 +150,7 @@ importers:
       passport: link:../.fabo/server-core/node_modules/passport
       passport-jwt: link:../.fabo/server-core/node_modules/passport-jwt
       serverless-api-gateway-throttling: 1.1.1
+      slugify: 1.5.3
       webpack: 5.44.0
     devDependencies:
       '@babel/core': 7.14.6
@@ -1617,6 +1621,10 @@ packages:
     deprecated: This version has been deprecated and is no longer supported or maintained
     dev: true
 
+  /@hapi/hoek/9.2.0:
+    resolution: {integrity: sha512-sqKVVVOe5ivCaXDWivIJYVSaEgdQK9ul7a4Kity5Iw7u9+wBAPbX1RMSnLLmp7O4Vzj0WOWwMAJsTL00xwaNug==}
+    dev: true
+
   /@hapi/iron/5.1.4:
     resolution: {integrity: sha512-+ElC+OCiwWLjlJBmm8ZEWjlfzTMQTdgPnU/TsoU5QsktspIWmWi9IU4kU83nH+X/SSya8TP8h8P11Wr5L7dkQQ==}
     deprecated: This version has been deprecated and is no longer supported or maintained
@@ -1743,6 +1751,12 @@ packages:
       '@hapi/hoek': 8.5.1
     dev: true
 
+  /@hapi/topo/5.1.0:
+    resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
+    dependencies:
+      '@hapi/hoek': 9.2.0
+    dev: true
+
   /@hapi/vise/3.1.1:
     resolution: {integrity: sha512-OXarbiCSadvtg+bSdVPqu31Z1JoBL+FwNYz3cYoBKQ5xq1/Cr4A3IkGpAZbAuxU5y4NL5pZFZG3d2a3ZGm/dOQ==}
     deprecated: This version has been deprecated and is no longer supported or maintained
@@ -1832,6 +1846,20 @@ packages:
       any-observable: 0.3.0
       rxjs: 6.6.7
     dev: false
+
+  /@sideway/address/4.1.2:
+    resolution: {integrity: sha512-idTz8ibqWFrPU8kMirL0CoPH/A29XOzzAzpyN3zQ4kAWnzmNfFmRaoMNN6VI8ske5M73HZyhIaW4OuSFIdM4oA==}
+    dependencies:
+      '@hapi/hoek': 9.2.0
+    dev: true
+
+  /@sideway/formula/3.0.0:
+    resolution: {integrity: sha512-vHe7wZ4NOXVfkoRb8T5otiENVlT7a3IAiw7H5M2+GO+9CDgcVUUsX1zalAztCmwyOr2RUTGJdgB+ZvSVqmdHmg==}
+    dev: true
+
+  /@sideway/pinpoint/2.0.0:
+    resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
+    dev: true
 
   /@sindresorhus/is/0.14.0:
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}
@@ -2361,6 +2389,14 @@ packages:
       url: 0.10.3
       uuid: 3.3.2
       xml2js: 0.4.19
+    dev: true
+
+  /axios/0.21.1:
+    resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
+    dependencies:
+      follow-redirects: 1.14.1
+    transitivePeerDependencies:
+      - debug
     dev: true
 
   /babel-loader/8.2.2_bdbf93c44932bbce0b7b7ee8ec67053a:
@@ -3863,6 +3899,16 @@ packages:
       pkg-dir: 4.2.0
     dev: true
 
+  /follow-redirects/1.14.1:
+    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: true
+
   /forwarded/0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
     engines: {node: '>= 0.6'}
@@ -4591,6 +4637,16 @@ packages:
   /jmespath/0.15.0:
     resolution: {integrity: sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=}
     engines: {node: '>= 0.6.0'}
+    dev: true
+
+  /joi/17.4.1:
+    resolution: {integrity: sha512-gDPOwQ5sr+BUxXuPDGrC1pSNcVR/yGGcTI0aCnjYxZEa3za60K/iCQ+OFIkEHWZGVCUcUlXlFKvMmrlmxrG6UQ==}
+    dependencies:
+      '@hapi/hoek': 9.2.0
+      '@hapi/topo': 5.1.0
+      '@sideway/address': 4.1.2
+      '@sideway/formula': 3.0.0
+      '@sideway/pinpoint': 2.0.0
     dev: true
 
   /js-string-escape/1.0.1:
@@ -6577,6 +6633,12 @@ packages:
     dependencies:
       tslib: 1.14.1
 
+  /rxjs/7.2.0:
+    resolution: {integrity: sha512-aX8w9OpKrQmiPKfT1bqETtUr9JygIz6GZ+gql8v7CijClsP0laoFUdKzxFAoWuRdSlOdU2+crss+cMf+cqMTnw==}
+    dependencies:
+      tslib: 2.1.0
+    dev: true
+
   /sade/1.7.4:
     resolution: {integrity: sha512-y5yauMD93rX840MwUJr7C1ysLFBgMspsdTo4UVrDg3fXDvtwOyIqykhVAAm6fk/3au77773itJStObgK+LKaiA==}
     engines: {node: '>= 6'}
@@ -6847,6 +6909,11 @@ packages:
 
   /sliced/1.0.1:
     resolution: {integrity: sha1-CzpmK10Ewxd7GSa+qCsD+Dei70E=}
+    dev: false
+
+  /slugify/1.5.3:
+    resolution: {integrity: sha512-/HkjRdwPY3yHJReXu38NiusZw2+LLE2SrhkWJtmlPDB1fqFSvioYj62NkPcrKiNCgRLeGcGK7QBvr1iQwybeXw==}
+    engines: {node: '>=8.0.0'}
     dev: false
 
   /smartwrap/1.2.5:
@@ -7380,6 +7447,10 @@ packages:
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
 
+  /tslib/2.1.0:
+    resolution: {integrity: sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==}
+    dev: true
+
   /tty-table/2.8.13:
     resolution: {integrity: sha512-eVV/+kB6fIIdx+iUImhXrO22gl7f6VmmYh0Zbu6C196fe1elcHXd7U6LcLXu0YoVPc2kNesWiukYcdK8ZmJ6aQ==}
     engines: {node: '>=8.16.0'}
@@ -7600,6 +7671,20 @@ packages:
       rollup: 2.53.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /wait-on/6.0.0:
+    resolution: {integrity: sha512-tnUJr9p5r+bEYXPUdRseolmz5XqJTTj98JgOsfBn7Oz2dxfE2g3zw1jE+Mo8lopM3j3et/Mq1yW7kKX6qw7RVw==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    dependencies:
+      axios: 0.21.1
+      joi: 17.4.1
+      lodash: 4.17.21
+      minimist: 1.2.5
+      rxjs: 7.2.0
+    transitivePeerDependencies:
+      - debug
     dev: true
 
   /watchpack/2.2.0:

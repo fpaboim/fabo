@@ -8,12 +8,19 @@
   export const prerender = true
 
   export async function load({ page, fetch, session, context }) {
-    const res = await post('/post/find?populate=author')
+    const slug = page.params.slug
+    const username = slug.split('/')[0]
+    const titleSlug = slug.split('/')[1]
+
+    const url = `/post/findone?slug=${titleSlug}&populate=author`
+    const res = await post(url)
+
+    console.log("RES2:", res)
 
     if (res) {
       return {
         props: {
-          posts: res
+          loadedpost: res
         }
       };
     }
@@ -21,8 +28,7 @@
 </script>
 
 <script>
-  import { User } from '../store/store'
-  export let posts
+  export let loadedpost
 </script>
 
 <svelte:head>
@@ -31,21 +37,16 @@
 
 <div class="content">
   <div class="flex flex-col items-center justify-center">
-    <div class="pt-2 font-bold text-lg">posts</div>
-
+    <div class="pt-2">
+      <span class="font-bold text-lg">{loadedpost.title}
+      </span>
+      <span class="text-md">by
+      </span>
+      <span class="text-md font-semibold">{loadedpost.author.username}
+      </span>
+    </div>
     <div class="flex flex-col items-center justify-center">
-      {#each posts as post}
-      <div class="flex flex-col items-center justify-center pt-4">
-        <div class="font-semibold text-md">
-          <a href="/posts/{post.author.username}/{post.slug}">
-            {post.title}
-          </a>
-        </div>
-        <div class="text-sm">
-          by {post.author.username} {dayjs(post.created).fromNow()}
-        </div>
-      </div>
-      {/each}
+      {loadedpost.body}
     </div>
   </div>
 </div>

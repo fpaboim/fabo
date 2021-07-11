@@ -13,3 +13,6 @@
 
 ## Securing your server
 - Per ip rate limiting with AWS WAF: https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html
+
+## Todo
+- Make schema requirements specific to server or client

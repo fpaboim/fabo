@@ -16,43 +16,34 @@ const seedDB = () => {
       let users = [];
 
       let admin = new User({
-        firstName: "admin",
-        lastName : "admin",
+        username : "admin",
         email    : "admin@example.com",
         password : "asdfasdf",
         provider : "local",
         roles    : [C.ROLES.ADMIN],
-        ratings  : [],
-        liked    : [],
         verified : true
       });
       users.push(admin.save());
 
-      let seller = new User({
-        firstName: "editor",
-        lastName : "editor",
+      let editor = new User({
+        username : "editor",
         email    : "editor@example.com",
         password : "asdfasdf",
         provider : "local",
         roles    : [C.ROLES.EDITOR],
-        ratings  : [],
-        liked    : [],
         verified : true
       });
-      users.push(seller.save());
+      users.push(editor.save());
 
-      let manager = new User({
-        firstName: "user",
-        lastName : "user",
+      let user = new User({
+        username : "user",
         email    : "user@example.com",
         password : "asdfasdf",
         provider : "local",
         roles    : [C.ROLES.USER],
-        ratings  : [],
-        liked    : [],
         verified : true
       });
-      users.push(manager.save());
+      users.push(user.save());
 
       return Promise.all(users)
     }

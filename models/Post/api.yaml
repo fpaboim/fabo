@@ -7,6 +7,9 @@ findone: true
 create:
   login: true
   middlewares: [apiLimiter]
+  pre:
+    setField:
+      author: user._id
 updateone:
   login: true
   auth:

@@ -1,12 +1,13 @@
 {
   "name": "fabo",
-  "version": "0.0.2",
-  "description": "svelte express mongo (serverless) stack",
+  "version": "0.0.3",
+  "description": "svelte express mongo (serverless) stack - pre-alpha!",
   "main": "./.fabo/index.js",
   "type": "module",
   "devDependencies": {
     "@changesets/cli": "^2.16.0",
-    "concurrently": "^6.2.0"
+    "concurrently": "^6.2.0",
+    "wait-on": "^6.0.0"
   },
   "repository": {
     "type": "git",
@@ -19,11 +20,11 @@
   "scripts": {
     "fabo": "nodemon ./index.js",
     "clean": "rm -rf node_modules server/node_modules .fabo/*/node_modules",
-    "client:dev": "cd client && pnpm run dev",
+    "client:dev": "wait-on tcp:4000 && cd client && pnpm run dev",
     "server:dev": "cd server && pnpm run dev",
     "server:dev_prod": "cd server && pnpm run dev_prod",
     "server:deploy": "cd server && pnpm run deploy",
-    "dev": "concurrently -n \"client,server,fabo\" -c \"blue.bold,yellow.bold,magenta.bold\" \"pnpm run client:dev\" \"pnpm run server:dev\" \"pnpm run fabo\" ",
+    "dev": "concurrently -k -n \"fabo,server,client\" -c \"magenta.bold,yellow.bold,blue.bold\" \"pnpm run fabo\" \"pnpm run server:dev\" \"pnpm run client:dev\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {

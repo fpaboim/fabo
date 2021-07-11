@@ -50,6 +50,7 @@
           password
         })
       }
+      console.log("RES:", res)
 
       if (res.errors) {
         let errors = res.errors

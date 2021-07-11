@@ -144,10 +144,10 @@ Handlebars.registerHelper('buildAPI_requiresLogin', function (obj) {
   return false
 });
 
-Handlebars.registerHelper('buildAPI_hasAuth', function (value) {
+Handlebars.registerHelper('buildAPI_hasVal', function (value) {
   let res = ''
 
-  if (value && typeof(value) == 'object' && value.length > 0) {
+  if (value && typeof(value) == 'object') {
     return true
   }
   return false
@@ -183,8 +183,8 @@ if (!user) {
   return res.status(400).send({errors: {auth: {message: 'User must be logged in.'}}})
 }
 {{/if}}
-
-{{#if (buildAPI_hasAuth this.auth)}}
+{{#ifCond (buildAPI_hasVal this.auth) '&&' (notEmptyArray this.auth)}}
+// auth
 if (!(
   {{#each this.auth}}
   {{#if @first}}
@@ -196,6 +196,22 @@ if (!(
 )) {
   return res.status(400).send({errors: {auth: {message: 'User not authorized.'}}})
 }
+{{/ifCond}}`
+)
+
+
+Handlebars.registerPartial('buildAPI_prePartial', `
+{{#if (buildAPI_hasVal this.pre)}}
+{{#each this.pre}}
+{{#ifCond @key '==' 'setField'}}
+body = {
+  ...body,
+{{#each this}}
+  {{@key}}: {{this}},
+{{/each}}
+}
+{{/ifCond}}
+{{/each}}
 {{/if}}`
 )
 
@@ -220,7 +236,7 @@ export default function compileAPIs(apis, clientBase, serverBase) {
         }
         if (obj.data.auth || obj.data.login) {
           if (obj.data.middlewares) {
-            obj.data.middlewares.push('auth')
+            obj.data.middlewares = ['auth'].concat(obj.data.middlewares)
           } else {
             obj.data.middlewares = ['auth']
           }

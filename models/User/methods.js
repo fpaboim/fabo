@@ -79,10 +79,10 @@ const methods = {
         email,
         password
       }).save()
-      console.log("NEW USER:", JSON.stringify(newUser))
+      newUser=newUser.toObject()
       const token = createToken(newUser, process.env.SECRET)
 
-      return res.status(200).send(newUser)
+      return res.status(200).send({...newUser, token})
     } catch(err) {
       console.log('err:', err)
       return res.status(400).json(err)
