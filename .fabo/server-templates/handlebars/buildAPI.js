@@ -92,34 +92,9 @@ const isRequired = (keys, value) => {
   return hasRequired
 }
 
-// partials
-///////////////////////////////////////////////////////////////////////////////
-Handlebars.registerPartial('authPartial', `
-{{#if (requiresLogin this)}}
-if (!user) {
-  return res.status(400).send({errors: {auth: {message: 'User must be logged in.'}}})
-}
-{{/if}}
-
-{{#if (hasAuth this.auth)}}
-if (!(
-  {{#each this.auth}}
-  {{#if @first}}
-      user.roles.includes({{this.role}})
-  {{else}}
-  || user.roles.includes({{this.role}})
-  {{/if}}
-  {{/each}}
-)) {
-  return res.status(400).send({errors: {auth: {message: 'User not authorized.'}}})
-}
-{{/if}}`
-)
-
-
 // helpers
 ///////////////////////////////////////////////////////////////////////////////
-Handlebars.registerHelper('getController', function (entry) {
+Handlebars.registerHelper('buildAPI_getController', function (entry) {
   let res = ''
 
   console.log('entry:', entry)
@@ -127,11 +102,7 @@ Handlebars.registerHelper('getController', function (entry) {
   return res
 });
 
-Handlebars.registerHelper('lowercase', function (value) {
-  return String(value).toLowerCase()
-});
-
-Handlebars.registerHelper('makeController', function (controllers) {
+Handlebars.registerHelper('buildAPI_makeController', function (controllers) {
   let res = ''
 
   let controllerDict = {}
@@ -156,7 +127,7 @@ Handlebars.registerHelper('makeController', function (controllers) {
   return res
 });
 
-Handlebars.registerHelper('requiresLogin', function (obj) {
+Handlebars.registerHelper('buildAPI_requiresLogin', function (obj) {
   let res = ''
 
   if (obj.login) {
@@ -173,7 +144,7 @@ Handlebars.registerHelper('requiresLogin', function (obj) {
   return false
 });
 
-Handlebars.registerHelper('hasAuth', function (value) {
+Handlebars.registerHelper('buildAPI_hasAuth', function (value) {
   let res = ''
 
   if (value && typeof(value) == 'object' && value.length > 0) {
@@ -182,55 +153,13 @@ Handlebars.registerHelper('hasAuth', function (value) {
   return false
 });
 
-Handlebars.registerHelper('isEntry', function (value) {
+Handlebars.registerHelper('buildAPI_isEntry', function (value) {
   let keys = Object.keys(value)
 
   // console.log('reqr0:', isRequired(keys, value))
   return (keys.includes('validations') || isRequired(keys,value))
 });
 
-Handlebars.registerHelper('parseEntry', function (value) {
-  let res = ''
-  let keys = Object.keys(value)
-
-  if (keys.length == 0) {
-    return ''
-  }
-
-  for (let entry in value) {
-    entry = entry.trim()
-    if (entry === 'default')
-      entry = 'def'
-
-    switch (entry) {
-      case 'type':
-        res += entry+': '+parseType(value[entry])
-        break
-      case 'validations':
-        res += 'validate: [validate({\n      '+parseValidations(value[entry])
-        break
-      case 'def':
-        entry = 'default'
-        if (typeof(value[entry])=='object') {
-          res += entry+': '+JSON.stringify(value[entry])
-        } else {
-          res += entry+': '+value[entry]
-        }
-        break
-      default:
-        res += entry+': '+JSON.stringify(value[entry])
-        break
-    }
-
-    if (entry != keys.slice(-1)[0]) {
-      res += ',\n    '
-    } else {
-      // console.log('last')
-    }
-    // console.log('res:', res)
-  }
-  return res
-});
 
 const defaultEntries = ['count', 'delete', 'find', 'findone', 'create', 'updateone', 'updatemany']
 const hasDefaultEntries = api => {
@@ -245,6 +174,32 @@ const hasDefaultEntries = api => {
   }
   return foundDefaultEntries
 }
+
+// partials
+///////////////////////////////////////////////////////////////////////////////
+Handlebars.registerPartial('buildAPI_authPartial', `
+{{#if (buildAPI_requiresLogin this)}}
+if (!user) {
+  return res.status(400).send({errors: {auth: {message: 'User must be logged in.'}}})
+}
+{{/if}}
+
+{{#if (buildAPI_hasAuth this.auth)}}
+if (!(
+  {{#each this.auth}}
+  {{#if @first}}
+      user.roles.includes({{this.role}})
+  {{else}}
+  || user.roles.includes({{this.role}})
+  {{/if}}
+  {{/each}}
+)) {
+  return res.status(400).send({errors: {auth: {message: 'User not authorized.'}}})
+}
+{{/if}}`
+)
+
+
 // exports
 ///////////////////////////////////////////////////////////////////////////////
 export default function compileAPIs(apis, clientBase, serverBase) {

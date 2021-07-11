@@ -18,6 +18,7 @@ body:
       message: Post body should be between {ARGS[0]} and {ARGS[1]} characters
 slug:
   type: String
+  required: true
   select: false
 author:
   type: Id
@@ -30,7 +31,7 @@ created:
   default: Date.now
 state:
   type: [String]
-  enum: Object.keys(C.POST_STATES)
+  enum: 'Object.keys(C.POST_STATES)'
   default: [C.POST_STATES.DRAFT]
   select: false
 liked:

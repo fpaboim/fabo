@@ -96,11 +96,7 @@ const isRequired = (keys, value) => {
 
 // helpers
 ///////////////////////////////////////////////////////////////////////////////
-Handlebars.registerHelper('json', function(context) {
-  return JSON.stringify(context);
-});
-
-Handlebars.registerHelper('parseValidationEntry', function (value) {
+Handlebars.registerHelper('buildSchemas_parseValidationEntry', function (value) {
   let res = ''
   let keys = Object.keys(value)
 
@@ -157,14 +153,14 @@ Handlebars.registerHelper('parseValidationEntry', function (value) {
   return res
 });
 
-Handlebars.registerHelper('hasValidationEntries', function (value) {
+Handlebars.registerHelper('buildSchemas_hasValidationEntries', function (value) {
   let keys = Object.keys(value)
 
   // console.log('reqr0:', isRequired(keys, value))
   return (keys.includes('validations') || isRequired(keys,value))
 });
 
-Handlebars.registerHelper('parseEntry', function (value) {
+Handlebars.registerHelper('buildSchemas_parseEntry', function (value) {
   let res = ''
   let keys = Object.keys(value)
 
@@ -184,16 +180,28 @@ Handlebars.registerHelper('parseEntry', function (value) {
       case 'validations':
         res += 'validate: [validate({\n      '+parseValidations(value[entry])
         break
+      case 'ref':
+        res += entry+': '+JSON.stringify(value[entry])
+        break
+      case 'required':
+        res += entry+': '+JSON.stringify(value[entry])
+        break
       case 'def':
+        console.log("def RES:", entry, JSON.stringify(value[entry]))
         entry = 'default'
-        if (typeof(value[entry])=='object') {
+        if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
           res += entry+': '+JSON.stringify(value[entry])
         } else {
           res += entry+': '+value[entry]
         }
         break
       default:
-        res += entry+': '+JSON.stringify(value[entry])
+        console.log("RES:", entry, JSON.stringify(value[entry]))
+        if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
+          res += entry+': '+JSON.stringify(value[entry])
+        } else {
+          res += entry+': '+value[entry]
+        }
         break
     }
 
@@ -215,7 +223,6 @@ export default function compileSchemas(schemas, clientBase, serverBase) {
 
   try {
     for (let modelName in schemas) {
-      // console.log("MODEL:", modelName)
       let schema = schemas[modelName]
       let schemaEntries = []
       for (let key in schema) {
@@ -241,6 +248,7 @@ export default function compileSchemas(schemas, clientBase, serverBase) {
       const buildMongoose = Handlebars.compile(mongooseTemplate, { noEscape: true });
       const mongooseOut = buildMongoose({name: modelName, schemaEntries})
       fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/schema.js', mongooseOut);
+      console.log('write out:', serverBase+'.fabo/models/'+modelName+'/schema.js')
 
       const schemaHooksIn = './models/'+modelName+'/schemaHooks.js'
       const hasHooks = fs.existsSync(schemaHooksIn)

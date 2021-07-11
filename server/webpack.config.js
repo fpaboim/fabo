@@ -10,7 +10,7 @@ module.exports = {
   optimization: {
     minimize: slsw.lib.webpack.isLocal ? false:true
   },
-  externals: [nodeExternals()],
+  externals: [{express: 'express'}, nodeExternals()],
   module: {
     rules: [
       {

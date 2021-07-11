@@ -1,5 +1,6 @@
 import compileSchemas from './handlebars/buildSchemas.js'
 import compileAPIs from './handlebars/buildAPI.js'
+import registerGlobalHelpers from './handlebars/globalHelpers.js'
 import { readSchemas, readAPIs } from './services/readConfig.js'
 import {
   scaffoldProject,
@@ -14,6 +15,7 @@ const startup = () => {
   scaffoldProject(serverBase, clientBase)
 
   console.log("Reading Configs... ")
+  registerGlobalHelpers()
   let schemas = readSchemas()
   let apis = readAPIs()
 

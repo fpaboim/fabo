@@ -9,7 +9,7 @@ const methods = {
   {{#if this.count}}
   count: async (req, res, next) => {
     const user = req.user
-    {{> authPartial this.count}}
+    {{> buildAPI_authPartial this.count}}
 
     let { filter } = aqp(req.query);
     {{#if this.count.owner}}
@@ -27,7 +27,7 @@ const methods = {
   {{#if this.delete}}
   delete: async (req, res, next) => {
     const user = req.user
-    {{> authPartial this.delete}}
+    {{> buildAPI_authPartial this.delete}}
 
     let { filter } = aqp(req.query);
     {{#if this.delete.owner}}
@@ -44,7 +44,7 @@ const methods = {
   {{#if this.find}}
   find: async (req, res, next) => {
     const user = req.user
-    {{> authPartial this.find}}
+    {{> buildAPI_authPartial this.find}}
 
     let { filter } = aqp(req.query);
     {{#if this.find.owner}}
@@ -69,7 +69,7 @@ const methods = {
   {{#if this.findone}}
   findone: async (req, res, next) => {
     const user = req.user
-    {{> authPartial this.findone}}
+    {{> buildAPI_authPartial this.findone}}
 
     let { filter } = aqp(req.query);
     {{#if this.findone.owner}}
@@ -89,7 +89,7 @@ const methods = {
   {{#if this.create}}
   create: async (req, res, next) => {
     const user = req.user
-    {{> authPartial this.create}}
+    {{> buildAPI_authPartial this.create}}
 
     const body = req.body
     const created = await {{../name}}.create(body).lean()
@@ -101,7 +101,7 @@ const methods = {
   {{#if this.updateone}}
   updateone: async (req, res, next) => {
     const user = req.user
-    {{> authPartial this.updateone}}
+    {{> buildAPI_authPartial this.updateone}}
 
     let { filter } = aqp(req.query);
     {{#if this.updateone.owner}}
@@ -120,7 +120,7 @@ const methods = {
   {{#if this.updatemany}}
   updatemany: async (req, res, next) => {
     const user = req.user
-    {{> authPartial this.updatemany}}
+    {{> buildAPI_authPartial this.updatemany}}
 
     let { filter } = aqp(req.query);
     {{#if this.updatemany.owner}}

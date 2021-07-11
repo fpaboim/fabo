@@ -9,7 +9,7 @@ import {{name}}Methods from './models/{{name}}/methods.js'
 {{/if}}
 {{/controllers}}
 
-{{makeController controllers}}
+{{buildAPI_makeController controllers}}
 
 const auth = passport.authenticate("jwt", { session: false })
 

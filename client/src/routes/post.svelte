@@ -64,8 +64,8 @@
     <form class='w-full' id="form" on:submit|preventDefault={handleSubmit} novalidate on:keydown={() => errorMsgs = resetInput()}>
 
       <div class="z-0 w-full mb-5">
-        <div class="flex flex-row items-center">
-          <label for="title" class="text-right w-1/3 duration-300 pr-3 -z-1 origin-0 text-gray-500">title</label>
+        <div class="flex flex-row">
+          <label for="title" class="pt-3 text-right w-1/3 duration-300 pr-3 -z-1 origin-0 text-gray-500">title</label>
           <input
             bind:value={formInput.title}
             type="text"
@@ -78,8 +78,8 @@
       </div>
 
       <div class="z-0 w-full mb-5">
-        <div class="flex flex-row items-center">
-          <label for="body" class="text-right w-1/3 duration-300 pr-3 -z-1 origin-0 text-gray-500">body</label>
+        <div class="flex flex-row">
+          <label for="body" class="pt-3 text-right w-1/3 duration-300 pr-3 -z-1 origin-0 text-gray-500">body</label>
           <textarea
             name="body"
             cols="40"

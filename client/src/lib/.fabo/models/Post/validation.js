@@ -23,6 +23,10 @@ export default {
       validator: "required",
       message: "Post body is required."
   })],
+  slug: [
+    validate({
+      validator: "required"
+  })],
 }
 
 
