@@ -9,8 +9,7 @@
 - [x] Serverless
 - [x] Easy to eject: it's just serverless + express + mongodb
 - [x] Automatic schema generation based on yaml interface
-- [x] A
-- utomatic API generation based on yaml interface
+- [x] Automatic API generation based on yaml interface
 - [x] Easy client side and server-side validation
 - [x] PNPM for more efficient monorepo organization
 - [ ] Commandline client for scaffolding
@@ -50,7 +49,7 @@ Creating a folder in the models directory automatically created a route with the
 - api.yaml
 - methods.js
 
-### Schema (schema.yaml)
+### Schema (/models/*modelname*/schema.yaml)
 Example schema:
 ```
 imports:
@@ -110,7 +109,7 @@ schema:
     ref: Message
 ```
 
-### Schema Hooks (schemaHooks.js)
+### Schema Hooks (/models/*modelname*/schemaHooks.js)
 Example pre save mongoose hook for salting and hashing a password before saving:
 ```
 import bcrypt   from 'bcryptjs'
@@ -150,7 +149,7 @@ const hooks = {
 export default hooks
 ```
 
-### API (api.yaml)
+### API (/models/*modelname*/api.yaml)
 Example API:
 ```
 count: true
@@ -196,8 +195,6 @@ profile:
 ### Constants (models/constants.js)
 Defines constants which your API and schema have access to, like roles and enums.
 
-### Models
-
 ### Client
 fabo currently was built with svelte kit in mind, but a general schema to integrate with any client side framework in on the roadmap.
 
@@ -210,6 +207,7 @@ fabo currently was built with svelte kit in mind, but a general schema to integr
 - Upload images
 - Finish scaffolding cli
 - Make docs page
+- Tests
 
 ### maybe?
 - Svelte autoforms
