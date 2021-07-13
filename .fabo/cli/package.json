@@ -1,6 +1,6 @@
 {
-  "name": "fabo-cli",
-  "version": "0.0.1",
+  "name": "@fpaboim/fabo-cli",
+  "version": "0.0.2",
   "description": "fabo framework creation cli",
   "main": "src/index.js",
   "publishConfig": {

@@ -99,12 +99,12 @@ importers:
       tailwindcss: ^2.2.2
     dependencies:
       cookie: 0.4.1
-      dayjs: 1.10.6
-      mongoose-validator: 2.1.0
+      dayjs: link:../.fabo/server-core/node_modules/dayjs
+      mongoose-validator: link:../.fabo/server-core/node_modules/mongoose-validator
       svelte-local-storage-store: 0.2.3_svelte@3.38.3
     devDependencies:
       '@sveltejs/adapter-vercel': 1.0.0-next.24
-      '@sveltejs/kit': 1.0.0-next.124_svelte@3.38.3
+      '@sveltejs/kit': 1.0.0-next.125_svelte@3.38.3
       '@zerodevx/svelte-toast': 0.3.0
       autoprefixer: 10.2.6_postcss@8.3.5
       color: 3.1.3
@@ -122,12 +122,14 @@ importers:
       '@babel/preset-env': ^7.14.7
       '@vendia/serverless-express': ^4.3.9
       api-query-params: ^5.0.0
+      aws-sdk: ^2.943.0
       babel-loader: ^8.2.2
       bcryptjs: ^2.4.3
       dotenv: ^10.0.0
       faker: ^5.5.3
       jsonwebtoken: ^8.5.1
       lodash: ^4.17.21
+      mime: ^2.5.2
       mongoose: ^5.13.2
       mongoose-validator: ^2.1.0
       passport: ^0.4.1
@@ -137,20 +139,24 @@ importers:
       serverless-offline: ^7.0.0
       serverless-webpack: ^5.5.1
       slugify: ^1.5.3
+      uniqid: ^5.3.0
       webpack: ^5.44.0
       webpack-node-externals: ^3.0.0
     dependencies:
       '@vendia/serverless-express': 4.3.9
       api-query-params: 5.0.0
+      aws-sdk: 2.943.0
       bcryptjs: 2.4.3
       dotenv: 10.0.0
-      jsonwebtoken: 8.5.1
-      mongoose: 5.13.2
-      mongoose-validator: 2.1.0
-      passport: 0.4.1
-      passport-jwt: 4.0.0
+      jsonwebtoken: link:../.fabo/server-core/node_modules/jsonwebtoken
+      mime: 2.5.2
+      mongoose: link:../.fabo/server-core/node_modules/mongoose
+      mongoose-validator: link:../.fabo/server-core/node_modules/mongoose-validator
+      passport: link:../.fabo/server-core/node_modules/passport
+      passport-jwt: link:../.fabo/server-core/node_modules/passport-jwt
       serverless-api-gateway-throttling: 1.1.1
       slugify: 1.5.3
+      uniqid: 5.3.0
       webpack: 5.44.0
     devDependencies:
       '@babel/core': 7.14.6
@@ -1872,24 +1878,24 @@ packages:
       esbuild: 0.12.15
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.124_svelte@3.38.3:
-    resolution: {integrity: sha512-opqmEj/OXJbLEqN+V03mxHvNf53ALT0HUaCmfe5FwQ4Cy5xE8yTlJulB27stnqMPxCeTk5XaCdmN9vDQgd+khA==}
+  /@sveltejs/kit/1.0.0-next.125_svelte@3.38.3:
+    resolution: {integrity: sha512-msYbZak97rW2Cgk08NiJW5Sz4S6XnVcjwTXrMo1G4MkYn8cZeL/eKWhuYrjGFvv4U3bYOZhTj/WfAzXNVEFX0A==}
     engines: {node: ^12.20 || >=14.13}
     hasBin: true
     peerDependencies:
       svelte: ^3.34.0
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 1.0.0-next.12_svelte@3.38.3+vite@2.4.1
+      '@sveltejs/vite-plugin-svelte': 1.0.0-next.12_svelte@3.38.3+vite@2.4.2
       cheap-watch: 1.0.3
       sade: 1.7.4
       svelte: 3.38.3
-      vite: 2.4.1
+      vite: 2.4.2
     transitivePeerDependencies:
       - rollup
       - supports-color
     dev: true
 
-  /@sveltejs/vite-plugin-svelte/1.0.0-next.12_svelte@3.38.3+vite@2.4.1:
+  /@sveltejs/vite-plugin-svelte/1.0.0-next.12_svelte@3.38.3+vite@2.4.2:
     resolution: {integrity: sha512-cuyNkJ6leptfv+7qL/fWQ7EpGWdguosFOUI0z93oQUmFTcX7QxJ5h+QI3NQyktBzlKL/761L8BbG2hHNkVbLIQ==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
     peerDependencies:
@@ -1903,7 +1909,7 @@ packages:
       require-relative: 0.8.7
       svelte: 3.38.3
       svelte-hmr: 0.14.5_svelte@3.38.3
-      vite: 2.4.1
+      vite: 2.4.2
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -2391,6 +2397,22 @@ packages:
       xml2js: 0.4.19
     dev: true
 
+  /aws-sdk/2.943.0:
+    resolution: {integrity: sha512-1/WDupJrIB0SJEzIOf+UpqmG0AP5AXoDXhbW7CEujHerOd+/b5A1ubeHKGQJvBN4tAktgsvGpDiBRfB9MpJU5g==}
+    engines: {node: '>= 0.8.0'}
+    requiresBuild: true
+    dependencies:
+      buffer: 4.9.2
+      events: 1.1.1
+      ieee754: 1.1.13
+      jmespath: 0.15.0
+      querystring: 0.2.0
+      sax: 1.2.1
+      url: 0.10.3
+      uuid: 3.3.2
+      xml2js: 0.4.19
+    dev: false
+
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
@@ -2629,7 +2651,6 @@ packages:
       base64-js: 1.5.1
       ieee754: 1.1.13
       isarray: 1.0.0
-    dev: true
 
   /buffer/5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -3667,7 +3688,6 @@ packages:
   /events/1.1.1:
     resolution: {integrity: sha1-nr23Y1rQmccNzEwqH1AEKI6L2SQ=}
     engines: {node: '>=0.4.x'}
-    dev: true
 
   /events/3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
@@ -4265,7 +4285,6 @@ packages:
 
   /ieee754/1.1.13:
     resolution: {integrity: sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==}
-    dev: true
 
   /ieee754/1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -4637,7 +4656,6 @@ packages:
   /jmespath/0.15.0:
     resolution: {integrity: sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=}
     engines: {node: '>= 0.6.0'}
-    dev: true
 
   /joi/17.4.1:
     resolution: {integrity: sha512-gDPOwQ5sr+BUxXuPDGrC1pSNcVR/yGGcTI0aCnjYxZEa3za60K/iCQ+OFIkEHWZGVCUcUlXlFKvMmrlmxrG6UQ==}
@@ -5171,6 +5189,12 @@ packages:
     hasBin: true
     dev: false
 
+  /mime/2.5.2:
+    resolution: {integrity: sha512-tqkh47FzKeCPD2PUiPB6pkbMzsCasjxAfC62/Wap5qrUWcb+sFasXUC5I3gYM5iBM8v/Qpn4UK0x+j0iHyFPDg==}
+    engines: {node: '>=4.0.0'}
+    hasBin: true
+    dev: false
+
   /mimic-fn/1.2.0:
     resolution: {integrity: sha512-jf84uxzwiuiIVKiOLpfYk7N46TSy8ubTonmneY9vrpHNAnp0QBt2BxWV9dO3/j+BoVAb+a5G6YDPW3M5HOdMWQ==}
     engines: {node: '>=4'}
@@ -5262,39 +5286,6 @@ packages:
       prebuild-install: 6.1.2
     dev: false
 
-  /mongodb/3.6.8:
-    resolution: {integrity: sha512-sDjJvI73WjON1vapcbyBD3Ao9/VN3TKYY8/QX9EPbs22KaCSrQ5rXo5ZZd44tWJ3wl3FlnrFZ+KyUtNH6+1ZPQ==}
-    engines: {node: '>=4'}
-    peerDependencies:
-      aws4: '*'
-      bson-ext: '*'
-      kerberos: '*'
-      mongodb-client-encryption: '*'
-      mongodb-extjson: '*'
-      snappy: '*'
-    peerDependenciesMeta:
-      aws4:
-        optional: true
-      bson-ext:
-        optional: true
-      kerberos:
-        optional: true
-      mongodb-client-encryption:
-        optional: true
-      mongodb-extjson:
-        optional: true
-      snappy:
-        optional: true
-    dependencies:
-      bl: 2.2.1
-      bson: 1.1.6
-      denque: 1.5.0
-      optional-require: 1.0.3
-      safe-buffer: 5.2.1
-    optionalDependencies:
-      saslprep: 1.0.3
-    dev: false
-
   /mongodb/3.6.8_mongodb-client-encryption@1.2.6:
     resolution: {integrity: sha512-sDjJvI73WjON1vapcbyBD3Ao9/VN3TKYY8/QX9EPbs22KaCSrQ5rXo5ZZd44tWJ3wl3FlnrFZ+KyUtNH6+1ZPQ==}
     engines: {node: '>=4'}
@@ -5342,32 +5333,6 @@ packages:
     dependencies:
       is: 3.3.0
       validator: 10.11.0
-    dev: false
-
-  /mongoose/5.13.2:
-    resolution: {integrity: sha512-sBUKJGpdwZCq9102Lj6ZOaLcW4z/T4TI9aGWrNX5ZlICwChKWG4Wo5qriLImdww3H7bETPW9vYtSiADNlA4wSQ==}
-    engines: {node: '>=4.0.0'}
-    dependencies:
-      '@types/mongodb': 3.6.20
-      '@types/node': 15.14.2
-      bson: 1.1.6
-      kareem: 2.3.2
-      mongodb: 3.6.8
-      mongoose-legacy-pluralize: 1.0.2_mongoose@5.13.2
-      mpath: 0.8.3
-      mquery: 3.2.5
-      ms: 2.1.2
-      regexp-clone: 1.0.0
-      safe-buffer: 5.2.1
-      sift: 13.5.2
-      sliced: 1.0.1
-    transitivePeerDependencies:
-      - aws4
-      - bson-ext
-      - kerberos
-      - mongodb-client-encryption
-      - mongodb-extjson
-      - snappy
     dev: false
 
   /mongoose/5.13.2_mongodb-client-encryption@1.2.6:
@@ -6375,7 +6340,6 @@ packages:
 
   /punycode/1.3.2:
     resolution: {integrity: sha1-llOgNvt8HuQjQvIyXM7v6jkmxI0=}
-    dev: true
 
   /punycode/2.1.1:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
@@ -6406,7 +6370,7 @@ packages:
   /querystring/0.2.0:
     resolution: {integrity: sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=}
     engines: {node: '>=0.4.x'}
-    dev: true
+    deprecated: The
 
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -6724,7 +6688,6 @@ packages:
 
   /sax/1.2.1:
     resolution: {integrity: sha1-e45lYZCyKOgaZq6nSEgNgozS03o=}
-    dev: true
 
   /schema-utils/2.7.1:
     resolution: {integrity: sha512-SHiNtMOUGWBQJwzISiVYKu82GiV4QYGePp3odlY1tuKO7gPtphAT5R/py0fA6xtbgLL/RvtJZnU9b8s0F1q0Xg==}
@@ -7607,6 +7570,10 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /uniqid/5.3.0:
+    resolution: {integrity: sha512-Jq8EzvAT8/CcLu8tzoSiylnzPkNhJJKpnMT964Dj1jI4pG4sKYP9aFVByNTp8KzMvYlW1Um63PCDqtOoujNzrA==}
+    dev: false
+
   /uniqs/2.0.0:
     resolution: {integrity: sha1-/+3ks2slKQaW5uFl1KWe25mOawI=}
     dev: true
@@ -7669,7 +7636,6 @@ packages:
     dependencies:
       punycode: 1.3.2
       querystring: 0.2.0
-    dev: true
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
@@ -7683,7 +7649,6 @@ packages:
     resolution: {integrity: sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
     hasBin: true
-    dev: true
 
   /v8flags/3.2.0:
     resolution: {integrity: sha512-mH8etigqMfiGWdeXpaaqGfs6BndypxusHHcv2qSHyZkGEznCd/qAXCWWRzeowtL54147cktFOC4P5y+kl8d8Jg==}
@@ -7719,8 +7684,8 @@ packages:
     resolution: {integrity: sha512-/juG65kTL4Cy2su4P8HjtkTxk6VmJDiOPBufWniqQ6wknac6jNiXS9vU+hO3wgusiyqWlzTbVHi0dyJqRONg3w==}
     dev: true
 
-  /vite/2.4.1:
-    resolution: {integrity: sha512-4BpKRis9uxIqPfIEcJ18LTBsamqnDFxTx45CXwagHjNltHa6PFEvf8Pe6OpgIHb0OyWT30OXOSSQvdOaX4OBiQ==}
+  /vite/2.4.2:
+    resolution: {integrity: sha512-2MifxD2I9fjyDmmEzbULOo3kOUoqX90A58cT6mECxoVQlMYFuijZsPQBuA14mqSwvV3ydUsqnq+BRWXyO9Qa+w==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     dependencies:
@@ -7928,12 +7893,10 @@ packages:
     dependencies:
       sax: 1.2.1
       xmlbuilder: 9.0.7
-    dev: true
 
   /xmlbuilder/9.0.7:
     resolution: {integrity: sha1-Ey7mPS7FVlxVfiD0wi35rKaGsQ0=}
     engines: {node: '>=4.0'}
-    dev: true
 
   /xtend/4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}

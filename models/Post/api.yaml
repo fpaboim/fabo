@@ -9,7 +9,7 @@ create:
   middlewares: [apiLimiter]
   pre:
     setField:
-      author: user._id
+      author: user.username
 updateone:
   login: true
   auth:

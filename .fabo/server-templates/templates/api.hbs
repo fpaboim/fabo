@@ -103,6 +103,9 @@ const methods = {
       const found = await {{../name}}.findOne(filter)
                                      .populate(population).lean()
 
+      if (found == undefined) {
+        return res.status(400).send({errors: {unknown: {message: 'Not found.'}}})
+      }
       return res.status(200).send(found)
     } catch(err) {
       console.log('** ERROR **: Unknown error on {{../name}}.findone', err)

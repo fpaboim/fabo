@@ -1,6 +1,6 @@
 {
-  "name": "@fabo/server-templates",
-  "version": "0.0.2",
+  "name": "@fpaboim/fabo-server-templates",
+  "version": "0.0.3",
   "description": "templates",
   "main": "index.js",
   "type": "module",

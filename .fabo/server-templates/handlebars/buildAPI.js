@@ -246,6 +246,7 @@ export default function compileAPIs(apis, clientBase, serverBase) {
 
       const apiMethods = './models/'+modelName+'/methods.js'
       if (fs.existsSync(apiMethods)) {
+        createDirIfNone(serverBase+'.fabo/models/'+modelName)
         fs.copyFileSync(apiMethods,
                         serverBase+'.fabo/models/'+modelName+'/methods.js')
         controllers.push({

@@ -22,7 +22,7 @@ const methods = {
   verifyEmail: async (req, res, next) => {
     const user = await User.findById(req.user.id, '-password').lean()
     if (!user) {
-      throw new Error('Error refreshing token')
+      return res.status(401).send({errors: {email: {message: 'Error refreshing token.'}}})
     }
   },
 
@@ -30,7 +30,7 @@ const methods = {
   refreshToken: async (req, res, next) => {
     const user = await User.findById(req.user.id, '-password').lean()
     if (!user) {
-      throw new Error('Error refreshing token')
+      return res.status(401).send({errors: {email: {message: 'Error refreshing token.'}}})
     }
 
     return res.status(200).send({ token: createToken(user, process.env.SECRET) })

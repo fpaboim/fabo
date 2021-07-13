@@ -12,10 +12,13 @@ export function readSchemas() {
     const dirs = getDirectories(baseFolder)
     for (let dir of dirs) {
       try {
-        const file = fs.readFileSync(baseFolder+dir+'/schema.yaml', 'utf8')
-        if (file) {
-          const schema = yaml.load(file);
-          schemas[dir] = schema
+        const schemafile = baseFolder+dir+'/schema.yaml'
+        if (fs.existsSync(schemafile)) {
+          const file = fs.readFileSync(schemafile, 'utf8')
+          if (file) {
+            const schema = yaml.load(file);
+            schemas[dir] = schema
+          }
         }
         // console.log('YAML:', schema);
       } catch(err) {

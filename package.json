@@ -1,6 +1,6 @@
 {
   "name": "fabo",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "svelte express mongo (serverless) stack - pre-alpha!",
   "main": "./.fabo/index.js",
   "type": "module",

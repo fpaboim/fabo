@@ -24,13 +24,17 @@ export function setLocalStorage(key, value) {
   return true
 }
 
-export async function postServer(url, body) {
+function makeUrl(url) {
   if (dev) {
     url = 'http://192.168.111.3:4000/dev' + url
   } else {
-    url = 'https://4bff8f2bb6.execute-api.us-east-1.amazonaws.com/prod' + url
+    url = 'api.' + process.env.DOMAIN + url
   }
-  console.log('post:', url)
+  return url
+}
+
+export async function postServer(url, body) {
+  url = makeUrl(url)
 
   let customError = false
   try {
@@ -72,11 +76,7 @@ export async function postServer(url, body) {
 }
 
 export async function post(url, body) {
-  if (dev) {
-    url = 'http://192.168.111.3:4000/dev' + url
-  } else {
-    url = 'https://4bff8f2bb6.execute-api.us-east-1.amazonaws.com/prod' + url
-  }
+  url = makeUrl(url)
   console.log('post:', url)
 
   let customError = false
@@ -119,7 +119,8 @@ export async function post(url, body) {
 }
 
 export async function get(url) {
-  url = 'http://localhost:4000' + url
+  url = makeUrl(url)
+
   let customError = false
   try {
     let headers = {}
@@ -153,3 +154,42 @@ export async function get(url) {
     throw customError ? err : {id: '', message: 'unknown error'}
   }
 }
+
+export const uploadFileToS3 = (presignedPostData, file) => {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+    Object.keys(presignedPostData.fields).forEach(key => {
+      formData.append(key, presignedPostData.fields[key]);
+    });
+    // Actual file has to be appended last.
+    formData.append("file", file);
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", presignedPostData.url, true);
+    xhr.send(formData);
+    xhr.onload = function() {
+      this.status === 204 ? resolve() : reject(this.responseText);
+    };
+  });
+};
+
+export const getPresignedPostData = selectedFile => {
+  return new Promise(resolve => {
+    const xhr = new XMLHttpRequest();
+
+    // Set the proper URL here.
+    const url = "https://mysite.com/api/files";
+    url = makeUrl('/upload/')
+
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(
+      JSON.stringify({
+        name: selectedFile.name,
+        type: selectedFile.type
+      })
+    );
+    xhr.onload = function() {
+      resolve(JSON.parse(this.responseText));
+    };
+  });
+};

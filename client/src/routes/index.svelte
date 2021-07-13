@@ -8,7 +8,7 @@
   export const prerender = true
 
   export async function load({ page, fetch, session, context }) {
-    const res = await post('/post/find?populate=author')
+    const res = await post('/post/find')
 
     if (res) {
       return {
@@ -30,19 +30,19 @@
 </svelte:head>
 
 <div class="content">
-  <div class="flex flex-col items-center justify-center">
+  <div class="flex flex-col items-start justify-start">
     <div class="pt-2 font-bold text-lg">posts</div>
 
     <div class="flex flex-col items-center justify-center">
       {#each posts as post}
-      <div class="flex flex-col items-center justify-center pt-4">
+      <div class="flex flex-col items-start justify-start pt-4">
         <div class="font-semibold text-md">
-          <a href="/posts/{post.author.username}/{post.slug}">
+          <a sveltekit:prefetch href="/posts/{post.author}/{post.slug}">
             {post.title}
           </a>
         </div>
         <div class="text-sm">
-          by {post.author.username} {dayjs(post.created).fromNow()}
+          by {post.author} {dayjs(post.created).fromNow()}
         </div>
       </div>
       {/each}

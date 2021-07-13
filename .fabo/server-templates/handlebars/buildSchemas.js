@@ -188,11 +188,16 @@ Handlebars.registerHelper('buildSchemas_parseEntry', function (value) {
         break
       case 'def':
         entry = 'default'
-        if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
-          res += entry+': '+JSON.stringify(value[entry])
-        } else {
-          res += entry+': '+value[entry]
-        }
+        // if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
+        //   res += entry+': '+JSON.stringify(value[entry])
+        // } else {
+        //   if (value['type'] == 'String') {
+        //     res += entry+': '+JSON.stringify(value[entry])
+        //   } else {
+        //     res += entry+': '+value[entry]
+        //   }
+        // }
+        res += entry+': '+value[entry]
         break
       default:
         if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
@@ -213,6 +218,15 @@ Handlebars.registerHelper('buildSchemas_parseEntry', function (value) {
   return res
 });
 
+Handlebars.registerHelper('parseImports', function (value) {
+  let res = ''
+  for (let key in value) {
+    res += `import ${key} from "${value[key]}"`
+  }
+
+  return res
+})
+
 // exports
 ///////////////////////////////////////////////////////////////////////////////
 export default function compileSchemas(schemas, clientBase, serverBase) {
@@ -223,8 +237,8 @@ export default function compileSchemas(schemas, clientBase, serverBase) {
     for (let modelName in schemas) {
       let schema = schemas[modelName]
       let schemaEntries = []
-      for (let key in schema) {
-        schemaEntries.push({name: key, data: schema[key]})
+      for (let key in schema['schema']) {
+        schemaEntries.push({name: key, data: schema['schema'][key]})
       }
       if (schemaEntries.length == 0) {
         // console.log('no entries for:', modelName)
@@ -232,7 +246,7 @@ export default function compileSchemas(schemas, clientBase, serverBase) {
       }
 
       let file_loc = new URL('../templates/schema.hbs', import.meta.url)
-      const mongooseTemplate = fs.readFileSync(file_loc, 'utf8');
+      const schemaTemplate = fs.readFileSync(file_loc, 'utf8');
 
       file_loc = new URL('../templates/validation.hbs', import.meta.url)
       const validationTemplate = fs.readFileSync(file_loc, 'utf8');
@@ -243,8 +257,8 @@ export default function compileSchemas(schemas, clientBase, serverBase) {
       createDirIfNone(serverBase+'.fabo/models/'+modelName)
       createDirIfNone(clientBase+'.fabo/models/'+modelName)
 
-      const buildMongoose = Handlebars.compile(mongooseTemplate, { noEscape: true });
-      const mongooseOut = buildMongoose({name: modelName, schemaEntries})
+      const buildMongoose = Handlebars.compile(schemaTemplate, { noEscape: true });
+      const mongooseOut = buildMongoose({name: modelName, imports: schema['imports'], schemaEntries})
       fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/schema.js', mongooseOut);
 
       const schemaHooksIn = './models/'+modelName+'/schemaHooks.js'
