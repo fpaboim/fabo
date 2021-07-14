@@ -31,7 +31,7 @@
     "node": ">=14"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "nodemonConfig": {
     "ignore": [
       "client/*",

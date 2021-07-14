@@ -1,6 +1,7 @@
 {
   "name": "fabo-example-blog-client",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
     "dev": "svelte-kit dev --open --host",
     "build": "svelte-kit build",

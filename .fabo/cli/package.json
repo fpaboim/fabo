@@ -1,5 +1,9 @@
 {
-  "name": "@fpaboim/fabo-cli",
+  "name": "@fabo/cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpaboim/fabo.git/.fabo/cli"
+  },
   "version": "0.0.2",
   "description": "fabo framework creation cli",
   "main": "src/index.js",

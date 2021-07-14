@@ -49,7 +49,7 @@ Creating a folder in the models directory automatically created a route with the
 - api.yaml
 - methods.js
 
-### Schema (/models/*modelname*/schema.yaml)
+### Schema (/models/modelroute/schema.yaml)
 Example schema:
 ```
 imports:
@@ -109,7 +109,7 @@ schema:
     ref: Message
 ```
 
-### Schema Hooks (/models/*modelname*/schemaHooks.js)
+### Schema Hooks (/models/modelroute/schemaHooks.js)
 Example pre save mongoose hook for salting and hashing a password before saving:
 ```
 import bcrypt   from 'bcryptjs'
@@ -149,7 +149,7 @@ const hooks = {
 export default hooks
 ```
 
-### API (/models/*modelname*/api.yaml)
+### API (/models/modelroute/api.yaml)
 Example API:
 ```
 count: true
