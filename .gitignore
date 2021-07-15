@@ -2,8 +2,8 @@
 /node_modules/*
 **/node_modules/*
 /fabo/.shared/*
-/client/.fabo/*
-/server/.fabo/*
+/client/packages/*
+/server/packages/*
 *.log*
 *.swp
 *.lock

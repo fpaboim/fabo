@@ -1,5 +1,3 @@
 packages:
-  # all packages in subdirs of packages/ and components/
-  - '.fabo/**'
-  - 'server/**'
-  - 'client/**'
+  # all packages in subdirs of packages/
+  - 'packages/**'

@@ -1,8 +1,0 @@
-.DS_Store
-*.env*
-node_modules
-/.svelte-kit
-/.vercel_build_output
-/build
-/functions
-/src/.fabo/*

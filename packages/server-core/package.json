@@ -1,0 +1,35 @@
+{
+  "name": "@fabo/server-core",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpaboim/fabo.git/.fabo/server-core"
+  },
+  "version": "0.1.0",
+  "description": "fabo_backend API server",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "author": "Francisco Aboim",
+  "license": "CC",
+  "dependencies": {
+    "@vendia/serverless-express": "^4.3.9",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dayjs": "^1.10.6",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "helmet-crossdomain": "^0.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb-client-encryption": "^1.2.6",
+    "mongoose": "^5.13.2",
+    "mongoose-validator": "^2.1.0",
+    "netjet": "^1.4.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0"
+  }
+}

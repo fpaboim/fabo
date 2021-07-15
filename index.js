@@ -1,3 +1,7 @@
-import startup from './.fabo/server-templates/startup.js'
+import compile from './packages/server-templates/compile.js'
 
-startup()
+const fabo = {
+  compile
+}
+
+export default fabo

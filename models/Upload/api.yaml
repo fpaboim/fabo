@@ -1,4 +1,0 @@
-signS3:
-  login: true
-  method: signS3
-  middlewares: [apiLimiter]

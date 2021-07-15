@@ -1,1 +1,0 @@
-# SEMS Stack Frontend
