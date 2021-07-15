@@ -16,31 +16,13 @@
 - [ ] Integration tests
 
 ## Instructions
-- Install pnpm
-```
-npm i -g pnpm
-```
+- Install fabo ``npm install fabo``
 - Install mongodb
 - Install serverless and login for deploying the serverless backend
-- Install vercel and login for deploying the SSR/static frontend
-- Install aws cli client [here](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-- Create S3 bucket for storing files:
-```
-aws s3api create-bucket --bucket my-bucket --region us-east-1
-```
-- Configure bucket:
-```
-aws s3api put-bucket-cors --bucket my-bucket --cors-configuration '{"CORSRules": [{
-  "AllowedOrigins": ["*"],
-  "AllowedHeaders": ["Authorization"],
-  "AllowedMethods": ["GET", "POST"],
-  "MaxAgeSeconds": 3000
-}]}'
-```
-- ``pnpm i``
-- ``pnpm run dev``
+
 
 ## Guide
+
 
 ### Structure
 Creating a folder in the models directory automatically created a route with the lowercased folder name. The folder can have the following files which auto-generate a schema and API:
@@ -191,6 +173,24 @@ profile:
   auth:
     - role: ROLES.USER
 ```
+
+### Config for S3 Uploads
+- Install aws cli client [here](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
+- Create S3 bucket for storing files:
+```
+aws s3api create-bucket --bucket my-bucket --region us-east-1
+```
+- Configure bucket:
+```
+aws s3api put-bucket-cors --bucket my-bucket --cors-configuration '{"CORSRules": [{
+  "AllowedOrigins": ["*"],
+  "AllowedHeaders": ["Authorization"],
+  "AllowedMethods": ["GET", "POST"],
+  "MaxAgeSeconds": 3000
+}]}'
+```
+- ``pnpm i``
+- ``pnpm run dev``
 
 ### Constants (models/constants.js)
 Defines constants which your API and schema have access to, like roles and enums.

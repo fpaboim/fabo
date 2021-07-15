@@ -5,6 +5,10 @@
   "main": "./index.js",
   "type": "module",
   "devDependencies": {
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/node": "^7.14.7",
+    "@babel/preset-env": "^7.14.7",
     "@changesets/cli": "^2.16.0",
     "concurrently": "^6.2.0",
     "wait-on": "^6.0.0"
@@ -14,20 +18,10 @@
     "url": "git+https://github.com/fpaboim/fabo.git"
   },
   "bin": {
-    "@fpaboim/fabo": "./packages/cli/bin/fabo",
-    "fabo": "./packages/cli/bin/fabo"
+    "@fpaboim/fabo": "./packages/cli/bin/fabo.js",
+    "fabo": "./packages/cli/bin/fabo.js"
   },
   "scripts": {
-    "fabo": "nodemon ./index.js",
-    "clean": "rm -rf node_modules server/node_modules packages/*/node_modules",
-    "client:dev": "wait-on tcp:4000 && cd client && pnpm run dev",
-    "server:dev": "cd server && pnpm run dev",
-    "server:dev_prod": "cd server && pnpm run dev_prod",
-    "server:deploy": "cd server && pnpm run deploy",
-    "all": "concurrently -k -n \"fabo,server,client\" -c \"magenta.bold,yellow.bold,blue.bold\" \"pnpm run fabo\" \"pnpm run server:dev\" \"pnpm run client:dev\" ",
-    "all:dev": "concurrently -k -n \"fabo,server,client\" -c \"magenta.bold,yellow.bold,blue.bold\" \"pnpm run fabo\" \"pnpm run server:dev\" \"pnpm run client:dev\" ",
-    "api": "concurrently -k -n \"fabo,server\" -c \"magenta.bold,yellow.bold\" \"pnpm run fabo\" \"pnpm run server:dev\" ",
-    "api:dev": "concurrently -k -n \"fabo,server\" -c \"magenta.bold,yellow.bold\" \"pnpm run fabo\" \"pnpm run server:dev\" ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
