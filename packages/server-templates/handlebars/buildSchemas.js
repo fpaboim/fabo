@@ -94,6 +94,12 @@ const isRequired = (keys, value) => {
   return hasRequired
 }
 
+const isNested = (values) => {
+  for (let key in values) {
+    console.log("KV", key, values[key])
+  }
+}
+
 // helpers
 ///////////////////////////////////////////////////////////////////////////////
 Handlebars.registerHelper('buildSchemas_parseValidationEntry', function (value) {
@@ -160,6 +166,74 @@ Handlebars.registerHelper('buildSchemas_hasValidationEntries', function (value) 
   return (keys.includes('validations') || isRequired(keys,value))
 });
 
+Handlebars.registerHelper('buildSchemas_parseNested', function (values) {
+  let res = ''
+
+  if (Array.isArray(values)) {
+    values = values[0]
+  }
+
+  let k = 0
+  let last = false
+  for (let basekey in values) {
+    if (k == Object.keys(values).length-1) {
+      last = true
+    }
+    k += 1
+
+    let value = values[basekey]
+    let keys = Object.keys(value)
+
+    res += basekey+': {\n      '
+
+    if (keys.length == 0) {
+      return ''
+    }
+
+    for (let entry in value) {
+      entry = entry.trim()
+      if (entry === 'default')
+        entry = 'def'
+
+      switch (entry) {
+        case 'type':
+          res += entry+': '+parseType(value[entry])
+          break
+        case 'validations':
+          res += 'validate: [validate({\n        '+parseValidations(value[entry])
+          break
+        case 'ref':
+          res += entry+': '+JSON.stringify(value[entry])
+          break
+        case 'required':
+          res += entry+': '+JSON.stringify(value[entry])
+          break
+        case 'def':
+          entry = 'default'
+          res += entry+': '+value[entry]
+          break
+        default:
+          if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
+            res += entry+': '+JSON.stringify(value[entry])
+          } else {
+            res += entry+': '+value[entry]
+          }
+          break
+      }
+
+      if (entry != keys.slice(-1)[0]) {
+        res += ',\n      '
+      } else {
+        // console.log('last')
+      }
+      // console.log('res:', res)
+    }
+    res += '\n    },\n    '
+  }
+  return res
+});
+
+
 Handlebars.registerHelper('buildSchemas_parseEntry', function (value) {
   let res = ''
   let keys = Object.keys(value)
@@ -188,15 +262,6 @@ Handlebars.registerHelper('buildSchemas_parseEntry', function (value) {
         break
       case 'def':
         entry = 'default'
-        // if (typeof(value[entry]) == 'object' && value[entry].length == 0) {
-        //   res += entry+': '+JSON.stringify(value[entry])
-        // } else {
-        //   if (value['type'] == 'String') {
-        //     res += entry+': '+JSON.stringify(value[entry])
-        //   } else {
-        //     res += entry+': '+value[entry]
-        //   }
-        // }
         res += entry+': '+value[entry]
         break
       default:
@@ -218,13 +283,37 @@ Handlebars.registerHelper('buildSchemas_parseEntry', function (value) {
   return res
 });
 
-Handlebars.registerHelper('parseImports', function (value) {
+Handlebars.registerHelper('buildSchemas_parseImports', function (value) {
   let res = ''
   for (let key in value) {
     res += `import ${key} from "${value[key]}"`
   }
 
   return res
+})
+
+Handlebars.registerHelper('buildSchemas_isArray', function (value) {
+  return Array.isArray(value)
+})
+
+Handlebars.registerHelper('buildSchemas_isNested', function (value) {
+  let isNested = false
+
+  try {
+    let keys = Object.keys(value.data)
+    const innerval = value.data[keys[0]]
+    if (typeof(innerval) == 'object') {
+      let keys2 = Object.keys(innerval)
+      const innerval2 = innerval[keys2[0]]
+      if (typeof(innerval2) == 'object') {
+        return true
+      }
+    }
+  } catch(e) {
+  }
+
+
+  return false
 })
 
 // exports
@@ -238,7 +327,12 @@ export default function compileSchemas(schemas, clientBase, serverBase) {
       let schema = schemas[modelName]
       let schemaEntries = []
       for (let key in schema['schema']) {
-        schemaEntries.push({name: key, data: schema['schema'][key]})
+        let entry = schema['schema'][key]
+
+        schemaEntries.push({
+          name: key,
+          data: entry
+        })
       }
       if (schemaEntries.length == 0) {
         // console.log('no entries for:', modelName)

@@ -2,18 +2,30 @@ import C from "../../shared/constants.js"
 import validate from 'mongoose-validator'
 import mongoose from 'mongoose'
 {{#imports}}
-{{parseImports this}}
+{{buildSchemas_parseImports this}}
 {{/imports}}
 
 // {{name}} schema
 ///////////////////////////////////////////////////////////////////////////////
 export default {
 {{#schemaEntries}}
+  {{#if (buildSchemas_isNested this)}}
+  {{#if (buildSchemas_isArray data)}}
+  {{name}}: [{
+    {{buildSchemas_parseNested data}}
+  }],
+  {{else}}
+  {{name}}: {
+    {{buildSchemas_parseNested data}}
+  },
+  {{/if}}
+  {{else}}
   {{name}}: {
   {{#data}}
     {{buildSchemas_parseEntry this}}
   {{/data}}
   },
+  {{/if}}
 {{/schemaEntries}}
 }
 
