@@ -32,8 +32,12 @@ const parseType = (value) => {
   }
 }
 
-const parseValidations = (value, validationTemplate=false) => {
+const parseValidations = (value, validationTemplate=false, nested=false) => {
   let res = ''
+  let padding = ''
+  if (nested) {
+    padding += '  '
+  }
 
   for (let i=0; i<value.length; i++) {
     const validationEntries = value[i]
@@ -58,12 +62,12 @@ const parseValidations = (value, validationTemplate=false) => {
     }
     // console.log('res:', res)
     if (i != value.length-1) {
-      res += '\n    }), validate({\n      '
+      res += '\n'+padding+'    }), validate({\n      '
     } else {
       if (validationTemplate) {
-        res += '\n  })],'
+        res += '\n'+padding+'  })],'
       } else {
-        res += '\n    })]'
+        res += '\n'+padding+'    })]'
       }
     }
   }
@@ -94,10 +98,38 @@ const isRequired = (keys, value) => {
   return hasRequired
 }
 
-const isNested = (values) => {
-  for (let key in values) {
-    console.log("KV", key, values[key])
+const getEntryValidationResult = (value, nested) => {
+  let keys = Object.keys(value)
+  let res = ''
+
+  let padding = ''
+  if (nested) {
+    padding = '  '
   }
+
+  for (let entry in value) {
+    // console.log('ent:', entry)
+    entry = entry.trim()
+    if (entry === 'default')
+      entry = 'def'
+
+    switch (entry) {
+      case 'validations':
+        res += 'validate({\n      '+padding+parseValidations(value[entry], true, true)
+        break
+      default:
+        continue
+    }
+
+    if (entry != keys.slice(-1)[0]) {
+      res += ',\n      ' + padding
+    } else {
+      // console.log('last')
+    }
+    // console.log('res:', res)
+  }
+
+  return res
 }
 
 // helpers
@@ -127,43 +159,61 @@ Handlebars.registerHelper('buildSchemas_parseValidationEntry', function (value) 
   }
   keys = Object.keys(value)
 
+  let nested = false
   if (!keys.includes('validations')) {
-    return ''
+    nested = true
   }
 
   if (keys.length == 0) {
     return ''
   }
 
-  for (let entry in value) {
-    // console.log('ent:', entry)
-    entry = entry.trim()
-    if (entry === 'default')
-      entry = 'def'
-
-    switch (entry) {
-      case 'validations':
-        res += 'validate({\n      '+parseValidations(value[entry], true)
-        break
-      default:
+  if (nested) {
+    res += ''
+    for (let key of keys) {
+      const newval = value[key]
+      let hasVal = Object.keys(newval).includes('validations')
+      if (!hasVal) {
         continue
+      }
+      console.log('key', key)
+      res += key + ': [\n'
+      res += '      '
+      res += getEntryValidationResult(newval, nested)
     }
-
-    if (entry != keys.slice(-1)[0]) {
-      res += ',\n    '
-    } else {
-      // console.log('last')
-    }
-    // console.log('res:', res)
+  } else {
+    res += getEntryValidationResult(value, nested)
   }
+
   return res
 });
 
 Handlebars.registerHelper('buildSchemas_hasValidationEntries', function (value) {
   let keys = Object.keys(value)
 
+  let hasVal = keys.includes('validations')
+
+  if (hasVal)
+    return true
+
+  for (let key of keys) {
+    if (typeof(value[key]) != 'object' || Array.isArray(value[key])) {
+      continue
+    }
+    for (let value2 in value[key]) {
+      let keys2 = Object.keys(value[key][value2])
+      if (keys2.includes('validations')) {
+        hasVal = true
+        break
+      }
+    }
+
+    if (hasVal)
+      return true
+  }
+
   // console.log('reqr0:', isRequired(keys, value))
-  return (keys.includes('validations') || isRequired(keys,value))
+  return (hasVal || isRequired(keys,value))
 });
 
 Handlebars.registerHelper('buildSchemas_parseNested', function (values) {

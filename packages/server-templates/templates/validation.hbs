@@ -6,11 +6,21 @@ import '$lib/.fabo/shared/lib/extendValidators.js'
 ///////////////////////////////////////////////////////////////////////////////
 export default {
 {{#schemaEntries}}
+  {{#if (buildSchemas_isNested this)}}
+  {{#if (buildSchemas_hasValidationEntries data)}}
+  {{name}}: {
+  {{#data}}
+    {{buildSchemas_parseValidationEntry this}}
+  {{/data}}
+  }
+  {{/if}}
+  {{else}}
   {{#if (buildSchemas_hasValidationEntries data)}}
   {{name}}: [
   {{#data}}
     {{buildSchemas_parseValidationEntry this}}
   {{/data}}
+  {{/if}}
   {{/if}}
 {{/schemaEntries}}
 }
