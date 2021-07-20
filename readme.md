@@ -5,24 +5,24 @@
 #### * This project is a WIP (pre-alpha), use at your own risk
 ![alt text](./server/static/raptors.jpg "The raptor fences are down")
 
+## Introduction
+fabo is a small serverless framework for auto generating rest api's on top of a yaml configurations. It was made out of necessity of reducing boilerplate and being able to provider sensible defaults for scaffolding serverless + mongodb projects.
+
 ## Features
 - [x] Serverless
 - [x] Easy to eject: it's just serverless + express + mongodb
 - [x] Automatic schema generation based on yaml interface
 - [x] Automatic API generation based on yaml interface
 - [x] Easy client side and server-side validation
-- [x] PNPM for more efficient monorepo organization
 - [ ] Commandline client for scaffolding
 - [ ] Integration tests
 
 ## Instructions
-- Install fabo ``npm install fabo``
-- Install mongodb
+- Install the latest version of mongodb if not already installed
 - Install serverless and login for deploying the serverless backend
-
+- Install fabo ``npm install fabo``
 
 ## Guide
-
 
 ### Structure
 Creating a folder in the models directory automatically created a route with the lowercased folder name. The folder can have the following files which auto-generate a schema and API:
