@@ -4,7 +4,7 @@
     "type": "git",
     "url": "git+https://github.com/fpaboim/fabo.git/.fabo/server-templates"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "templates",
   "main": "index.js",
   "type": "module",
