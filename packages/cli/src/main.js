@@ -10,10 +10,31 @@ import compile from '../../server-templates/compile.js'
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
+const TEMPLATES = {
+  Svelte: 'svelte-starter',
+  Barebones: 'barebones'
+}
+
+function filterfunc(source) {
+  if (source.includes('.git')
+   || source.includes('.webpack')
+   || source.includes('.svelte-kit')
+   || source.includes('.fabo')
+   || source.includes('.log')
+   || source.includes('node_modules')) {
+    return false
+  }
+  return true
+}
+
 async function copyTemplateFiles(options) {
-  return copy(options.templateDirectory, options.targetDirectory, {
+  let res = await copy(options.templateDirectory, options.targetDirectory, {
     clobber: false,
+    filter: filterfunc,
+    dereference: true,
   });
+
+  return res
 }
 
 async function initPackages(options) {
@@ -50,15 +71,15 @@ export async function createProject(options) {
 
   const templateDir = path.resolve(
     new URL(import.meta.url).pathname,
-    '../../templates',
-    options.template
+    '../../../../templates',
+    TEMPLATES[options.template]
   );
   options.templateDirectory = templateDir;
 
   try {
     await access(templateDir, fs.constants.R_OK);
   } catch (err) {
-    console.error('%s Invalid template name', chalk.red.bold('ERROR'));
+    console.error('%s Invalid template name: %s', chalk.red.bold('ERROR'), templateDir);
     process.exit(1);
   }
 

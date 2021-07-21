@@ -4,32 +4,33 @@ import { createProject } from './main.js';
 
 
 function parseArgumentsIntoOptions(rawArgs) {
-  const args = arg(
-    {
-      '--compile': Boolean,
-      '--git': Boolean,
-      '--yes': Boolean,
-      '--install': Boolean,
-      '-c': '--compile',
-      '-g': '--git',
-      '-y': '--yes',
-      '-i': '--install',
-    },
-    {
-      argv: rawArgs.slice(2),
-    }
-  );
+  const args = arg({
+    '--compile': Boolean,
+    '--git': Boolean,
+    '--yes': Boolean,
+    '--install': Boolean,
+    '--init':    String,
+    '--template':    String,
+    '-c': '--compile',
+    '-g': '--git',
+    '-y': '--yes',
+    '-tpl': '--template',
+    '-i': '--install'
+  });
+
   return {
     compile: args['--compile'] || false,
     skipPrompts: args['--yes'] || false,
     git: args['--git'] || false,
-    template: args._[0],
+    init: args['--init'] || false,
+    template: args['--template'] || false,
+    targetDirectory: args._[1] || false,
     runInstall: args['--install'] || false,
   };
 }
 
 async function promptForMissingOptions(options) {
-  const defaultTemplate = 'Svelte';
+  const defaultTemplate = 'Barebones';
   if (options.skipPrompts) {
     return {
       ...options,
@@ -43,7 +44,7 @@ async function promptForMissingOptions(options) {
       type: 'list',
       name: 'template',
       message: 'Please choose which project template to use',
-      choices: ['Svelte', 'Custom'],
+      choices: ['Barebones', 'Svelte'],
       default: defaultTemplate,
     });
   }
