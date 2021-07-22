@@ -1,9 +1,10 @@
 <h1 align="center">fabo serverless framework</h1>
 <h3 align="center">Build scalable serverless APIs in minutes, not days.</h3>
 
-Easy backend serverless yaml based CMS and REST API generator, which aims to replace a lot of the boilerplate which goes along with creating JAMSTACK mobile/web apps without having to give up on your code editor. Serverless is easy when fabo does the heavy lifting! 🏋️
+Easy backend serverless yaml based CMS and REST API generator, which aims to replace a lot of the boilerplate which goes along with creating jamstack mobile/web apps without having to give up on your code editor. Serverless is easy when fabo does the heavy lifting! 🏋️
 
-* This project is in ALPHA, documentation is a work in progress, use at your own risk
+* This project is in ALPHA, documentation is a work in progress, *caveat emptor*
+
 ![raptors, beware!](./assets/raptors.jpg "The raptor fences are down")
 
 ## Introduction
@@ -15,24 +16,26 @@ fabo is a small serverless framework for auto generating rest api's on top of a 
 - [x] Automatic schema generation based on yaml interface
 - [x] Automatic API generation based on yaml interface
 - [x] Easy client side and server-side validation
-- [ ] Commandline client for scaffolding
-- [ ] Integration tests
+- [x] Commandline client for scaffolding
 
 ## Instructions
-- Install the latest version of mongodb if not already installed
-- Install serverless and login for deploying the serverless backend
-- Install fabo ``npm install fabo``
+- Install the latest version of mongodb 4.4+ if not already installed
+- Install serverless and login for deploying the serverless backend ``npm install -g serverless`` or with pnpm ``pnpm add -g serverless``
+- Install fabo ``npm install -g fabo`` or with pnpm ``pnpm add -g fabo``
+- To create a project in the current directory ``fabo init`` or to make a new directory with your project files ``fabo init newdirectory``
 
 ## Guide
 
 ### Structure
-Creating a folder in the models directory automatically created a route with the lowercased folder name. The folder can have the following files which auto-generate a schema and API:
+Your schema definition and methods relating to the schema reside in the ``./models`` folder. Creating a folder in the models directory automatically creates a route with the lowercased folder name and corresponding routes. The folder can have the following files which auto-generate a schema and API:
 - schema.yaml
 - schemaHooks.yaml
 - api.yaml
 - methods.js
 
-### Schema (/models/modelroute/schema.yaml)
+### Examples:
+
+#### Schema (/models/modelroute/schema.yaml)
 Example schema:
 ```
 imports:
@@ -92,7 +95,7 @@ schema:
     ref: Message
 ```
 
-### Schema Hooks (/models/modelroute/schemaHooks.js)
+#### Schema Hooks (/models/modelroute/schemaHooks.js)
 Example pre save mongoose hook for salting and hashing a password before saving:
 ```
 import bcrypt   from 'bcryptjs'
@@ -132,7 +135,7 @@ const hooks = {
 export default hooks
 ```
 
-### API (/models/modelroute/api.yaml)
+#### API (/models/modelroute/api.yaml)
 Example API:
 ```
 count: true
@@ -173,6 +176,103 @@ profile:
   method: getCurrentUser
   auth:
     - role: ROLES.USER
+```
+
+#### Extending API Methods (/models/modelroute/methods.yaml)
+The canonical ``User`` model uses custom methods which are mapped to routes in the example above.
+```
+import User from "./";
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+
+const createToken = (user, secret, expiresIn='2d') => {
+  return jwt.sign({ email: user.email, _id: user._id }, secret, { expiresIn })
+}
+
+
+const methods = {
+  getCurrentUser: async (req, res, next) => {
+    const user = req.user
+    if (!user) {
+      return null
+    } else {
+      // const user = await User.findOne({email: user.email}, {password: false, favorites: false})
+      return res.send({user})
+    }
+  },
+
+  verifyEmail: async (req, res, next) => {
+    const user = await User.findById(req.user.id, '-password').lean()
+    if (!user) {
+      return res.status(401).send({errors: {email: {message: 'Error refreshing token.'}}})
+    }
+  },
+
+
+  refreshToken: async (req, res, next) => {
+    const user = await User.findById(req.user.id, '-password').lean()
+    if (!user) {
+      return res.status(401).send({errors: {email: {message: 'Error refreshing token.'}}})
+    }
+
+    return res.status(200).send({ token: createToken(user, process.env.SECRET) })
+  },
+
+  signinUser: async (req, res, next) => {
+    const {email, password} = req.body
+    // console.log('signing in', email)
+    let user = await User.findOne({email}).lean()
+    // console.log('signing in user:', user)
+    if (!user) {
+      return res.status(401).send({errors: {email: {message: 'Email not found.'}}})
+    }
+    const isValidPassword = await bcrypt.compare(password, user.password)
+    if (!isValidPassword) {
+      return res.status(401).send({errors: {password: {message: 'Invalid password.'}}})
+    }
+
+    delete user.password
+    // console.log('token for:', user)
+
+    const token = createToken(user, process.env.SECRET)
+
+    return res.status(200).send({...user, token})
+  },
+
+  signupUser: async (req, res, next) => {
+    try {
+      console.log('signup')
+      // console.log('USER:', email, password)
+      const {username, email, password} = req.body
+
+      const user = await User.findOne({ email }).lean()
+      const user2 = await User.findOne({ username }).lean()
+
+      if (user) {
+        return res.status(400).send({errors: {email: {message: 'Email already registered.'}}})
+      }
+
+      if (user2) {
+        return res.status(400).send({errors: {username: {message: 'Username already exists.'}}})
+      }
+
+      let newUser = await new User({
+        username,
+        email,
+        password
+      }).save()
+      newUser=newUser.toObject()
+      const token = createToken(newUser, process.env.SECRET)
+
+      return res.status(200).send({...newUser, token})
+    } catch(err) {
+      console.log('err:', err)
+      return res.status(400).json(err)
+    }
+  }
+};
+
+export default methods
 ```
 
 ### Querying the API
@@ -459,15 +559,14 @@ Defines constants which your API and schema have access to, like roles and enums
 ### Client
 fabo currently was built with svelte kit in mind, but a general schema to integrate with any client side framework in on the roadmap.
 
-
 ## Securing your server
 - Per ip rate limiting with AWS WAF: https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html
 
 ## Todo
 ### planned
 - Easier image uploads
-- Finish scaffolding cli
-- Make docs page
+- fabo config file for configuring different client frameworks
+- Page for the docs
 - Tests
 
 ### maybe?
