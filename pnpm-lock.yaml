@@ -67,7 +67,7 @@ importers:
       jsonwebtoken: ^8.5.1
       mongodb-client-encryption: ^1.2.6
       mongoose: ^5.13.3
-      mongoose-validator: ^2.1.0
+      mongoose-validator: github:fpaboim/mongoose-validator
       netjet: ^1.4.0
       passport: ^0.4.1
       passport-jwt: ^4.0.0
@@ -83,7 +83,7 @@ importers:
       jsonwebtoken: 8.5.1
       mongodb-client-encryption: 1.2.6
       mongoose: 5.13.3_mongodb-client-encryption@1.2.6
-      mongoose-validator: 2.1.0
+      mongoose-validator: github.com/fpaboim/mongoose-validator/372483c820934720e7426a27c375276e4137a2ce
       netjet: 1.4.0
       passport: 0.4.1
       passport-jwt: 4.0.0
@@ -4289,7 +4289,7 @@ packages:
       bson: 1.1.6
       denque: 1.5.0
       mongodb-client-encryption: 1.2.6
-      optional-require: 1.0.3
+      optional-require: 1.1.0
       safe-buffer: 5.2.1
     optionalDependencies:
       saslprep: 1.0.3
@@ -4301,13 +4301,6 @@ packages:
       mongoose: '*'
     dependencies:
       mongoose: 5.13.3_mongodb-client-encryption@1.2.6
-    dev: false
-
-  /mongoose-validator/2.1.0:
-    resolution: {integrity: sha512-o1oThcinMdYfuut8ld8iQv4TdEB8W6I/WIKB6lWGtHzHmxa/SRnmXg2FeLL2CO+b9vzRitVubrFTeMOr9bJ2cA==}
-    dependencies:
-      is: 3.3.0
-      validator: 10.11.0
     dev: false
 
   /mongoose/5.13.3_mongodb-client-encryption@1.2.6:
@@ -4616,9 +4609,11 @@ packages:
       mimic-fn: 2.1.0
     dev: false
 
-  /optional-require/1.0.3:
-    resolution: {integrity: sha512-RV2Zp2MY2aeYK5G+B/Sps8lW5NHAzE5QClbFP15j+PWmP+T9PxlJXBOOLoSAdgwFvS4t0aMR4vpedMkbHfh0nA==}
+  /optional-require/1.1.0:
+    resolution: {integrity: sha512-5/7ee3eTFg1P+F9usTubuNCLfWRK6DjV0EFHLlbp7MmV5UlWqpWIVSnH6xo4u+fc5WHXaJuvJi6iuYnfDyj6oQ==}
     engines: {node: '>=4'}
+    dependencies:
+      require-at: 1.0.6
     dev: false
 
   /ora/5.4.1:
@@ -5132,6 +5127,11 @@ packages:
     engines: {node: '>=0.10'}
     dev: true
     optional: true
+
+  /require-at/1.0.6:
+    resolution: {integrity: sha512-7i1auJbMUrXEAZCOQ0VNJgmcT2VOKPRl2YGJwgpHpC9CE91Mv4/4UYIUm4chGJaI381ZDq1JUicFii64Hapd8g==}
+    engines: {node: '>=4'}
+    dev: false
 
   /require-directory/2.1.1:
     resolution: {integrity: sha1-jGStX9MNqxyXbiNE/+f3kqam30I=}
@@ -6178,3 +6178,12 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  github.com/fpaboim/mongoose-validator/372483c820934720e7426a27c375276e4137a2ce:
+    resolution: {tarball: https://codeload.github.com/fpaboim/mongoose-validator/tar.gz/372483c820934720e7426a27c375276e4137a2ce}
+    name: mongoose-validator
+    version: 2.1.2
+    dependencies:
+      is: 3.3.0
+      validator: 10.11.0
+    dev: false

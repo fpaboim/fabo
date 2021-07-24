@@ -147,9 +147,9 @@ const methods = {
         {{this.updateone.owner}}: user._id
       }
       {{/if}}
-      const updated = await {{../name}}.updateone(filter, body)
+      const updated = await {{../name}}.updateOne(filter, body)
 
-      return res.status(200).send(updated.toObject())
+      return res.status(200).send(updated)
     } catch(err) {
       console.log('** ERROR **: Unknown error on {{../name}}.updateone', err)
       return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
@@ -173,7 +173,7 @@ const methods = {
         {{this.updatemany.owner}}: user._id
       }
       {{/if}}
-      const updatemany = await {{../name}}.updatemany(filter, body)
+      const updatemany = await {{../name}}.updateMany(filter, body)
 
       return res.status(200).send(updatemany.toObject())
     } catch(err) {
