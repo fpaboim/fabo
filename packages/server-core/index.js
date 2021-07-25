@@ -25,16 +25,14 @@ export function makeHandler(router, services, options) {
       )
     )
 
-    console.log("VERSION:", process.version)
-
     // Create express app and connect to db
     let connection = connectToDB()
-    console.log("Connected!")
     let app = createApp(router, services, options)
     connection = await connection
 
     app = serverlessExpress({app})
     // app = middy(app).use(cors())
+    console.log("Connected!")
 
     return app(...args)
   }

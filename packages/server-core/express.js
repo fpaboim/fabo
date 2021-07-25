@@ -32,7 +32,6 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 const createApp = (router, services, options) => {
-  console.log("CREATE APP", router, services, options)
   if (!options) {
     throw Error("NO SERVER OPTIONS SUPPLIED")
   }
