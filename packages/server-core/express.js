@@ -23,30 +23,30 @@ function initHelmetHeaders(app) {
   app.use(helmet.hidePoweredBy());
 }
 
-const whitelist = [
-  'http://www.myproject.com.br',
-  'https://myproject-front.vercel.app',
-  'http://myproject-front.vercel.app',
-  'http://192.168.111.2:3000',
-];
-
-const corsOptions = {
-  origin: function(origin, callback){
-    let originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-    callback(null, originIsWhitelisted);
-  },
-  credentials: true
-};
-
 var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'https://myproject-front.vercel.app');
+    // res.header('Access-Control-Allow-Origin', 'https://myproject-front.vercel.app');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
 
     next();
 }
 
-const createApp = (router, services) => {
+const createApp = (router, services, options) => {
+  console.log("CREATE APP", options)
+  const whitelist = options.whitelist
+
+  if (!options || !whitelist) {
+    throw Error("NO SERVER CORS WHITELIST SUPPLIED")
+  }
+
+  const corsOptions = {
+    origin: function(origin, callback){
+      let originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+      callback(null, originIsWhitelisted);
+    },
+    credentials: true
+  };
+
   console.log('Initializing express...')
   const app = express()
 

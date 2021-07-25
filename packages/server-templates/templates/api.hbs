@@ -14,10 +14,12 @@ const methods = {
       {{> buildAPI_prePartial this.count}}
 
       let { filter } = aqp(req.query);
-      {{#if this.count.owner}}
+      {{#if this.count.filters}}
       filter = {
         ...filter,
-        {{this.count.owner}}: user._id
+        {{#each this.count.filters}}
+        {{this.field}}: {{this.value}}
+        {{/each}}
       }
       {{/if}}
 
@@ -39,10 +41,12 @@ const methods = {
       {{> buildAPI_prePartial this.delete}}
 
       let { filter } = aqp(req.query);
-      {{#if this.delete.owner}}
+      {{#if this.delete.filters}}
       filter = {
         ...filter,
-        {{this.delete.owner}}: user._id
+        {{#each this.delete.filters}}
+        {{this.field}}: {{this.value}}
+        {{/each}}
       }
       {{/if}}
       const del = await {{../name}}.deleteOne(filter)
@@ -63,10 +67,12 @@ const methods = {
       {{> buildAPI_prePartial this.find}}
 
       let { filter,skip,limit,sort,projection,population } = aqp(req.query);
-      {{#if this.find.owner}}
+      {{#if this.find.filters}}
       filter = {
         ...filter,
-        {{this.find.owner}}: user._id
+        {{#each this.find.filters}}
+        {{this.field}}: {{this.value}}
+        {{/each}}
       }
       {{/if}}
       const found = await {{../name}}
@@ -94,10 +100,12 @@ const methods = {
       {{> buildAPI_prePartial this.findone}}
 
       let { filter,population } = aqp(req.query);
-      {{#if this.findone.owner}}
+      {{#if this.findone.filters}}
       filter = {
         ...filter,
-        {{this.findone.owner}}: user._id
+        {{#each this.findone.filters}}
+        {{this.field}}: {{this.value}}
+        {{/each}}
       }
       {{/if}}
       const found = await {{../name}}.findOne(filter)
@@ -141,10 +149,12 @@ const methods = {
       {{> buildAPI_prePartial this.updateone}}
 
       let { filter } = aqp(req.query);
-      {{#if this.updateone.owner}}
+      {{#if this.updateone.filters}}
       filter = {
         ...filter,
-        {{this.updateone.owner}}: user._id
+        {{#each this.updateone.filters}}
+        {{this.field}}: {{this.value}}
+        {{/each}}
       }
       {{/if}}
       const updated = await {{../name}}.updateOne(filter, body)
@@ -167,10 +177,12 @@ const methods = {
       {{> buildAPI_prePartial this.updatemany}}
 
       let { filter } = aqp(req.query);
-      {{#if this.updatemany.owner}}
+      {{#if this.updatemany.filters}}
       filter = {
         ...filter,
-        {{this.updatemany.owner}}: user._id
+        {{#each this.updatemany.filters}}
+        {{this.field}}: {{this.value}}
+        {{/each}}
       }
       {{/if}}
       const updatemany = await {{../name}}.updateMany(filter, body)

@@ -1,4 +1,6 @@
-import {extend} from  'mongoose-validator'
+import pkg from  'mongoose-validator'
+
+const {extend} = pkg
 
 try {
   extend(
