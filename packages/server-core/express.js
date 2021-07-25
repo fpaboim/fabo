@@ -32,10 +32,14 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 const createApp = (router, services, options) => {
-  console.log("CREATE APP", options)
+  console.log("CREATE APP", router, services, options)
+  if (!options) {
+    throw Error("NO SERVER OPTIONS SUPPLIED")
+  }
+
   const whitelist = options.whitelist
 
-  if (!options || !whitelist) {
+  if (!whitelist) {
     throw Error("NO SERVER CORS WHITELIST SUPPLIED")
   }
 

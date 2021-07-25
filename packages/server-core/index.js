@@ -14,7 +14,7 @@ dotenv.config()
 
 // funcs
 ///////////////////////////////////////////////////////////////////////////////
-export function makeHandler(router, services) {
+export function makeHandler(router, services, options) {
   return async function startApp(...args) {
     console.log("\n")
     console.log(
@@ -30,7 +30,7 @@ export function makeHandler(router, services) {
     // Create express app and connect to db
     let connection = connectToDB()
     console.log("Connected!")
-    let app = createApp(router, services)
+    let app = createApp(router, services, options)
     connection = await connection
 
     app = serverlessExpress({app})
