@@ -211,6 +211,25 @@ body = {
 {{/each}}
 }
 {{/ifCond}}
+{{#ifCond @key '==' 'setFields'}}
+body = {
+  ...body,
+{{#each this}}
+{{#each this}}
+  {{@key}}: {{this}},
+{{/each}}
+{{/each}}
+}
+{{/ifCond}}
+{{#ifCond @key '==' 'denyFields'}}
+const bodyKeys = Object.keys(body)
+{{#each this}}
+if (bodyKeys.includes("{{this}}")) {
+  delete body["{{this}}"]
+}
+{{/each}}
+{{/ifCond}}
+
 {{/each}}
 {{/if}}`
 )
