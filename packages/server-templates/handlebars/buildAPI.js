@@ -203,6 +203,14 @@ if (!(
 Handlebars.registerPartial('buildAPI_prePartial', `
 {{#if (buildAPI_hasVal this.pre)}}
 {{#each this.pre}}
+{{#ifCond @key '==' 'denyFields'}}
+const bodyKeys = Object.keys(body)
+{{#each this}}
+if (bodyKeys.includes("{{this}}")) {
+  delete body["{{this}}"]
+}
+{{/each}}
+{{/ifCond}}
 {{#ifCond @key '==' 'setField'}}
 body = {
   ...body,
@@ -221,15 +229,6 @@ body = {
 {{/each}}
 }
 {{/ifCond}}
-{{#ifCond @key '==' 'denyFields'}}
-const bodyKeys = Object.keys(body)
-{{#each this}}
-if (bodyKeys.includes("{{this}}")) {
-  delete body["{{this}}"]
-}
-{{/each}}
-{{/ifCond}}
-
 {{/each}}
 {{/if}}`
 )

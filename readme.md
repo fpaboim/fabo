@@ -567,6 +567,7 @@ fabo currently was built with svelte kit in mind, but a general schema to integr
 - Easier image uploads
 - fabo config file for configuring different client frameworks
 - Page for the docs
+- Validate query parameters
 - Tests
 
 ### maybe?
