@@ -1,3 +1,4 @@
+import rimraf from 'rimraf'
 import compileSchemas from './handlebars/buildSchemas.js'
 import compileAPIs from './handlebars/buildAPI.js'
 import registerGlobalHelpers from './handlebars/globalHelpers.js'
@@ -12,6 +13,8 @@ const compile = () => {
   console.log("Scaffolding...")
   const serverBase = './server/'
   const clientBase = './client/src/lib/'
+  rimraf.sync(serverBase+'.fabo/');
+  rimraf.sync(clientBase+'.fabo/');
   scaffoldProject(serverBase, clientBase)
 
   console.log("Reading Configs... ")

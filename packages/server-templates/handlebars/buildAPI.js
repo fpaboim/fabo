@@ -175,6 +175,26 @@ const hasDefaultEntries = api => {
   return foundDefaultEntries
 }
 
+Handlebars.registerHelper('buildAPI_isNumQuery', function(val, options) {
+  const arr = ['skip', 'limit']
+  if (!arr) {
+    return options.inverse(this);
+  }
+  if (arr.includes(val)) {
+    return options.fn(this)
+  }
+  options.inverse(this);
+});
+
+Handlebars.registerHelper('buildAPI_mergeSettings', function(settings, context) {
+  return {
+    query: {
+      ...settings,
+      ...context.query
+    },
+  }
+});
+
 // partials
 ///////////////////////////////////////////////////////////////////////////////
 Handlebars.registerPartial('buildAPI_authPartial', `
@@ -200,17 +220,93 @@ if (!(
 )
 
 
-Handlebars.registerPartial('buildAPI_prePartial', `
+
+Handlebars.registerPartial('buildAPI_preQuery', `
+{{#if settings.query}}
+{{#each settings.query}}
+{{#ifCond @key '==' 'filter'}}
+{{#if this.allow}}
+const allowedVals = allowQueryBase.concat({{json this.allow}})
+for (let key in query) {
+  if (!allowedVals.includes(key)) {
+    return res.status(400).send({errors: {auth: {message: 'Unauthorized key:'+key}}})
+  }
+}
+{{/if}}
+{{#if this.deny}}
+const deniedVals = {{json this.deny}}
+for (let key in query) {
+  if (deniedVals.includes(key)) {
+    return res.status(400).send({errors: {auth: {message: 'Unauthorized key:'+key}}})
+  }
+}
+{{/if}}
+{{#if this.required}}
+const requiredVals = {{json this.required}}
+for (let key of requiredVals) {
+  if (!Object.keys(query).includes(key)) {
+    return res.status(400).send({errors: {auth: {message: 'Required key:'+key}}})
+  }
+}
+{{/if}}
+{{/ifCond}}
+{{#buildAPI_isNumQuery @key}}
+{{#if this.min}}
+if (query['{{@key}}'] && query['{{@key}}'] < {{this.min}}) {
+  return res.status(400).send({errors: {auth: {message: 'Query param:{{@key}} below minimum'}}})
+}
+{{/if}}
+{{#if this.max}}
+if (query['{{@key}}'] && query['{{@key}}'] > {{this.max}}) {
+  return res.status(400).send({errors: {auth: {message: 'Query param:{{@key}} above maximum'}}})
+}
+{{/if}}
+{{/buildAPI_isNumQuery}}
+{{/each}}
+{{/if}}`
+)
+
+Handlebars.registerPartial('buildAPI_preAllow', `
+{{#if (buildAPI_hasVal this.pre)}}
+{{#each this.pre}}
+{{#ifCond @key '==' 'allowFields'}}
+const allowKeys = [
+{{#each this}}
+  "{{this}}",
+{{/each}}
+]
+for (let key in bodyKeys) {
+  if (!allowKeys.includes(key)) {
+    delete body[key]
+  }
+}
+{{/ifCond}}
+{{/each}}
+{{/if}}`
+)
+
+Handlebars.registerPartial('buildAPI_preDeny', `
 {{#if (buildAPI_hasVal this.pre)}}
 {{#each this.pre}}
 {{#ifCond @key '==' 'denyFields'}}
-const bodyKeys = Object.keys(body)
+const denyKeys = [
 {{#each this}}
-if (bodyKeys.includes("{{this}}")) {
-  delete body["{{this}}"]
-}
+  "{{this}}",
 {{/each}}
+]
+for (let key in bodyKeys) {
+  if (denyKeys.includes(key)) {
+    delete body[key]
+  }
+}
 {{/ifCond}}
+{{/each}}
+{{/if}}`
+)
+
+Handlebars.registerPartial('buildAPI_preSet', `
+{{#if (buildAPI_hasVal this.pre)}}
+{{#each this.pre}}
 {{#ifCond @key '==' 'setField'}}
 body = {
   ...body,
@@ -242,9 +338,18 @@ export default function compileAPIs(apis, clientBase, serverBase) {
     let models = []
     let controllers = []
     for (let modelName in apis) {
-      models.push({name: modelName})
-      let api = apis[modelName]
-      // console.log('modelName:', modelName)
+      let api = {}
+      let querysettings = {}
+      if (apis[modelName]['endpoints']) {
+        models.push({name: modelName})
+
+        api = apis[modelName]['endpoints']
+        if (apis[modelName]['endpoints']) {
+          querysettings = apis[modelName]['query']
+        }
+      } else {
+        continue
+      }
 
       for (let key of Object.keys(api)) {
         let obj = {
@@ -276,12 +381,12 @@ export default function compileAPIs(apis, clientBase, serverBase) {
       // console.log("NAME:", modelName, api)
       if (Object.keys(api).length > 0) {
         let file_loc = new URL('../templates/api.hbs', import.meta.url)
-        const mongooseTemplate = fs.readFileSync(file_loc, 'utf8');
+        const apiTemplate = fs.readFileSync(file_loc, 'utf8');
         createDirIfNone(serverBase+'.fabo/models/'+modelName)
 
         if (hasDefaultEntries(api)) {
-          const buildMongoose = Handlebars.compile(mongooseTemplate, { noEscape: true });
-          const mongooseOut = buildMongoose({name: modelName, apiEntries: api})
+          const compiledApiTpl = Handlebars.compile(apiTemplate, { noEscape: true });
+          const mongooseOut = compiledApiTpl({name: modelName, apiEntries: api, querySettings: querysettings})
           fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/api.js', mongooseOut);
           controllers.push({
             name: modelName,

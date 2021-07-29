@@ -564,11 +564,13 @@ fabo currently was built with svelte kit in mind, but a general schema to integr
 
 ## Todo
 ### planned
-- Easier image uploads
-- fabo config file for configuring different client frameworks
-- Page for the docs
-- Validate query parameters
-- Tests
+- [x] Easier image uploads
+- [ ] fabo config file for configuring different client frameworks
+- [ ] Page for the docs
+- [ ] Validate query parameters
+- [ ] Alias endpoints with different config
+- [ ] Global query limits config
+- [ ] Tests
 
 ### maybe?
 - Svelte autoforms

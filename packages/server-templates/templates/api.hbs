@@ -2,6 +2,17 @@ import C from "../../shared/constants.js"
 import {{name}} from '../{{name}}'
 import aqp from 'api-query-params';
 
+const allowQueryBase = ['filter','skip','limit','sort','projection','population']
+{{!-- {{#each querySettings}}
+{{#if this}}
+{{@key}}-{{this}}
+{{/if}}
+{{/each}}
+
+{{#hasKey querySettings 'sort'}}
+hasfilter
+{{/hasKey}}
+ --}}
 // methods
 ///////////////////////////////////////////////////////////////////////////////
 const methods = {
@@ -10,10 +21,10 @@ const methods = {
   count: async (req, res, next) => {
     try {
       const user = req.user
+      let  query = req.query
       {{> buildAPI_authPartial this.count}}
-      {{> buildAPI_prePartial this.count}}
-
-      let { filter } = aqp(req.query);
+      {{> buildAPI_preQuery this.count}}
+      let { filter } = aqp(query);
       {{#if this.count.filters}}
       filter = {
         ...filter,
@@ -37,10 +48,10 @@ const methods = {
   delete: async (req, res, next) => {
     try {
       const user = req.user
+      let  query = req.query
       {{> buildAPI_authPartial this.delete}}
-      {{> buildAPI_prePartial this.delete}}
-
-      let { filter } = aqp(req.query);
+      {{> buildAPI_preQuery this.delete}}
+      let { filter } = aqp(query);
       {{#if this.delete.filters}}
       filter = {
         ...filter,
@@ -63,10 +74,10 @@ const methods = {
   find: async (req, res, next) => {
     try {
       const user = req.user
+      let  query = req.query
       {{> buildAPI_authPartial this.find}}
-      {{> buildAPI_prePartial this.find}}
-
-      let { filter,skip,limit,sort,projection,population } = aqp(req.query);
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.find)}}
+      let { filter,skip,limit,sort,projection,population } = aqp(query);
       {{#if this.find.filters}}
       filter = {
         ...filter,
@@ -77,11 +88,21 @@ const methods = {
       {{/if}}
       const found = await {{../name}}
         .find(filter)
+        {{#hasKey ../querySettings 'skip'}}
         .skip(skip)
+        {{/hasKey}}
+        {{#hasKey ../querySettings 'limit'}}
         .limit(limit)
+        {{/hasKey}}
+        {{#hasKey ../querySettings 'sort'}}
         .sort(sort)
-        .select(projection)
+        {{/hasKey}}
+        {{#hasKey ../querySettings 'populate'}}
         .populate(population)
+        {{/hasKey}}
+        {{#hasKey ../querySettings 'select'}}
+        .select(projection)
+        {{/hasKey}}
         .lean()
 
       return res.status(200).send(found)
@@ -95,11 +116,12 @@ const methods = {
   {{#if this.findone}}
   findone: async (req, res, next) => {
     try {
-      const user = req.user
+      const user    = req.user
+      let query     = req.query
+      let queryKeys = Object.keys(query)
       {{> buildAPI_authPartial this.findone}}
-      {{> buildAPI_prePartial this.findone}}
-
-      let { filter,population } = aqp(req.query);
+      {{> buildAPI_preQuery this.find}}
+      let { filter,projection,population } = aqp(query);
       {{#if this.findone.filters}}
       filter = {
         ...filter,
@@ -109,7 +131,13 @@ const methods = {
       }
       {{/if}}
       const found = await {{../name}}.findOne(filter)
-                                     .populate(population).lean()
+                                     {{#hasKey ../querySettings 'populate'}}
+                                     .populate(population)
+                                     {{/hasKey}}
+                                     {{#hasKey ../querySettings 'select'}}
+                                     .select(projection)
+                                     {{/hasKey}}
+                                     .lean()
 
       if (found == undefined) {
         return res.status(400).send({errors: {unknown: {message: 'Not found.'}}})
@@ -125,10 +153,13 @@ const methods = {
   {{#if this.create}}
   create: async (req, res, next) => {
     try {
-      const user = req.user
-      let   body = req.body
+      const user    = req.user
+      let   body    = req.body
+      let  bodyKeys = Object.keys(body)
       {{> buildAPI_authPartial this.create}}
-      {{> buildAPI_prePartial this.create}}
+      {{> buildAPI_preAllow this.create}}
+      {{> buildAPI_preDeny this.create}}
+      {{> buildAPI_preSet this.create}}
 
       const created = await new {{../name}}(body).save()
 
@@ -143,10 +174,13 @@ const methods = {
   {{#if this.updateone}}
   updateone: async (req, res, next) => {
     try {
-      const user = req.user
-      let   body = req.body
+      const user    = req.user
+      let   body    = req.body
+      let  bodyKeys = Object.keys(body)
       {{> buildAPI_authPartial this.updateone}}
-      {{> buildAPI_prePartial this.updateone}}
+      {{> buildAPI_preAllow this.updateone}}
+      {{> buildAPI_preDeny this.updateone}}
+      {{> buildAPI_preSet this.updateone}}
 
       let { filter } = aqp(req.query);
       {{#if this.updateone.filters}}
@@ -170,11 +204,14 @@ const methods = {
   {{#if this.updatemany}}
   updatemany: async (req, res, next) => {
     try {
-      const user = req.user
-      let   body = req.body
+      const user    = req.user
+      let   body    = req.body
+      let  bodyKeys = Object.keys(body)
 
       {{> buildAPI_authPartial this.updatemany}}
-      {{> buildAPI_prePartial this.updatemany}}
+      {{> buildAPI_preAllow this.updatemany}}
+      {{> buildAPI_preDeny this.updatemany}}
+      {{> buildAPI_preSet this.updatemany}}
 
       let { filter } = aqp(req.query);
       {{#if this.updatemany.filters}}
