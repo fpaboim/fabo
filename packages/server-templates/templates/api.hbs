@@ -2,7 +2,7 @@ import C from "../../shared/constants.js"
 import {{name}} from '../{{name}}'
 import aqp from 'api-query-params';
 
-const allowQueryBase = ['filter','skip','limit','sort','projection','population']
+const allowQueryBase = ['filter','skip','limit','sort','fields','populate']
 {{!-- {{#each querySettings}}
 {{#if this}}
 {{@key}}-{{this}}
@@ -100,7 +100,7 @@ const methods = {
         {{#hasKey ../querySettings 'populate'}}
         .populate(population)
         {{/hasKey}}
-        {{#hasKey ../querySettings 'select'}}
+        {{#hasKey ../querySettings 'fields'}}
         .select(projection)
         {{/hasKey}}
         .lean()
@@ -134,7 +134,7 @@ const methods = {
                                      {{#hasKey ../querySettings 'populate'}}
                                      .populate(population)
                                      {{/hasKey}}
-                                     {{#hasKey ../querySettings 'select'}}
+                                     {{#hasKey ../querySettings 'fields'}}
                                      .select(projection)
                                      {{/hasKey}}
                                      .lean()

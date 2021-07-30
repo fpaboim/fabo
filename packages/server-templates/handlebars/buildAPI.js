@@ -273,6 +273,13 @@ if (!query['{{@key}}']) {
 }
 {{/if}}
 {{/buildAPI_isNumQuery}}
+{{#ifCond @key '==' 'sort'}}
+{{#if this.default}}
+if (!query['{{@key}}']) {
+  query['{{@key}}'] = {{json this.default}}
+}
+{{/if}}
+{{/ifCond}}
 {{/each}}
 {{/if}}`
 )

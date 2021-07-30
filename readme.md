@@ -183,7 +183,7 @@ query:
     min: 1
   sort:
     default: -created
-  select: false
+  fields: false
   populate: false
 
 
