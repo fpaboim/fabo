@@ -23,7 +23,7 @@ const methods = {
       const user = req.user
       let  query = req.query
       {{> buildAPI_authPartial this.count}}
-      {{> buildAPI_preQuery this.count}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.count)}}
       let { filter } = aqp(query);
       {{#if this.count.filters}}
       filter = {
@@ -50,7 +50,7 @@ const methods = {
       const user = req.user
       let  query = req.query
       {{> buildAPI_authPartial this.delete}}
-      {{> buildAPI_preQuery this.delete}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.delete)}}
       let { filter } = aqp(query);
       {{#if this.delete.filters}}
       filter = {
@@ -120,7 +120,7 @@ const methods = {
       let query     = req.query
       let queryKeys = Object.keys(query)
       {{> buildAPI_authPartial this.findone}}
-      {{> buildAPI_preQuery this.find}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.findone)}}
       let { filter,projection,population } = aqp(query);
       {{#if this.findone.filters}}
       filter = {
@@ -177,20 +177,14 @@ const methods = {
       const user    = req.user
       let   body    = req.body
       let  bodyKeys = Object.keys(body)
+      let query     = req.query
+      let queryKeys = Object.keys(query)
       {{> buildAPI_authPartial this.updateone}}
       {{> buildAPI_preAllow this.updateone}}
       {{> buildAPI_preDeny this.updateone}}
       {{> buildAPI_preSet this.updateone}}
-
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.updateone)}}
       let { filter } = aqp(req.query);
-      {{#if this.updateone.filters}}
-      filter = {
-        ...filter,
-        {{#each this.updateone.filters}}
-        {{this.field}}: {{this.value}}
-        {{/each}}
-      }
-      {{/if}}
       const updated = await {{../name}}.updateOne(filter, body)
 
       return res.status(200).send(updated)

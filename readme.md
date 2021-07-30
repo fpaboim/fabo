@@ -1,21 +1,21 @@
 <h1 align="center">fabo serverless framework</h1>
 <h3 align="center">Build scalable serverless APIs in minutes, not days.</h3>
 
-Easy backend serverless yaml based CMS and REST API generator, which aims to replace a lot of the boilerplate which goes along with creating jamstack mobile/web apps without having to give up on your code editor. Serverless is easy when fabo does the heavy lifting! 🏋️
-
+Easy backend serverless yaml based REST API generator, which aims to replace a lot of the boilerplate which goes along with creating jamstack mobile/web apps.
 * This project is in ALPHA, documentation is a work in progress, *caveat emptor*
 
 ![raptors, beware!](./assets/raptors.jpg "The raptor fences are down")
 
 ## Introduction
-fabo is a small serverless framework for auto generating rest api's on top of a yaml configurations. It was made out of necessity of reducing boilerplate and being able to provider sensible defaults for scaffolding serverless + mongodb projects.
+fabo is a small serverless framework for auto generating rest api's on top of a yaml configurations. It was made out of necessity of reducing boilerplate and being able to provide sensible defaults for scaffolding serverless + mongodb projects.
 
 ## Features
 - [x] Serverless
 - [x] Easy to eject: it's just serverless + express + mongodb
 - [x] Automatic schema generation based on yaml interface
 - [x] Automatic API generation based on yaml interface
-- [x] Easy client side and server-side validation
+- [x] Easy query building and validation
+- [x] Easy client side and server-side schema validation
 - [x] Commandline client for scaffolding
 
 ## Instructions
@@ -138,44 +138,77 @@ export default hooks
 #### API (/models/modelroute/api.yaml)
 Example API:
 ```
-count: true
-delete:
-  auth:
-    - role: ROLES.ADMIN
-find: true
-findone: true
-create:
-  login: true
-  middlewares: [apiLimiter]
-  pre:
-    setField:
-      author: user.username
-updateone:
-  login: true
-  auth:
-    - role: ROLES.USER
-      owner: author
-    - role: ROLES.EDITOR
+endpoints:
+  count: true
+  delete:
+    auth:
+      - role: C.ROLES.ADMIN
+  find:
+    query:
+      filter:
+        allow: [build]
+        required: [build]
+  findone: true
+  create:
+    login: true
+    pre:
+      allowFields: [body, build]
+      setFields:
+        - author: user.username
+        - edited: Date.now()
+        - created: Date.now()
+  updateone:
+    login: true
+    auth:
+      - role: C.ROLES.USER
+      - role: C.ROLES.EDITOR
+    query:
+      filter:
+        setFields:
+          - field: author
+            value: user.username
+    pre:
+      allowFields: [body]
+      setFields:
+        - edited: Date.now()
+query:
+  filter:
+    required: [build]
+  skip: true
+  limit:
+    default: 25
+    max: 25
+    min: 1
+  sort:
+    default: -created
+  select: false
+  populate: false
+
+
 ```
 
 Example custom API:
 ```
-auth/login:
-  method: signinUser
-  middlewares: [apiLimiter]
-auth/signup:
-  method: signupUser
-  middlewares: [apiLimiter]
-auth/refreshtoken:
-  method: refreshToken
-  middlewares: [apiLimiter]
-auth/verifyEmail/:userid/:token:
-  method: verifyEmail
-  middlewares: [apiLimiter]
-profile:
-  method: getCurrentUser
-  auth:
-    - role: ROLES.USER
+endpoints:
+  auth/login:
+    method: signinUser
+    middlewares: [apiLimiter]
+  auth/signup:
+    method: signupUser
+    middlewares: [apiLimiter]
+  auth/refreshtoken:
+    method: refreshToken
+    middlewares: [apiLimiter]
+  auth/verify:
+    method: verifyEmail
+    middlewares: [apiLimiter]
+  profile:
+    method: getCurrentUser
+    auth:
+      - role: C.ROLES.USER
+  auth/get:
+    method: getUser
+    middlewares: [apiLimiter]
 ```
 
 #### Extending API Methods (/models/modelroute/methods.yaml)
@@ -567,7 +600,7 @@ fabo currently was built with svelte kit in mind, but a general schema to integr
 - [x] Easier image uploads
 - [ ] fabo config file for configuring different client frameworks
 - [ ] Page for the docs
-- [ ] Validate query parameters
+- [x] Validate query parameters
 - [ ] Alias endpoints with different config
 - [ ] Global query limits config
 - [ ] Tests
