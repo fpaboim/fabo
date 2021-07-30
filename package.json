@@ -1,6 +1,6 @@
 {
   "name": "fabo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Serverless Express/MongoDB api generator - beta",
   "main": "./index.js",
   "type": "module",
@@ -11,6 +11,7 @@
     "@babel/preset-env": "^7.14.8",
     "@changesets/cli": "^2.16.0",
     "concurrently": "^6.2.0",
+    "package-preview": "^4.0.0",
     "wait-on": "^6.0.0"
   },
   "repository": {
@@ -22,7 +23,7 @@
     "fabo": "./packages/cli/bin/fabo.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "preview && node tests/test.js"
   },
   "engines": {
     "node": ">=14"
