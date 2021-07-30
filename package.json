@@ -1,7 +1,7 @@
 {
   "name": "fabo",
-  "version": "0.1.6",
-  "description": "svelte express mongo (serverless) stack - pre-alpha!",
+  "version": "1.0.0",
+  "description": "Serverless Express/MongoDB api generator - beta",
   "main": "./index.js",
   "type": "module",
   "devDependencies": {
