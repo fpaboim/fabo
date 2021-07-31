@@ -588,6 +588,9 @@ aws s3api put-bucket-cors --bucket my-bucket --cors-configuration '{"CORSRules":
 - ``pnpm i``
 - ``pnpm run dev``
 
+### Configuring Cache w/ S3 and cloudfront
+https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-s3-amazon-cloudfront-a-match-made-in-the-cloud/
+
 ### Constants (models/constants.js)
 Defines constants which your API and schema have access to, like roles and enums.
 
