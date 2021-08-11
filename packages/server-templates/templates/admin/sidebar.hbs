@@ -1,0 +1,11 @@
+<div class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+  <div>fabojs</div>
+  <div class="flex flex-col justify-center items-center">
+    Models
+  </div>
+  {{#each this.schemas}}
+  <ul>
+    <li><a href="/models/{{@key}}">{{@key}}</a></li>
+  </ul>
+  {{/each}}
+</div>

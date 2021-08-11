@@ -12,6 +12,7 @@ const copy = promisify(ncp);
 
 const TEMPLATES = {
   Svelte: 'svelte-starter',
+  'Barebones w/ admin': 'barebones-admin',
   Barebones: 'barebones'
 }
 

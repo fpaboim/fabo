@@ -1,0 +1,58 @@
+<script>
+  import {onMount} from 'svelte'
+  import {post} from '$lib/req_utils'
+
+  export const ssr = false
+  export const prerender = false
+
+  export let datas = []
+  onMount(async () => {
+    datas = await post('/{{toLowerCase model}}/find')
+  })
+</script>
+
+<div class="overflow-x-auto">
+  <table class="table w-full">
+    <thead>
+      <tr>
+        <th>
+          <label>
+            <input type="checkbox" class="checkbox">
+          </label>
+        </th>
+        {{#each schema.schema}}
+        <th>{{@key}}</th>
+        {{/each}}
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each datas as data}
+      <tr>
+        <th>
+          <label>
+            <input type="checkbox" class="checkbox">
+          </label>
+        </th>
+        {{#each schema.schema}}
+        <td>{data['{{@key}}']}</td>
+        {{/each}}
+        <th>
+          <button class="btn btn-ghost btn-xs">edit</button>
+        </th>
+      </tr>
+      {/each}
+
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th></th>
+        {{#each schema.schema}}
+        <th>{{@key}}</th>
+        {{/each}}
+        <th></th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
