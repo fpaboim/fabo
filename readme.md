@@ -600,6 +600,12 @@ fabo currently was built with svelte kit in mind, but a general schema to integr
 ## Securing your server
 - Per ip rate limiting with AWS WAF: https://docs.aws.amazon.com/waf/latest/developerguide/how-aws-waf-works.html
 
+## WIP
+### Admin
+- [x] View db fields
+- [ ] Delete db entries
+- [ ] Update db fields
+
 ## Todo
 ### planned
 - [ ] Admin
