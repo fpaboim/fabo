@@ -574,7 +574,7 @@ You can specify how query parameter values are casted by passing an object.
 - Install aws cli client [here](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 - Create S3 bucket for storing files:
 ```
-aws s3api create-bucket --bucket my-bucket --region us-east-1
+aws s3api create-bucket --bucket my-bucket --region us-west-2 --create-bucket-configuration LocationConstraint=us-west-2
 ```
 - Configure bucket:
 ```
