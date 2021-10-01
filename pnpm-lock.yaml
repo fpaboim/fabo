@@ -92,16 +92,20 @@ importers:
 
   packages/server-templates:
     specifiers:
+      execa: ^5.1.1
       express-rate-limit: ^5.3.0
       fs-extra: ^10.0.0
       handlebars: ^4.7.7
       js-yaml: ^4.1.0
+      ncp: ^2.0.0
       rimraf: ^3.0.2
     dependencies:
+      execa: 5.1.1
       express-rate-limit: 5.3.0
       fs-extra: 10.0.0
       handlebars: 4.7.7
       js-yaml: 4.1.0
+      ncp: 2.0.0
       rimraf: 3.0.2
 
 packages:
@@ -2132,6 +2136,7 @@ packages:
   /chokidar/3.5.2:
     resolution: {integrity: sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==}
     engines: {node: '>= 8.10.0'}
+    requiresBuild: true
     dependencies:
       anymatch: 3.1.2
       braces: 3.0.2
