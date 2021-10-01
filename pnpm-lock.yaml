@@ -9,6 +9,9 @@ importers:
       '@babel/node': ^7.14.7
       '@babel/preset-env': ^7.14.8
       '@changesets/cli': ^2.16.0
+      '@fabo/cli': workspace:*
+      '@fabo/server-core': workspace:*
+      '@fabo/server-templates': workspace:*
       chalk: ^4.1.1
       concurrently: ^6.2.0
       express-rate-limit: ^5.3.0
@@ -23,6 +26,9 @@ importers:
       '@babel/node': 7.14.7_@babel+core@7.14.8
       '@babel/preset-env': 7.14.8_@babel+core@7.14.8
       '@changesets/cli': 2.16.0
+      '@fabo/cli': link:packages/cli
+      '@fabo/server-core': link:packages/server-core
+      '@fabo/server-templates': link:packages/server-templates
       concurrently: 6.2.0
       package-preview: 4.0.0
       wait-on: 6.0.0

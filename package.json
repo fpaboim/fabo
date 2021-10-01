@@ -1,6 +1,6 @@
 {
   "name": "fabo",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Serverless Express/MongoDB api generator - beta",
   "main": "./index.js",
   "type": "module",
@@ -8,6 +8,9 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@fabo/cli": "workspace:*",
+    "@fabo/server-core": "workspace:*",
+    "@fabo/server-templates": "workspace:*",
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.14.8",
     "@babel/node": "^7.14.7",
