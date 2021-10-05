@@ -1,10 +1,11 @@
 {
-  "name": "@fabo/cli",
+  "name": "@fpaboim/cli",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fpaboim/fabo.git/.fabo/cli"
+    "url": "git+https://github.com/fpaboim/fabo.git",
+    "directory": "packages/fabo"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "fabo framework creation cli",
   "main": "src/cli.js",
@@ -13,6 +14,9 @@
   },
   "scripts": {
     "start": "babel-node ./src/cli.js"
+  },
+  "bin": {
+    "fabo": "./src/cli.js"
   },
   "keywords": [
     "cli",
@@ -32,13 +36,16 @@
     "execa": "^5.1.1",
     "inquirer": "^8.1.2",
     "listr": "^0.14.3",
-    "ncp": "^2.0.0"
+    "ncp": "^2.0.0",
+    "rimraf": "^3.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.14.8",
     "@babel/node": "^7.14.7",
     "@babel/preset-env": "^7.14.8",
+    "@fpaboim/server-core": "workspace:*",
+    "@fpaboim/server-templates": "workspace:*",
     "nodemon": "^2.0.12"
   }
 }

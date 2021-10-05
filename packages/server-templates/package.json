@@ -1,10 +1,10 @@
 {
-  "name": "@fabo/server-templates",
+  "name": "@fpaboim/server-templates",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fpaboim/fabo.git/.fabo/server-templates"
+    "url": "git+https://github.com/fpaboim/fabo.git/.fabo"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "templates",
   "main": "index.js",
   "type": "module",

@@ -9,15 +9,11 @@ importers:
       '@babel/node': ^7.14.7
       '@babel/preset-env': ^7.14.8
       '@changesets/cli': ^2.16.0
-      '@fabo/cli': workspace:*
-      '@fabo/server-core': workspace:*
-      '@fabo/server-templates': workspace:*
+      '@fpaboim/fabo': workspace:*
       chalk: ^4.1.1
-      concurrently: ^6.2.0
       express-rate-limit: ^5.3.0
-      package-preview: ^4.0.0
-      wait-on: ^6.0.0
     dependencies:
+      '@fpaboim/fabo': link:packages/fabo
       chalk: 4.1.1
       express-rate-limit: 5.3.0
     devDependencies:
@@ -26,12 +22,6 @@ importers:
       '@babel/node': 7.14.7_@babel+core@7.14.8
       '@babel/preset-env': 7.14.8_@babel+core@7.14.8
       '@changesets/cli': 2.16.0
-      '@fabo/cli': link:packages/cli
-      '@fabo/server-core': link:packages/server-core
-      '@fabo/server-templates': link:packages/server-templates
-      concurrently: 6.2.0
-      package-preview: 4.0.0
-      wait-on: 6.0.0
 
   packages/cli:
     specifiers:
@@ -39,6 +29,8 @@ importers:
       '@babel/core': ^7.14.8
       '@babel/node': ^7.14.7
       '@babel/preset-env': ^7.14.8
+      '@fpaboim/server-core': workspace:*
+      '@fpaboim/server-templates': workspace:*
       arg: ^5.0.0
       chalk: ^4.1.1
       esm: ^3.2.25
@@ -47,6 +39,7 @@ importers:
       listr: ^0.14.3
       ncp: ^2.0.0
       nodemon: ^2.0.12
+      rimraf: ^3.0.2
     dependencies:
       arg: 5.0.0
       chalk: 4.1.1
@@ -55,12 +48,48 @@ importers:
       inquirer: 8.1.2
       listr: 0.14.3
       ncp: 2.0.0
+      rimraf: 3.0.2
     devDependencies:
       '@babel/cli': 7.14.8_@babel+core@7.14.8
       '@babel/core': 7.14.8
       '@babel/node': 7.14.7_@babel+core@7.14.8
       '@babel/preset-env': 7.14.8_@babel+core@7.14.8
+      '@fpaboim/server-core': link:../server-core
+      '@fpaboim/server-templates': link:../server-templates
       nodemon: 2.0.12
+
+  packages/fabo:
+    specifiers:
+      '@babel/cli': ^7.14.8
+      '@babel/core': ^7.14.8
+      '@babel/node': ^7.14.7
+      '@babel/preset-env': ^7.14.8
+      '@changesets/cli': ^2.16.0
+      '@fpaboim/cli': workspace:*
+      '@fpaboim/fabo': workspace:*
+      '@fpaboim/server-core': workspace:*
+      '@fpaboim/server-templates': workspace:*
+      chalk: ^4.1.1
+      concurrently: ^6.2.0
+      express-rate-limit: ^5.3.0
+      package-preview: ^4.0.0
+      wait-on: ^6.0.0
+    dependencies:
+      '@fpaboim/cli': link:../cli
+      '@fpaboim/fabo': 'link:'
+      '@fpaboim/server-core': link:../server-core
+      '@fpaboim/server-templates': link:../server-templates
+      chalk: 4.1.1
+      express-rate-limit: 5.3.0
+    devDependencies:
+      '@babel/cli': 7.14.8_@babel+core@7.14.8
+      '@babel/core': 7.14.8
+      '@babel/node': 7.14.7_@babel+core@7.14.8
+      '@babel/preset-env': 7.14.8_@babel+core@7.14.8
+      '@changesets/cli': 2.16.0
+      concurrently: 6.3.0
+      package-preview: 4.0.0
+      wait-on: 6.0.0
 
   packages/server-core:
     specifiers:
@@ -1438,14 +1467,14 @@ packages:
       prettier: 1.19.1
     dev: true
 
-  /@hapi/hoek/9.2.0:
-    resolution: {integrity: sha512-sqKVVVOe5ivCaXDWivIJYVSaEgdQK9ul7a4Kity5Iw7u9+wBAPbX1RMSnLLmp7O4Vzj0WOWwMAJsTL00xwaNug==}
+  /@hapi/hoek/9.2.1:
+    resolution: {integrity: sha512-gfta+H8aziZsm8pZa0vj04KO6biEiisppNgA1kbJvFrrWu9Vm7eaUEy76DIxsuTaWvti5fkJVhllWc6ZTE+Mdw==}
     dev: true
 
   /@hapi/topo/5.1.0:
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
     dependencies:
-      '@hapi/hoek': 9.2.0
+      '@hapi/hoek': 9.2.1
     dev: true
 
   /@manypkg/find-root/1.1.0:
@@ -1512,7 +1541,7 @@ packages:
     dependencies:
       command-exists: 1.2.9
       cross-spawn: 7.0.3
-      pnpm: 6.11.5
+      pnpm: 6.16.1
     dev: true
 
   /@samverschueren/stream-to-observable/0.3.1_rxjs@6.6.7:
@@ -1534,7 +1563,7 @@ packages:
   /@sideway/address/4.1.2:
     resolution: {integrity: sha512-idTz8ibqWFrPU8kMirL0CoPH/A29XOzzAzpyN3zQ4kAWnzmNfFmRaoMNN6VI8ske5M73HZyhIaW4OuSFIdM4oA==}
     dependencies:
-      '@hapi/hoek': 9.2.0
+      '@hapi/hoek': 9.2.1
     dev: true
 
   /@sideway/formula/3.0.0:
@@ -1787,10 +1816,10 @@ packages:
     dev: true
     optional: true
 
-  /axios/0.21.1:
-    resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
+  /axios/0.21.4:
+    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.1
+      follow-redirects: 1.14.4
     transitivePeerDependencies:
       - debug
     dev: true
@@ -2326,15 +2355,14 @@ packages:
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
 
-  /concurrently/6.2.0:
-    resolution: {integrity: sha512-v9I4Y3wFoXCSY2L73yYgwA9ESrQMpRn80jMcqMgHx720Hecz2GZAvTI6bREVST6lkddNypDKRN22qhK0X8Y00g==}
+  /concurrently/6.3.0:
+    resolution: {integrity: sha512-k4k1jQGHHKsfbqzkUszVf29qECBrkvBKkcPJEUDTyVR7tZd1G/JOfnst4g1sYbFvJ4UjHZisj1aWQR8yLKpGPw==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
       chalk: 4.1.1
-      date-fns: 2.23.0
+      date-fns: 2.25.0
       lodash: 4.17.21
-      read-pkg: 5.2.0
       rxjs: 6.6.7
       spawn-command: 0.0.2-1
       supports-color: 8.1.1
@@ -2461,8 +2489,8 @@ packages:
     resolution: {integrity: sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==}
     dev: false
 
-  /date-fns/2.23.0:
-    resolution: {integrity: sha512-5ycpauovVyAk0kXNZz6ZoB9AYMZB4DObse7P3BPWmyEjXNORTI8EJ6X0uaSAq4sCHzM1uajzrkr6HnsLQpxGXA==}
+  /date-fns/2.25.0:
+    resolution: {integrity: sha512-ovYRFnTrbGPD4nqaEqescPEv1mNwvt+UTqI3Ay9SzNtey9NZnYu6E2qCcBBgJ6/2VF1zGGygpyTDITqpQQ5e+w==}
     engines: {node: '>=0.11'}
     dev: true
 
@@ -3058,8 +3086,8 @@ packages:
       pkg-dir: 4.2.0
     dev: true
 
-  /follow-redirects/1.14.1:
-    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
+  /follow-redirects/1.14.4:
+    resolution: {integrity: sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -3875,10 +3903,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /joi/17.4.1:
-    resolution: {integrity: sha512-gDPOwQ5sr+BUxXuPDGrC1pSNcVR/yGGcTI0aCnjYxZEa3za60K/iCQ+OFIkEHWZGVCUcUlXlFKvMmrlmxrG6UQ==}
+  /joi/17.4.2:
+    resolution: {integrity: sha512-Lm56PP+n0+Z2A2rfRvsfWVDXGEWjXxatPopkQ8qQ5mxCEhwHG+Ettgg5o98FFaxilOxozoa14cFhrE/hOzh/Nw==}
     dependencies:
-      '@hapi/hoek': 9.2.0
+      '@hapi/hoek': 9.2.1
       '@hapi/topo': 5.1.0
       '@sideway/address': 4.1.2
       '@sideway/formula': 3.0.0
@@ -4292,7 +4320,7 @@ packages:
       decamelize-keys: 1.1.0
       hard-rejection: 2.1.0
       minimist-options: 4.1.0
-      normalize-package-data: 3.0.2
+      normalize-package-data: 3.0.3
       read-pkg-up: 7.0.1
       redent: 3.0.0
       trim-newlines: 3.0.1
@@ -4658,12 +4686,12 @@ packages:
       validate-npm-package-license: 3.0.4
     dev: true
 
-  /normalize-package-data/3.0.2:
-    resolution: {integrity: sha512-6CdZocmfGaKnIHPVFhJJZ3GuR8SsLKvDANFp47Jmy51aKIr8akjAWTSxtpI+MBgBFdSMRyo4hMpDlT6dTffgZg==}
+  /normalize-package-data/3.0.3:
+    resolution: {integrity: sha512-p2W1sgqij3zMMyRC067Dg16bfzVH+w7hyegmpIvZ4JNjqtGOVAIvLmjBx3yP7YTe9vKJgkoNOPjwQGogDoMXFA==}
     engines: {node: '>=10'}
     dependencies:
       hosted-git-info: 4.0.2
-      resolve: 1.20.0
+      is-core-module: 2.5.0
       semver: 7.3.5
       validate-npm-package-license: 3.0.4
     dev: true
@@ -5068,8 +5096,8 @@ packages:
       find-up: 4.1.0
     dev: true
 
-  /pnpm/6.11.5:
-    resolution: {integrity: sha512-TXMSRyncP88F4GTdKFIIi3kdXSYf+v3uvIKLfNjPTt2YjsrbKmYNCR3VsGjYwlMVSnH2UEo2/sM2VNSefH9Isw==}
+  /pnpm/6.16.1:
+    resolution: {integrity: sha512-oTZtaWJvvQ1V4KzpPya/BYYF90c6ICKmFYof8DAzMi0g2PEGseSVRdw/A2ov6mQJxBjHyRyYp/j42j8QOqRuKw==}
     engines: {node: '>=12.17'}
     hasBin: true
     dev: true
@@ -6350,8 +6378,8 @@ packages:
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
-      axios: 0.21.1
-      joi: 17.4.1
+      axios: 0.21.4
+      joi: 17.4.2
       lodash: 4.17.21
       minimist: 1.2.5
       rxjs: 7.3.0

@@ -1,27 +1,26 @@
 {
-  "name": "fabo",
-  "version": "1.0.5",
-  "private": true,
+  "name": "@fpaboim/fabo",
+  "version": "1.0.6",
   "description": "Serverless Express/MongoDB api generator - beta",
   "main": "./index.js",
   "type": "module",
-  "workspaces": [
-    "packages/*"
-  ],
   "devDependencies": {
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.14.8",
     "@babel/node": "^7.14.7",
     "@babel/preset-env": "^7.14.8",
-    "@changesets/cli": "^2.16.0"
+    "@changesets/cli": "^2.16.0",
+    "concurrently": "^6.2.0",
+    "package-preview": "^4.0.0",
+    "wait-on": "^6.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fpaboim/fabo.git"
+    "url": "git+https://github.com/fpaboim/fabo.git",
+    "directory": "packages/fabo"
   },
   "bin": {
-    "@fabo/fabo": "./packages/cli/bin/fabo.js",
-    "fabo": "./packages/cli/bin/fabo.js"
+    "fabo": "./index.js"
   },
   "scripts": {
     "test": "preview && node tests/test.js"
@@ -47,6 +46,9 @@
   },
   "dependencies": {
     "@fpaboim/fabo": "workspace:*",
+    "@fpaboim/cli": "workspace:*",
+    "@fpaboim/server-core": "workspace:*",
+    "@fpaboim/server-templates": "workspace:*",
     "chalk": "^4.1.1",
     "express-rate-limit": "^5.3.0"
   }
