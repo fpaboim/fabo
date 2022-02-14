@@ -25,6 +25,7 @@
     "helmet": "^4.6.0",
     "helmet-crossdomain": "^0.5.0",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.3.1",
     "mongodb-client-encryption": "^1.2.6",
     "mongoose": "^5.13.4",
     "mongoose-validator": "github:fpaboim/mongoose-validator",
