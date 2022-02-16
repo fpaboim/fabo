@@ -27,7 +27,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.3.1",
     "mongodb-client-encryption": "^1.2.6",
-    "mongoose": "^5.13.4",
     "mongoose-validator": "github:fpaboim/mongoose-validator",
     "netjet": "^1.4.0",
     "passport": "^0.4.1",
