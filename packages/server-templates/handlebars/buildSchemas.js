@@ -188,6 +188,24 @@ Handlebars.registerHelper('buildSchemas_parseValidationEntry', function (value) 
   return res
 });
 
+Handlebars.registerHelper('buildSchemas_isRequired', function (data) {
+  const required = data['required']
+  if (required) {
+    if (typeof required == 'boolean') {
+      return required
+    } else {
+      if (Array.isArray(required) && typeof required[0] == 'boolean') {
+        return required[0]
+      } else {
+        return false
+      }
+    }
+
+  } else {
+    return false
+  }
+});
+
 Handlebars.registerHelper('buildSchemas_hasValidationEntries', function (value) {
   let keys = Object.keys(value)
 

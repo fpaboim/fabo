@@ -10,12 +10,19 @@ import createApp from "./express.js"
 
 // Vars
 ///////////////////////////////////////////////////////////////////////////////
+const PORT = 4000
+
 dotenv.config()
+const result = dotenv.config()
+
+if (result.error) {
+  throw result.error
+}
 
 // funcs
 ///////////////////////////////////////////////////////////////////////////////
 export function makeHandler(router, services, options) {
-  return async function startApp(...args) {
+  return async function startApp(mongoose, local=false, ...args) {
     console.log("\n")
     console.log(
       chalk.bold(
@@ -26,14 +33,20 @@ export function makeHandler(router, services, options) {
     )
 
     // Create express app and connect to db
-    let connection = connectToDB()
-    let app = createApp(router, services, options)
+    let connection = connectToDB(mongoose)
     connection = await connection
+    console.log('Connected to DB')
+    let app = createApp(router, services, options)
 
-    app = serverlessExpress({app})
+    if (!local) {
+      app = serverlessExpress({app})
+      console.log("Connected!")
+      return app(...args)
+    } else {
+      app.listen(PORT, () => {
+        console.log(`Example app listening at http://localhost:${PORT}`)
+      })
+    }
     // app = middy(app).use(cors())
-    console.log("Connected!")
-
-    return app(...args)
   }
 }
