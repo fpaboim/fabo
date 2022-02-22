@@ -4,18 +4,17 @@ import schema from './schema.js'
 import hooks from './schemaHooks.js'
 {{/if}}
 
-const {{name}}Schema = new mongoose.Schema(schema)
 {{#if hasHooks}}
 // hooks
 ///////////////////////////////////////////////////////////////////////////////
 for (let hook in hooks) {
   for (let hookmethod in hooks[hook]) {
-    {{name}}Schema[hook](hookmethod, hooks[hook][hookmethod])
+    schema[hook](hookmethod, hooks[hook][hookmethod])
   }
 }
 {{/if}}
 
-const {{name}} = mongoose.model('{{name}}', {{name}}Schema)
+const {{name}} = mongoose.model('{{name}}', schema)
 export default {{name}}
 
 

@@ -7,7 +7,7 @@ import mongoose from 'mongoose'
 
 // {{name}} schema
 ///////////////////////////////////////////////////////////////////////////////
-export default {
+const schema = {
 {{#schemaEntries}}
   {{#if (buildSchemas_isNested this)}}
   {{#if (buildSchemas_isArray data)}}
@@ -29,5 +29,5 @@ export default {
 {{/schemaEntries}}
 }
 
-
-
+const {{name}} = new mongoose.Schema(schema)
+export default {{name}}

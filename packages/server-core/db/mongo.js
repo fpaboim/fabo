@@ -9,6 +9,9 @@ const connectToDB = async (mongoose) => {
   // mongoose.set("useFindAndModify", false)
   // mongoose.set("useCreateIndex", true)
   // mongoose.set("useUnifiedTopology", true)
+  if (process.env.production) {
+    mongoose.set('autoIndex', false);
+  }
 
   db = await mongoose.connect(process.env.MONGO_URI, {
     "bufferCommands": false

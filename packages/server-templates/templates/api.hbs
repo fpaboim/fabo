@@ -78,6 +78,7 @@ const methods = {
       {{> buildAPI_authPartial this.find}}
       {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.find)}}
       let { filter,skip,limit,sort,projection,population } = aqp(query);
+      {{> buildAPI_postQuery settings=(buildAPI_mergeSettings ../querySettings this.find)}}
       {{#if this.find.filters}}
       filter = {
         ...filter,
@@ -88,21 +89,21 @@ const methods = {
       {{/if}}
       const found = await {{../name}}
         .find(filter)
-        {{#hasKey ../querySettings 'skip'}}
+        {{#buildAPI_useField ../querySettings 'skip' this.find.skip}}
         .skip(skip)
-        {{/hasKey}}
-        {{#hasKey ../querySettings 'limit'}}
+        {{/buildAPI_useField}}
+        {{#buildAPI_useField ../querySettings 'limit' this.find.limit}}
         .limit(limit)
-        {{/hasKey}}
-        {{#hasKey ../querySettings 'sort'}}
+        {{/buildAPI_useField}}
+        {{#buildAPI_useField ../querySettings 'sort' this.find.sort}}
         .sort(sort)
-        {{/hasKey}}
-        {{#hasKey ../querySettings 'populate'}}
+        {{/buildAPI_useField}}
+        {{#buildAPI_useField ../querySettings 'populate' this.find.populate}}
         .populate(population)
-        {{/hasKey}}
-        {{#hasKey ../querySettings 'fields'}}
+        {{/buildAPI_useField}}
+        {{#buildAPI_useField ../querySettings 'fields' this.find.fields}}
         .select(projection)
-        {{/hasKey}}
+        {{/buildAPI_useField}}
         .lean()
 
       return res.status(200).send(found)
@@ -122,6 +123,7 @@ const methods = {
       {{> buildAPI_authPartial this.findone}}
       {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.findone)}}
       let { filter,projection,population } = aqp(query);
+      {{> buildAPI_postQuery settings=(buildAPI_mergeSettings ../querySettings this.findone)}}
       {{#if this.findone.filters}}
       filter = {
         ...filter,
@@ -131,12 +133,12 @@ const methods = {
       }
       {{/if}}
       const found = await {{../name}}.findOne(filter)
-                                     {{#hasKey ../querySettings 'populate'}}
+                                     {{#buildAPI_useField ../querySettings 'populate' this.findone.populate}}
                                      .populate(population)
-                                     {{/hasKey}}
-                                     {{#hasKey ../querySettings 'fields'}}
+                                     {{/buildAPI_useField}}
+                                     {{#buildAPI_useField ../querySettings 'fields' this.findone.fields}}
                                      .select(projection)
-                                     {{/hasKey}}
+                                     {{/buildAPI_useField}}
                                      .lean()
 
       if (found == undefined) {

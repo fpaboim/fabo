@@ -187,13 +187,24 @@ Handlebars.registerHelper('buildAPI_isNumQuery', function(val, options) {
 });
 
 Handlebars.registerHelper('buildAPI_mergeSettings', function(settings, context) {
+  const merged = {
+    ...settings,
+    ...context.query
+  }
+
   return {
-    query: {
-      ...settings,
-      ...context.query
-    },
+    query: merged,
   }
 });
+
+Handlebars.registerHelper('buildAPI_useField', function(settings, defaultField, localField, options) {
+  if (localField && localField !== false)
+    return options.fn(this)
+  if ((Object.keys(settings).includes(defaultField) &&
+      settings[defaultField] !== false))
+    return options.fn(this)
+  return ''
+})
 
 // partials
 ///////////////////////////////////////////////////////////////////////////////
@@ -251,7 +262,9 @@ for (let key of requiredVals) {
 {{/if}}
 {{#if this.setFields}}
 {{#each this.setFields}}
-query["{{this.field}}"] = {{this.value}}
+{{#each this}}
+query["{{@key}}"] = {{this}}
+{{/each}}
 {{/each}}
 {{/if}}
 {{/ifCond}}
@@ -278,6 +291,25 @@ if (!query['{{@key}}']) {
 if (!query['{{@key}}']) {
   query['{{@key}}'] = {{json this.default}}
 }
+{{/if}}
+{{/ifCond}}
+{{/each}}
+{{/if}}`
+)
+
+Handlebars.registerPartial('buildAPI_postQuery', `
+{{#if settings.query}}
+{{#each settings.query}}
+{{#ifCond @key '==' 'fields'}}
+{{#if this.setFields}}
+{{#each this.setFields}}
+{{#each this}}
+projection = {
+  ...projection,
+  {{@key}}: {{this}}
+}
+{{/each}}
+{{/each}}
 {{/if}}
 {{/ifCond}}
 {{/each}}
