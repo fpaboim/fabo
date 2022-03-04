@@ -17,126 +17,105 @@ hasfilter
 ///////////////////////////////////////////////////////////////////////////////
 const methods = {
 {{#apiEntries}}
-  {{#if this.count}}
-  count: async (req, res, next) => {
+  {{#each this as |entry|}}
+    {{#if (or
+      (or (eq entry.alias 'create') (eq entry.type 'create'))
+      (eq @key 'create'))}}
+  {{@key}}: async (req, res, next) => {
     try {
-      const user = req.user
-      let  query = req.query
-      {{> buildAPI_authPartial this.count}}
-      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.count)}}
-      let { filter } = aqp(query);
-      {{#if this.count.filters}}
-      filter = {
-        ...filter,
-        {{#each this.count.filters}}
-        {{this.field}}: {{this.value}}
-        {{/each}}
-      }
-      {{/if}}
+      const user    = req.user
+      let   body    = req.body
+      let  bodyKeys = Object.keys(body)
+      {{> buildAPI_authPartial entry}}
+      {{> buildAPI_preAllow entry}}
+      {{> buildAPI_preDeny entry}}
+      {{> buildAPI_preSet entry}}
 
-      const count = await {{../name}}.count(filter)
+      const created = await new {{../../name}}(body).save()
 
-      return res.status(200).send(count)
+      return res.status(200).send(created.toObject())
     } catch(err) {
-      console.log('** ERROR **: Unknown error on {{../name}}.count', err)
+      console.log('** ERROR **: Unknown error on {{../../name}}.create', err)
       return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
   },
-  {{/if}}
+    {{/if}}
+  {{/each}}
 
-  {{#if this.delete}}
-  delete: async (req, res, next) => {
+  {{#each this as |entry|}}
+    {{#if (or
+      (or (eq entry.alias 'find') (eq entry.type 'find'))
+      (eq @key 'find'))}}
+  {{@key}}: async (req, res, next) => {
     try {
       const user = req.user
       let  query = req.query
-      {{> buildAPI_authPartial this.delete}}
-      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.delete)}}
-      let { filter } = aqp(query);
-      {{#if this.delete.filters}}
-      filter = {
-        ...filter,
-        {{#each this.delete.filters}}
-        {{this.field}}: {{this.value}}
-        {{/each}}
-      }
-      {{/if}}
-      const del = await {{../name}}.deleteOne(filter)
-
-      return res.status(200).send(del)
-    } catch(err) {
-      console.log('** ERROR **: Unknown error on {{../name}}.delete', err)
-      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
-    }
-  },
-  {{/if}}
-
-  {{#if this.find}}
-  find: async (req, res, next) => {
-    try {
-      const user = req.user
-      let  query = req.query
-      {{> buildAPI_authPartial this.find}}
-      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.find)}}
+      {{> buildAPI_authPartial entry}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../../querySettings entry)}}
       let { filter,skip,limit,sort,projection,population } = aqp(query);
-      {{> buildAPI_postQuery settings=(buildAPI_mergeSettings ../querySettings this.find)}}
-      {{#if this.find.filters}}
+      {{> buildAPI_postQuery settings=(buildAPI_mergeSettings ../../querySettings entry)}}
+      {{#if entry.filters}}
       filter = {
         ...filter,
-        {{#each this.find.filters}}
+        {{#each entry.filters}}
         {{this.field}}: {{this.value}}
         {{/each}}
       }
       {{/if}}
-      const found = await {{../name}}
+      const found = await {{../../name}}
         .find(filter)
-        {{#buildAPI_useField ../querySettings 'skip' this.find.skip}}
+        {{#buildAPI_useField ../../querySettings 'skip' entry.skip}}
         .skip(skip)
         {{/buildAPI_useField}}
-        {{#buildAPI_useField ../querySettings 'limit' this.find.limit}}
+        {{#buildAPI_useField ../../querySettings 'limit' entry.limit}}
         .limit(limit)
         {{/buildAPI_useField}}
-        {{#buildAPI_useField ../querySettings 'sort' this.find.sort}}
+        {{#buildAPI_useField ../../querySettings 'sort' entry.sort}}
         .sort(sort)
         {{/buildAPI_useField}}
-        {{#buildAPI_useField ../querySettings 'populate' this.find.populate}}
+        {{#buildAPI_useField ../../querySettings 'populate' entry.populate}}
         .populate(population)
         {{/buildAPI_useField}}
-        {{#buildAPI_useField ../querySettings 'fields' this.find.fields}}
+        {{#buildAPI_useField ../../querySettings 'fields' entry.fields}}
         .select(projection)
         {{/buildAPI_useField}}
         .lean()
 
       return res.status(200).send(found)
     } catch(err) {
-      console.log('** ERROR **: Unknown error on {{../name}}.find', err)
+      console.log('** ERROR **: Unknown error on {{../../name}}.find', err)
       return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
   },
-  {{/if}}
+    {{/if}}
+  {{/each}}
 
-  {{#if this.findone}}
-  findone: async (req, res, next) => {
+  {{#each this as |entry|}}
+    {{#if (or
+      (or (eq entry.alias 'findone') (eq entry.type 'findone'))
+      (eq @key 'findone'))}}
+  {{@key}}: async (req, res, next) => {
     try {
       const user    = req.user
       let query     = req.query
       let queryKeys = Object.keys(query)
-      {{> buildAPI_authPartial this.findone}}
-      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.findone)}}
+      {{> buildAPI_authPartial entry}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../../querySettings entry)}}
       let { filter,projection,population } = aqp(query);
-      {{> buildAPI_postQuery settings=(buildAPI_mergeSettings ../querySettings this.findone)}}
-      {{#if this.findone.filters}}
+      {{> buildAPI_postQuery settings=(buildAPI_mergeSettings ../../querySettings entry)}}
+      {{#if entry.filters}}
       filter = {
         ...filter,
-        {{#each this.findone.filters}}
+        {{#each entry.filters}}
         {{this.field}}: {{this.value}}
         {{/each}}
       }
       {{/if}}
-      const found = await {{../name}}.findOne(filter)
-                                     {{#buildAPI_useField ../querySettings 'populate' this.findone.populate}}
+      const found = await {{../../name}}.findOne(filter)
+                                     {{#buildAPI_useField ../../querySettings 'populate' entry.populate}}
                                      .populate(population)
                                      {{/buildAPI_useField}}
-                                     {{#buildAPI_useField ../querySettings 'fields' this.findone.fields}}
+                                     {{#buildAPI_useField ../../querySettings 'fields' entry.fields}}
                                      .select(projection)
                                      {{/buildAPI_useField}}
                                      .lean()
@@ -146,87 +125,138 @@ const methods = {
       }
       return res.status(200).send(found)
     } catch(err) {
-      console.log('** ERROR **: Unknown error on {{../name}}.findone', err)
+      console.log('** ERROR **: Unknown error on {{../../name}}.findone', err)
       return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
   },
-  {{/if}}
+    {{/if}}
+  {{/each}}
 
-  {{#if this.create}}
-  create: async (req, res, next) => {
-    try {
-      const user    = req.user
-      let   body    = req.body
-      let  bodyKeys = Object.keys(body)
-      {{> buildAPI_authPartial this.create}}
-      {{> buildAPI_preAllow this.create}}
-      {{> buildAPI_preDeny this.create}}
-      {{> buildAPI_preSet this.create}}
-
-      const created = await new {{../name}}(body).save()
-
-      return res.status(200).send(created.toObject())
-    } catch(err) {
-      console.log('** ERROR **: Unknown error on {{../name}}.create', err)
-      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
-    }
-  },
-  {{/if}}
-
-  {{#if this.updateone}}
-  updateone: async (req, res, next) => {
+  {{#each this as |entry|}}
+    {{#if (or
+      (or (eq entry.alias 'updateone') (eq entry.type 'updateone'))
+      (eq @key 'updateone'))}}
+  {{@key}}: async (req, res, next) => {
     try {
       const user    = req.user
       let   body    = req.body
       let  bodyKeys = Object.keys(body)
       let query     = req.query
       let queryKeys = Object.keys(query)
-      {{> buildAPI_authPartial this.updateone}}
-      {{> buildAPI_preAllow this.updateone}}
-      {{> buildAPI_preDeny this.updateone}}
-      {{> buildAPI_preSet this.updateone}}
-      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings this.updateone)}}
+      {{> buildAPI_authPartial entry}}
+      {{> buildAPI_preAllow entry}}
+      {{> buildAPI_preDeny entry}}
+      {{> buildAPI_preSet entry}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings entry)}}
       let { filter } = aqp(req.query);
-      const updated = await {{../name}}.updateOne(filter, body)
+      const updated = await {{../../name}}.updateOne(filter, body)
 
       return res.status(200).send(updated)
     } catch(err) {
-      console.log('** ERROR **: Unknown error on {{../name}}.updateone', err)
+      console.log('** ERROR **: Unknown error on {{../../name}}.updateone', err)
       return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
   },
-  {{/if}}
+    {{/if}}
+  {{/each}}
 
-  {{#if this.updatemany}}
-  updatemany: async (req, res, next) => {
+
+  {{#each this as |entry|}}
+    {{#if (or
+      (or (eq entry.alias 'updatemany') (eq entry.type 'updatemany'))
+      (eq @key 'updatemany'))}}
+  {{@key}}: async (req, res, next) => {
     try {
       const user    = req.user
       let   body    = req.body
       let  bodyKeys = Object.keys(body)
 
-      {{> buildAPI_authPartial this.updatemany}}
-      {{> buildAPI_preAllow this.updatemany}}
-      {{> buildAPI_preDeny this.updatemany}}
-      {{> buildAPI_preSet this.updatemany}}
+      {{> buildAPI_authPartial entry}}
+      {{> buildAPI_preAllow entry}}
+      {{> buildAPI_preDeny entry}}
+      {{> buildAPI_preSet entry}}
 
       let { filter } = aqp(req.query);
-      {{#if this.updatemany.filters}}
+      {{#if entry.filters}}
       filter = {
         ...filter,
-        {{#each this.updatemany.filters}}
+        {{#each entry.filters}}
         {{this.field}}: {{this.value}}
         {{/each}}
       }
       {{/if}}
-      const updatemany = await {{../name}}.updateMany(filter, body)
+      const updatemany = await {{../../name}}.updateMany(filter, body)
 
       return res.status(200).send(updatemany.toObject())
     } catch(err) {
-      console.log('** ERROR **: Unknown error on {{../name}}.updatemany', err)
+      console.log('** ERROR **: Unknown error on {{../../name}}.updatemany', err)
       return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
     }
   },
-  {{/if}}
+    {{/if}}
+  {{/each}}
+
+  {{#each this as |entry|}}
+    {{#if (or
+      (or (eq entry.alias 'count') (eq entry.type 'count'))
+      (eq @key 'count'))}}
+  {{@key}}: async (req, res, next) => {
+    try {
+      const user = req.user
+      let  query = req.query
+      {{> buildAPI_authPartial entry}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../../querySettings entry)}}
+      let { filter } = aqp(query);
+      {{#if entry.filters}}
+      filter = {
+        ...filter,
+        {{#each entry.filters}}
+        {{this.field}}: {{this.value}}
+        {{/each}}
+      }
+      {{/if}}
+
+      const count = await {{../../name}}.count(filter)
+
+      return res.status(200).send(count)
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../../name}}.count', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
+    }
+  },
+    {{/if}}
+  {{/each}}
+
+  {{#each this as |entry|}}
+    {{#if (or
+      (or (eq entry.alias 'delete') (eq entry.type 'delete'))
+      (eq @key 'delete'))}}
+  {{@key}}: async (req, res, next) => {
+    try {
+      const user = req.user
+      let  query = req.query
+      {{> buildAPI_authPartial entry}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../../querySettings entry)}}
+      let { filter } = aqp(query);
+      {{#if entry.filters}}
+      filter = {
+        ...filter,
+        {{#each entry.filters}}
+        {{this.field}}: {{this.value}}
+        {{/each}}
+      }
+      {{/if}}
+      const del = await {{../../name}}.deleteOne(filter)
+
+      return res.status(200).send(del)
+    } catch(err) {
+      console.log('** ERROR **: Unknown error on {{../../name}}.delete', err)
+      return res.status(400).send({errors: {unknown: {message: 'Unknown error.'}}})
+    }
+  },
+    {{/if}}
+  {{/each}}
+
 
 {{/apiEntries}}
 };

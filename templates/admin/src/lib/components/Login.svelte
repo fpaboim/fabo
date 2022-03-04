@@ -2,7 +2,7 @@
   export const prerender = true
 </script>
 
-<script>
+<!-- <script>
   import { goto } from "$app/navigation"
   import { User, modal } from '../../store/store'
   import { post, setLocalStorage } from '$lib/req_utils'
@@ -106,3 +106,4 @@
 <style style lang="postcss">
 
 </style>
+ -->

@@ -3,6 +3,7 @@ import fs   from 'fs'
 import {
   getDirectories
 } from './fileUtils.js'
+import { defaultEntries } from '../handlebars/buildAPI.js'
 
 
 export function readSchemas() {
@@ -60,6 +61,22 @@ export function readAPIs() {
     }
   } catch(err) {
     console.log('**ERROR**: Error reading API config:', err)
+  }
+
+  return preProcessAPIs(apis)
+}
+
+function preProcessAPIs(apis) {
+  for(let entry in apis) {
+    for(let subentry in apis[entry]) {
+      if (defaultEntries.includes(subentry.alias)) {
+        apis[entry][subentry] = {
+          ...apis[entry][subentry.alias],
+          ...apis[entry][subentry]
+        }
+        console.log("PATCHED:", subentry)
+      }
+    }
   }
 
   return apis

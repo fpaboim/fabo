@@ -94,8 +94,8 @@ const compile = async (optionsIn) => {
         });
       }
       compileAdmin(schemas, apis, adminBase)
-      console.log("OK!")
     }
+    console.log("COMPILED!")
   } catch(e) {
     console.log("ERROR COMPILING:", e)
   }

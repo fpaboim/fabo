@@ -161,7 +161,7 @@ Handlebars.registerHelper('buildAPI_isEntry', function (value) {
 });
 
 
-const defaultEntries = ['count', 'delete', 'find', 'findone', 'create', 'updateone', 'updatemany']
+export const defaultEntries = ['count', 'delete', 'find', 'findone', 'create', 'updateone', 'updatemany']
 const hasDefaultEntries = api => {
   let foundDefaultEntries = false
   for (let key of Object.keys(api)) {
@@ -190,6 +190,17 @@ Handlebars.registerHelper('buildAPI_mergeSettings', function(settings, context) 
   const merged = {
     ...settings,
     ...context.query
+  }
+
+  return {
+    query: merged,
+  }
+});
+
+Handlebars.registerHelper('buildAPI_mergeBtoA', function(A, B) {
+  const merged = {
+    ...A,
+    ...B
   }
 
   return {
@@ -428,7 +439,6 @@ export default function compileAPIs(apis, clientBase, serverBase) {
         })
       }
 
-      // console.log("NAME:", modelName, api)
       if (Object.keys(api).length > 0) {
         let file_loc = new URL('../templates/api.hbs', import.meta.url)
         const apiTemplate = fs.readFileSync(file_loc, 'utf8');
@@ -436,6 +446,7 @@ export default function compileAPIs(apis, clientBase, serverBase) {
 
         if (hasDefaultEntries(api)) {
           const compiledApiTpl = Handlebars.compile(apiTemplate, { noEscape: true });
+
           const mongooseOut = compiledApiTpl({name: modelName, apiEntries: api, querySettings: querysettings})
           fs.writeFileSync(serverBase+'.fabo/models/'+modelName+'/api.js', mongooseOut);
           controllers.push({
