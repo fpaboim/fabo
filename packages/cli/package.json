@@ -26,19 +26,19 @@
   "author": "fpaboim",
   "license": "MIT",
   "dependencies": {
-    "arg": "^5.0.0",
-    "chalk": "^4.1.1",
+    "arg": "^5.0.1",
+    "chalk": "^4.1.2",
     "esm": "^3.2.25",
     "execa": "^5.1.1",
-    "inquirer": "^8.1.2",
+    "inquirer": "^8.2.0",
     "listr": "^0.14.3",
     "ncp": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.14.8",
-    "@babel/node": "^7.14.7",
-    "@babel/preset-env": "^7.14.8",
-    "nodemon": "^2.0.12"
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.5",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
   }
 }

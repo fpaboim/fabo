@@ -416,6 +416,7 @@ export default function compileAPIs(apis, clientBase, serverBase) {
         let obj = {
           name: modelName,
           path: key,
+          type: 'post',
           data: api[key]
         }
         if (obj.data.auth || obj.data.login) {
@@ -425,6 +426,14 @@ export default function compileAPIs(apis, clientBase, serverBase) {
             obj.data.middlewares = ['auth']
           }
         }
+
+        if (key == 'find' || key == 'findone') {
+          obj.type = 'get'
+        }
+        if (obj.data.alias && (obj.data.alias == 'find') || (obj.data.alias == 'findone')) {
+          obj.type = 'get'
+        }
+
         routerEntries.push(obj)
       }
 
