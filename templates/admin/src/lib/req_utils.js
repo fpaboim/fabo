@@ -128,7 +128,6 @@ export async function get(url) {
     const res = await fetch(url, {
       headers
     })
-    console.log('res:', res)
 
     if (!res.ok) {
       console.log("POST ERROR", res)

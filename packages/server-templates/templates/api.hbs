@@ -147,7 +147,7 @@ const methods = {
       {{> buildAPI_preAllow entry}}
       {{> buildAPI_preDeny entry}}
       {{> buildAPI_preSet entry}}
-      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../querySettings entry)}}
+      {{> buildAPI_preQuery settings=(buildAPI_mergeSettings ../../querySettings entry)}}
       let { filter } = aqp(req.query);
       const updated = await {{../../name}}.updateOne(filter, body)
 

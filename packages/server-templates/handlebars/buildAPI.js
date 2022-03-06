@@ -211,7 +211,7 @@ Handlebars.registerHelper('buildAPI_mergeBtoA', function(A, B) {
 Handlebars.registerHelper('buildAPI_useField', function(settings, defaultField, localField, options) {
   if (localField && localField !== false)
     return options.fn(this)
-  if ((Object.keys(settings).includes(defaultField) &&
+  if (settings && (Object.keys(settings).includes(defaultField) &&
       settings[defaultField] !== false))
     return options.fn(this)
   return ''
