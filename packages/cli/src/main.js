@@ -5,7 +5,7 @@ import path from 'path';
 import { promisify } from 'util';
 import execa from 'execa';
 import Listr from 'listr';
-import compile from '../../server-templates/compile.js'
+import { compile } from '@fabo/server-templates'
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);

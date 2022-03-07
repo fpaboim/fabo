@@ -2,17 +2,15 @@
   "name": "@fabo/server-templates",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fpaboim/fabo.git/.fabo/server-templates"
+    "url": "git+https://github.com/fpaboim/fabo",
+    "directory": "packages/server-templates"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "templates",
-  "main": "index.js",
+  "main": "compile.js",
   "type": "module",
   "publishConfig": {
     "access": "public"
-  },
-  "scripts": {
-    "start": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,10 +22,12 @@
     "ext": ".js, .json, .yaml, .hbs"
   },
   "dependencies": {
+    "execa": "^5.1.1",
     "express-rate-limit": "^5.5.1",
     "fs-extra": "^10.0.1",
     "handlebars": "^4.7.7",
     "js-yaml": "^4.1.0",
+    "ncp": "^2.0.0",
     "rimraf": "^3.0.2"
   }
 }

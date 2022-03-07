@@ -51,7 +51,7 @@ const adminTemplateDir = path.resolve(
   new URL(import.meta.url).pathname, '../../../templates/admin'
 );
 
-const compile = async (optionsIn) => {
+export const compile = async (optionsIn) => {
   try {
     let options = {
       ...defaultOptions,
@@ -100,5 +100,3 @@ const compile = async (optionsIn) => {
     console.log("ERROR COMPILING:", e)
   }
 }
-
-export default compile

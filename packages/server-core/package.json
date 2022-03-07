@@ -2,9 +2,10 @@
   "name": "@fabo/server-core",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fpaboim/fabo.git/.fabo/server-core"
+    "url": "git+https://github.com/fpaboim/fabo",
+    "directory": "packages/server-core"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "fabo_backend API server",
   "main": "index.js",
   "type": "module",
