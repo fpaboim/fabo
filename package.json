@@ -1,6 +1,6 @@
 {
   "name": "fabo",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Serverless Express/MongoDB API Generator - beta",
   "main": "./index.js",
   "type": "module",
